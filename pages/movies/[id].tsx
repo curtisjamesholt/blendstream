@@ -4,7 +4,6 @@ import Link from 'next/link';
 import useUser from '../../src/hooks/useUser';
 import Head from 'next/head';
 import useMovieThumbnail from '../../src/hooks/useMovieThumbnail';
-import MovieBanner from '../../src/components/MovieBanner';
 import Header from '../../src/components/layout/Header';
 import Image from 'next/image';
 import { FiHeart, FiPlay, FiPlus } from 'react-icons/fi';

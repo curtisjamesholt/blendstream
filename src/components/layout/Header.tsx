@@ -3,7 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import useUser from '../../hooks/useUser';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { FiGithub, FiMenu, FiX } from 'react-icons/fi';
+import { FaDiscord, FaGithub } from 'react-icons/fa';
 
 const Header = () => {
   const session = useSession();
@@ -31,12 +32,30 @@ const Header = () => {
           >
             <span className="text-sm font-normal">Discover</span>
           </Link>
+          <Link
+            href={'/'}
+            target="_blank"
+            className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
+          >
+            <FaDiscord />
+          </Link>
+          <Link
+            href={'https://github.com/joshuaKnauber/shortfilms'}
+            target="_blank"
+            className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
+          >
+            {/* <span className="text-sm font-normal">Discover</span> */}
+            <FaGithub />
+          </Link>
         </div>
         <div className="flex flex-row items-center gap-8">
-          <Link href={'/submit'}>
-            {/* <span className="text-bs rounded bg-gradient-to-br from-orange-300 to-rose-700 py-1 px-3 font-medium text-black">
-                Submit
-              </span> */}
+          <Link
+            href={'/submit'}
+            className=" transition-transform hover:scale-105"
+          >
+            <span className="rounded bg-white py-1 px-3 text-sm font-medium text-black">
+              Submit
+            </span>
           </Link>
           {session ? (
             <>
@@ -53,7 +72,12 @@ const Header = () => {
               </Link>
             </>
           ) : (
-            <Link href={'/login'}>Login</Link>
+            <Link
+              href={'/login'}
+              className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
+            >
+              <span className="text-sm font-normal">Login</span>
+            </Link>
           )}
         </div>
       </div>

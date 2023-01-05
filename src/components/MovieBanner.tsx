@@ -16,10 +16,12 @@ const MovieBanner = (props: MovieBannerProps) => {
 
   const thumbnails = useMovieThumbnails(movies.map((movie) => movie.url));
 
+  const showDuration = 10000;
+
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % movies.length);
-    }, 7000);
+    }, showDuration);
     return () => {
       clearInterval(interval);
     };
@@ -31,14 +33,17 @@ const MovieBanner = (props: MovieBannerProps) => {
     <div className="relative">
       <div className="relative -mt-16 flex w-full justify-center">
         <div className="flex h-[70vh] w-full items-start justify-center overflow-x-hidden md:items-start md:overflow-x-visible">
-          <div className="relative aspect-video h-[100%] md:h-auto md:max-h-[90vh] md:w-[100vw]">
+          <div className="relative aspect-video h-[100%] overflow-hidden md:h-auto md:max-h-[90vh] md:w-[100vw]">
             {thumbnails.map((thumbnail, i) => (
               <Image
                 key={i}
                 fill
-                style={{ objectFit: 'cover' }}
-                className={`duration-400 aspect-video transition-opacity ease-in-out ${
-                  i === index ? 'opacity-100' : 'opacity-0'
+                style={{
+                  objectFit: 'cover',
+                  animation: `scaleAnim ${showDuration}ms linear infinite, fadeAnim ${showDuration}ms linear infinite`,
+                }}
+                className={`duration-400 aspect-video ${
+                  i === index ? 'block' : 'hidden'
                 }`}
                 alt="Thumbnail"
                 src={thumbnail.highest}
@@ -54,8 +59,11 @@ const MovieBanner = (props: MovieBannerProps) => {
           </div>
         </div>
         <div className="absolute left-4 right-4 bottom-4 flex flex-col gap-4 md:left-8 md:bottom-8">
-          <span className="tracking-wid mb-2 text-4xl font-bold opacity-100 md:text-5xl">
+          <span className="tracking-wid text-4xl font-bold opacity-100 md:text-5xl">
             {movies[index].title}
+          </span>
+          <span className="mb-4 max-w-2xl text-base opacity-75">
+            {movies[index].description}
           </span>
           <Link href={`/movies/${movies[index].id}`}>
             <div className="mb-4 flex h-10 w-[150px] items-center justify-center gap-2 rounded bg-white">
