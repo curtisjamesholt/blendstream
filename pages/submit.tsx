@@ -1,18 +1,18 @@
-import { useSession } from "@supabase/auth-helpers-react";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
-import usePublishMovie from "../src/hooks/usePublishMovie";
+import { useSession } from '@supabase/auth-helpers-react';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { FormEvent, useState } from 'react';
+import usePublishMovie from '../src/hooks/usePublishMovie';
 
 export default function Submit() {
   const session = useSession();
 
   const router = useRouter();
 
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [url, setUrl] = useState<string>("");
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [url, setUrl] = useState<string>('');
 
   const { submitMovie, loading } = usePublishMovie();
 
@@ -31,7 +31,7 @@ export default function Submit() {
         <div>
           <form
             onSubmit={onSubmitForm}
-            style={{ display: "flex", flexDirection: "column", width: 200 }}
+            style={{ display: 'flex', flexDirection: 'column', width: 200 }}
           >
             <label htmlFor="title">Title</label>
             <input
@@ -60,12 +60,13 @@ export default function Submit() {
             <button type="submit" disabled={loading}>
               Submit
             </button>
+            <span>dont submit links to a video in a playlist</span>
           </form>
         </div>
       ) : (
         <div>
           <p>user is required to submit, please sign in</p>
-          <Link href={"/login"}>Sign In</Link>
+          <Link href={'/login'}>Sign In</Link>
         </div>
       )}
     </>
