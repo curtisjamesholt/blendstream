@@ -30,14 +30,14 @@ const MovieBanner = (props: MovieBannerProps) => {
   return (
     <div className="relative">
       <div className="relative -mt-16 flex w-full justify-center">
-        <div className="flex h-[70vh] w-full items-center justify-center overflow-x-hidden md:items-start md:overflow-x-visible">
-          <div className="relative aspect-video h-[50vh] md:h-auto md:max-h-[90vh] md:w-[100vw]">
+        <div className="flex h-[70vh] w-full items-start justify-center overflow-x-hidden md:items-start md:overflow-x-visible">
+          <div className="relative aspect-video h-[100%] md:h-auto md:max-h-[90vh] md:w-[100vw]">
             {thumbnails.map((thumbnail, i) => (
               <Image
                 key={i}
                 fill
                 style={{ objectFit: 'cover' }}
-                className={`duration-400 transition-opacity ease-in-out ${
+                className={`duration-400 aspect-video transition-opacity ease-in-out ${
                   i === index ? 'opacity-100' : 'opacity-0'
                 }`}
                 alt="Thumbnail"
@@ -54,7 +54,7 @@ const MovieBanner = (props: MovieBannerProps) => {
           </div>
         </div>
         <div className="absolute left-4 right-4 bottom-4 flex flex-col gap-4 md:left-8 md:bottom-8">
-          <span className="mb-2 text-4xl font-bold tracking-wide opacity-100 md:text-6xl">
+          <span className="tracking-wid mb-2 text-4xl font-bold opacity-100 md:text-5xl">
             {movies[index].title}
           </span>
           <Link href={`/movies/${movies[index].id}`}>

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Movie } from '../../hooks/usePublishMovie';
 import MovieCard from '../MovieCard';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -16,6 +16,8 @@ const MovieSlider = (props: MovieSliderProps) => {
 
   const [offset, setOffset] = useState<number>(0);
 
+  const [hasOverflow, setHasOverflow] = useState<boolean>(false);
+
   const itemWidth = 250;
 
   const onPrev = () => {
@@ -29,6 +31,27 @@ const MovieSlider = (props: MovieSliderProps) => {
       setOffset((prev) => Math.min(prev + itemWidth, maxOffset));
     }
   };
+
+  const updateHasOverflow = () => {
+    if (wrapperRef.current && containerRef.current) {
+      setHasOverflow(
+        wrapperRef.current.clientWidth < containerRef.current.scrollWidth
+      );
+    } else {
+      setHasOverflow(false);
+    }
+  };
+
+  useEffect(() => {
+    updateHasOverflow();
+  }, [movies, wrapperRef.current, containerRef.current]);
+
+  useEffect(() => {
+    window.addEventListener('resize', updateHasOverflow);
+    return () => {
+      window.removeEventListener('resize', updateHasOverflow);
+    };
+  }, []);
 
   return (
     <div className="flex w-full flex-col overflow-x-hidden">
@@ -50,18 +73,22 @@ const MovieSlider = (props: MovieSliderProps) => {
             </div>
           ))}
         </div>
-        <button
-          className="absolute left-0 top-0 hidden h-full w-28 items-center justify-center bg-gradient-to-r from-black to-transparent opacity-50 transition-opacity hover:opacity-100 md:flex"
-          onClick={onPrev}
-        >
-          <FiChevronLeft size={30} />
-        </button>
-        <button
-          className="absolute right-0 top-0 hidden h-full w-28 items-center justify-center bg-gradient-to-l from-black to-transparent opacity-50 transition-opacity hover:opacity-100 md:flex"
-          onClick={onNext}
-        >
-          <FiChevronRight size={30} />
-        </button>
+        {hasOverflow && (
+          <>
+            <button
+              className="absolute left-0 top-0 hidden h-full w-28 items-center justify-center rounded bg-gradient-to-r from-black to-transparent opacity-50 transition-opacity hover:opacity-100 md:flex"
+              onClick={onPrev}
+            >
+              <FiChevronLeft size={30} />
+            </button>
+            <button
+              className="absolute right-0 top-0 hidden h-full w-28 items-center justify-center rounded bg-gradient-to-l from-black to-transparent opacity-50 transition-opacity hover:opacity-100 md:flex"
+              onClick={onNext}
+            >
+              <FiChevronRight size={30} />
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
