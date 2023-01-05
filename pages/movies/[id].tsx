@@ -4,14 +4,28 @@ import Link from 'next/link';
 import useUser from '../../src/hooks/useUser';
 import Head from 'next/head';
 import useMovieThumbnail from '../../src/hooks/useMovieThumbnail';
+import MovieBanner from '../../src/components/MovieBanner';
+import Header from '../../src/components/layout/Header';
+import Image from 'next/image';
+import { FiHeart, FiPlay, FiPlus } from 'react-icons/fi';
+import { useSession } from '@supabase/auth-helpers-react';
 
 export default function Movie() {
   const router = useRouter();
   const { id } = router.query;
+  const session = useSession();
 
   const { movie } = useMovie(typeof id === 'string' ? id : '');
-  const { high } = useMovieThumbnail(movie?.url || '');
+  const { highest: thumbnail } = useMovieThumbnail(movie?.url || '');
   const { profile } = useUser(movie?.creator || '');
+
+  const onToggleWatchlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
+
+  const onToggleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault();
+  };
 
   if (!movie) return <div>loading...</div>;
 
@@ -20,27 +34,67 @@ export default function Movie() {
       <Head>
         <title>{movie.title}</title>
       </Head>
-      <div>
-        <p>{movie.title}</p>
-        <img src={profile?.profile_picture || ''} />
-        <p>{profile?.full_name}</p>
-        <Link href={`/`}>Back</Link>
-        <br />
-        <Link href={`/watch/${movie.id}`}>Watch</Link>
-        <img
-          src={high || ''}
-          style={{
-            width: '100vw',
-            aspectRatio: '16/9',
-            objectFit: 'cover',
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            zIndex: -1,
-            filter: 'blur(10px) brightness(0.25)',
-          }}
-        />
-      </div>
+      <>
+        <Header />
+        <div>
+          <Link href={`/watch/${movie.id}`}>
+            <div className="relative mx-8 h-[80vh] overflow-hidden rounded-xl">
+              {thumbnail && (
+                <Image
+                  className="aspect-video object-cover"
+                  src={thumbnail}
+                  alt="Thumbnail"
+                  fill
+                />
+              )}
+              <div
+                className="absolute h-full w-full"
+                style={{
+                  background:
+                    'linear-gradient(0deg, rgba(0,0,0,.9) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0) 100%)',
+                }}
+              ></div>
+
+              <div className="absolute top-1/2 left-1/2 flex aspect-square w-[70px] items-center justify-center rounded-full bg-black bg-opacity-40 transition-all hover:bg-opacity-70">
+                <FiPlay className="ml-1 fill-white" size={24} />
+              </div>
+
+              <div className="absolute left-8 bottom-8">
+                <span className="text-5xl font-semibold">{movie.title}</span>
+                <div className="mt-2 flex items-center gap-4">
+                  <div className="relative aspect-square w-6 overflow-hidden rounded-full">
+                    {profile?.profile_picture && (
+                      <Image src={profile.profile_picture} alt="Profile" fill />
+                    )}
+                  </div>
+                  <span className="font-medium">{profile?.full_name}</span>
+                </div>
+                <span className="mt-6 block max-w-xl text-sm font-normal">
+                  {movie.description}
+                </span>
+                {session && (
+                  <div className="mt-6 flex gap-2">
+                    <button
+                      onClick={onToggleWatchlist}
+                      className="flex items-center gap-4 rounded-md bg-white bg-opacity-10 px-4 py-2 text-sm font-medium backdrop-blur-sm"
+                    >
+                      <FiPlus strokeWidth={3} />
+                      Add to Watchlist
+                    </button>
+                    <button
+                      onClick={onToggleFavorite}
+                      className="flex items-center gap-4 rounded-md bg-white bg-opacity-10 px-4 py-2 text-sm font-medium backdrop-blur-sm"
+                    >
+                      <FiHeart strokeWidth={3} />
+                      Favorite
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </Link>
+        </div>
+      </>
     </>
   );
 }

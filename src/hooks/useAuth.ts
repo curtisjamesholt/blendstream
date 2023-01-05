@@ -1,11 +1,14 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 const useAuth = () => {
   const supabase = useSupabaseClient();
 
   const signInWithDiscord = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "discord",
+      provider: 'discord',
+      options: {
+        redirectTo: window.location.origin,
+      },
     });
     return { data, error };
   };
