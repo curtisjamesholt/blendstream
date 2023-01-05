@@ -18,7 +18,11 @@ export default function Footer() {
         </span>
       </Link>
       <span className="hidden text-sm opacity-50 md:block">
-        Made with ❤️ by the blender community
+        Made with ❤️ by the{' '}
+        <Link href="https://www.blender.org" target="_blank">
+          <u>blender</u>
+        </Link>{' '}
+        community
       </span>
       <Link href={''} target="_blank">
         <span className="flex items-center gap-2 text-sm opacity-50">
