@@ -34,6 +34,7 @@ const MovieBanner = (props: MovieBannerProps) => {
           <div className="relative aspect-video h-[50vh] md:h-auto md:max-h-[90vh] md:w-[100vw]">
             {thumbnails.map((thumbnail, i) => (
               <Image
+                key={i}
                 fill
                 style={{ objectFit: 'cover' }}
                 className={`duration-400 transition-opacity ease-in-out ${

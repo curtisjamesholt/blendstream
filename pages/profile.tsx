@@ -1,9 +1,9 @@
-import { useSession } from "@supabase/auth-helpers-react";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import useAuth from "../src/hooks/useAuth";
-import useMyMovies from "../src/hooks/useMyMovies";
+import { useSession } from '@supabase/auth-helpers-react';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import useAuth from '../src/hooks/useAuth';
+import useMyMovies from '../src/hooks/useMyMovies';
 
 export default function Profile() {
   const session = useSession();
@@ -16,7 +16,7 @@ export default function Profile() {
 
   const onSignOut = async () => {
     await signOut();
-    router.push("/");
+    router.push('/');
   };
 
   if (!session) {
@@ -36,7 +36,7 @@ export default function Profile() {
         {session?.user.id}
         <button onClick={onSignOut}>sign out</button>
         {movies.map((movie) => (
-          <div>
+          <div key={movie.id}>
             {movie.title}: {JSON.stringify(movie.published)}
           </div>
         ))}
