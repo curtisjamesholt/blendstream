@@ -14,7 +14,7 @@ const Header = () => {
   return (
     <>
       <div
-        className={`sticky top-0 z-40 hidden h-16 w-full flex-row items-center justify-between bg-black bg-opacity-80 px-4 backdrop-blur transition-opacity md:flex`}
+        className={`sticky top-0 z-40 hidden h-16 w-full flex-row items-center justify-between bg-black bg-opacity-80 px-8 backdrop-blur transition-opacity md:flex`}
       >
         <div className="flex flex-row items-center gap-8">
           <Link
