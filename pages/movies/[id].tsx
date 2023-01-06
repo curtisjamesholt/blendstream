@@ -82,7 +82,10 @@ export default function Movie() {
                 </div>
                 <div className="mt-6 flex gap-1">
                   {[...movie.categories].sort().map((category) => (
-                    <span className="rounded bg-white bg-opacity-10 px-2 py-[2px] text-xs font-medium tracking-wide">
+                    <span
+                      key={category}
+                      className="rounded bg-white bg-opacity-10 px-2 py-[2px] text-xs font-medium tracking-wide"
+                    >
                       {category}
                     </span>
                   ))}

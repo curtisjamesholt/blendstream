@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import MovieSlider from '../src/components/layout/MovieSlider';
 import { useRecentMovies } from '../src/hooks/useMovies';
 
