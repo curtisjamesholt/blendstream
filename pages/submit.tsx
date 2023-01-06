@@ -57,7 +57,7 @@ export default function Submit() {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
             />
-            <button type="submit" disabled={loading}>
+            <button type="submit" disabled={loading || true}>
               Submit
             </button>
             <span>dont submit links to a video in a playlist</span>

@@ -50,7 +50,6 @@ const Header = () => {
             target="_blank"
             className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
           >
-            {/* <span className="text-sm font-normal">Discover</span> */}
             <FaGithub />
           </Link>
         </div>
@@ -96,24 +95,64 @@ const Header = () => {
         </button>
       </div>
       <div
-        className={`fixed top-0 left-0 z-20 flex h-full w-full origin-top flex-col bg-black transition-transform md:hidden ${
+        className={`fixed top-0 left-0 z-20 flex h-full w-full origin-top flex-col gap-2 bg-black px-4 pt-4 transition-transform md:hidden ${
           showMobileMenu ? 'scale-y-100' : 'scale-y-0'
         }`}
       >
-        <button onClick={() => setShowMobileMenu(false)}>
-          <FiX size={24} />
-        </button>
-        <Link href="/" onClick={() => setShowMobileMenu(false)}>
+        <div className="flex justify-end">
+          <button onClick={() => setShowMobileMenu(false)}>
+            <FiX size={24} />
+          </button>
+        </div>
+        {session ? (
+          <Link
+            href="/profile"
+            onClick={() => setShowMobileMenu(false)}
+            className="flex items-center gap-2 py-2 px-4 text-sm font-medium"
+          >
+            <div className="relative aspect-square w-8 overflow-hidden rounded-full">
+              {profile?.profile_picture && (
+                <Image
+                  src={profile.profile_picture}
+                  fill
+                  alt="Profile Picture"
+                />
+              )}
+            </div>
+            Profile
+          </Link>
+        ) : (
+          <Link
+            href="/login"
+            onClick={() => setShowMobileMenu(false)}
+            className="py-2 px-4 text-sm font-medium"
+          >
+            Login
+          </Link>
+        )}
+        <div className="h-[1px] rounded bg-gray-700"></div>
+        <Link
+          href="/"
+          onClick={() => setShowMobileMenu(false)}
+          className="py-2 px-4 text-sm font-medium"
+        >
           Home
         </Link>
-        <Link href="/profile" onClick={() => setShowMobileMenu(false)}>
-          Profile
-        </Link>
-        <Link href="/submit" onClick={() => setShowMobileMenu(false)}>
-          Submit
-        </Link>
-        <Link href="/discover" onClick={() => setShowMobileMenu(false)}>
+        <div className="h-[1px] rounded bg-gray-700"></div>
+        <Link
+          href="/discover"
+          onClick={() => setShowMobileMenu(false)}
+          className="py-2 px-4 text-sm font-medium"
+        >
           Discover
+        </Link>
+        <div className="h-[1px] rounded bg-gray-700"></div>
+        <Link
+          href="/submit"
+          onClick={() => setShowMobileMenu(false)}
+          className="py-2 px-4 text-sm font-medium"
+        >
+          Submit
         </Link>
       </div>
     </>

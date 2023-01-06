@@ -1,8 +1,11 @@
-import { useSession } from "@supabase/auth-helpers-react";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import useAuth from "../src/hooks/useAuth";
+import { useSession } from '@supabase/auth-helpers-react';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { FaDiscord } from 'react-icons/fa';
+import Footer from '../src/components/layout/Footer';
+import Header from '../src/components/layout/Header';
+import useAuth from '../src/hooks/useAuth';
 
 export default function Submit() {
   const session = useSession();
@@ -17,7 +20,7 @@ export default function Submit() {
 
   useEffect(() => {
     if (session) {
-      router.push("/");
+      router.push('/');
     }
   }, [session, router]);
 
@@ -26,7 +29,18 @@ export default function Submit() {
       <Head>
         <title>Login</title>
       </Head>
-      <button onClick={onSignIn}>sign in with discord</button>
+      <div className="flex min-h-[100vh] flex-col">
+        <Header />
+        <div className="flex flex-grow flex-col items-center gap-16">
+          <button
+            onClick={onSignIn}
+            className="mt-[30vh] flex items-center gap-4 rounded bg-[#7289da] px-10 py-[14px] text-sm font-semibold text-black transition-all hover:brightness-110"
+          >
+            <FaDiscord size={18} /> Sign In With Discord
+          </button>
+        </div>
+        <Footer />
+      </div>
     </>
   );
 }
