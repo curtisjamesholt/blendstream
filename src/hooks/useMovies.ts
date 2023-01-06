@@ -1,6 +1,7 @@
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { Movie } from './usePublishMovie';
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
 export const useMoviesById = (ids: string[]) => {
   const supabase = useSupabaseClient();
@@ -76,6 +77,34 @@ export const useMoviesByCategory = (category: string) => {
   const { data, error, isLoading } = useQuery<Movie[] | null>(
     ['moviesByCategory', category],
     fetchMoviesByCategory
+  );
+
+  return {
+    movies: data || [],
+    error: error,
+    loading: isLoading,
+  };
+};
+
+export const useFilteredMovies = (search: string) => {
+  const supabase = useSupabaseClient();
+
+  const fetchFilteredMovies = async () => {
+    if (!search) return [];
+    const { data, error } = await supabase
+      .from('movies')
+      .select('*')
+      .filter('title', 'ilike', `%${search}%`)
+      .filter('published', 'eq', true)
+      .order('created_at', { ascending: false });
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data as Movie[];
+  };
+  const { data, error, isLoading } = useQuery<Movie[] | null>(
+    ['filteredMovies', search],
+    fetchFilteredMovies
   );
 
   return {

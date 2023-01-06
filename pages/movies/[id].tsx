@@ -46,10 +46,10 @@ export default function Movie() {
         <title>{movie.title}</title>
       </Head>
       <>
-        <Header />
-        <div className="h-[100vh]">
-          <Link href={`/watch/${movie.id}`}>
-            <div className="relative h-[80vh] overflow-hidden md:mx-8 md:mt-4 md:rounded-xl">
+        <div className="flex min-h-[100vh] flex-col">
+          <Header />
+          <Link href={`/watch/${movie.id}`} className="flex-grow">
+            <div className="relative h-[80vh] min-h-[600px] overflow-hidden md:mx-8 md:mt-4 md:rounded-xl">
               {thumbnail && (
                 <Image
                   className="aspect-video object-cover gradient-mask-b-50 md:[mask-image:none]"
@@ -146,8 +146,8 @@ export default function Movie() {
               </div>
             </div>
           </Link>
+          <Footer />
         </div>
-        <Footer />
       </>
     </>
   );
