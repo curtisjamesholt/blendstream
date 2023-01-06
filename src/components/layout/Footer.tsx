@@ -18,7 +18,7 @@ export default function Footer() {
         </span>
       </Link>
       <span className="hidden text-sm opacity-50 md:block">
-        Made with ❤️ by the{' '}
+        Built with ❤️ by the{' '}
         <Link href="https://www.blender.org" target="_blank">
           <u>blender</u>
         </Link>{' '}

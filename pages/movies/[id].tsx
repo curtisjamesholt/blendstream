@@ -6,9 +6,12 @@ import Head from 'next/head';
 import useMovieThumbnail from '../../src/hooks/useMovieThumbnail';
 import Header from '../../src/components/layout/Header';
 import Image from 'next/image';
-import { FiHeart, FiPlay, FiPlus } from 'react-icons/fi';
+import { FiCheck, FiHeart, FiPlay, FiPlus } from 'react-icons/fi';
 import { useSession } from '@supabase/auth-helpers-react';
 import Footer from '../../src/components/layout/Footer';
+import useWatchlist from '../../src/hooks/useWatchlist';
+import Spinner from '../../src/components/Spinner';
+import useFavorites from '../../src/hooks/useFavorites';
 
 export default function Movie() {
   const router = useRouter();
@@ -18,13 +21,21 @@ export default function Movie() {
   const { movie } = useMovie(typeof id === 'string' ? id : '');
   const { highest: thumbnail } = useMovieThumbnail(movie?.url || '');
   const { profile } = useUser(movie?.creator || '');
+  const { watchlist, toggleInWatchlist, togglingWatchlist } = useWatchlist();
+  const { favorites, toggleFavorite, togglingFavorite } = useFavorites();
 
   const onToggleWatchlist = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (movie) {
+      toggleInWatchlist(movie.id);
+    }
   };
 
   const onToggleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (movie) {
+      toggleFavorite(movie.id);
+    }
   };
 
   if (!movie) return <div>loading...</div>;
@@ -76,17 +87,49 @@ export default function Movie() {
                   <div className="mt-6 flex gap-2">
                     <button
                       onClick={onToggleWatchlist}
-                      className="flex items-center gap-4 rounded-md bg-white bg-opacity-10 px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all hover:bg-opacity-20"
+                      disabled={togglingWatchlist}
+                      className={`flex items-center gap-4 rounded-md bg-white px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all ${
+                        watchlist.includes(movie?.id || '')
+                          ? 'bg-opacity-100 text-black'
+                          : 'bg-opacity-10 hover:bg-opacity-20'
+                      }`}
                     >
-                      <FiPlus strokeWidth={3} />
-                      Add to Watchlist
+                      {togglingWatchlist ? (
+                        <Spinner size={16} />
+                      ) : watchlist.includes(movie?.id || '') ? (
+                        <FiCheck />
+                      ) : (
+                        <FiPlus strokeWidth={3} />
+                      )}
+                      {watchlist.includes(movie.id)
+                        ? 'Watchlist'
+                        : 'Add to Watchlist'}
                     </button>
                     <button
                       onClick={onToggleFavorite}
-                      className="flex items-center gap-4 rounded-md bg-white bg-opacity-10 px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all hover:bg-opacity-20"
+                      disabled={togglingFavorite}
+                      className={`flex items-center gap-4 rounded-md bg-white px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all ${
+                        favorites.includes(movie?.id || '')
+                          ? 'bg-opacity-100 text-black'
+                          : 'bg-opacity-10 hover:bg-opacity-20'
+                      }`}
                     >
-                      <FiHeart strokeWidth={3} />
-                      Favorite
+                      {favorites.includes(movie.id) ? (
+                        togglingFavorite ? (
+                          <Spinner size={16} />
+                        ) : (
+                          <FiHeart className="fill-red-500 stroke-red-500 stroke-2" />
+                        )
+                      ) : (
+                        <>
+                          {togglingFavorite ? (
+                            <Spinner size={16} />
+                          ) : (
+                            <FiHeart strokeWidth={3} />
+                          )}
+                          Favorite
+                        </>
+                      )}
                     </button>
                   </div>
                 )}

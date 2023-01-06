@@ -4,12 +4,19 @@ import Footer from '../src/components/layout/Footer';
 import Header from '../src/components/layout/Header';
 import MovieSlider from '../src/components/layout/MovieSlider';
 import MovieBanner from '../src/components/MovieBanner';
+import useFavorites from '../src/hooks/useFavorites';
 import useMovies from '../src/hooks/useMovies';
 import useUpdateProfilePicture from '../src/hooks/useUpdateProfilePicture';
+import useWatchlist from '../src/hooks/useWatchlist';
 
 export default function Home() {
   const session = useSession();
-  const { movies } = useMovies();
+
+  const { watchlist } = useWatchlist();
+  const { favorites } = useFavorites();
+  const { movies: watchlistMovies } = useMovies(watchlist);
+  const { movies: favoritesMovies } = useMovies(favorites);
+  const { recentMovies } = useMovies();
 
   useUpdateProfilePicture();
 
@@ -20,21 +27,25 @@ export default function Home() {
       </Head>
       <Header />
       <main className="flex flex-col gap-4">
-        <MovieBanner movies={movies} />
+        <MovieBanner movies={recentMovies} />
         <div className="z-10 mb-16 flex flex-col gap-14">
           {session && (
             <>
-              <MovieSlider title="Your Watchlist" movies={movies} />
-              <MovieSlider title="Your Favorites" movies={movies} />
-              <MovieSlider title="Recently Watched" movies={movies} />
+              {watchlistMovies.length ? (
+                <MovieSlider title="Your Watchlist" movies={watchlistMovies} />
+              ) : null}
+              {favoritesMovies.length ? (
+                <MovieSlider title="Your Favorites" movies={favoritesMovies} />
+              ) : null}
             </>
           )}
-          <MovieSlider title="Photorealism" movies={movies} />
-          <MovieSlider title="NPR" movies={movies} />
-          <MovieSlider title="One Person Production" movies={movies} />
-          <MovieSlider title="Blender" movies={movies} />
-          <MovieSlider title="Sci-Fi" movies={movies} />
-          <MovieSlider title="Comedy" movies={movies} />
+          <MovieSlider title="New Arrivals" movies={recentMovies} />
+          <MovieSlider title="Photorealism" movies={watchlistMovies} />
+          <MovieSlider title="NPR" movies={watchlistMovies} />
+          <MovieSlider title="One Person Production" movies={watchlistMovies} />
+          <MovieSlider title="Blender" movies={watchlistMovies} />
+          <MovieSlider title="Sci-Fi" movies={watchlistMovies} />
+          <MovieSlider title="Comedy" movies={watchlistMovies} />
         </div>
       </main>
       <Footer />

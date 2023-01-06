@@ -11,6 +11,29 @@ body {
   color: white;
 }
 
+html {
+  --scrollbarBG: black;
+  --thumbBG: #363636;
+  --thumbBGHover: #494949;
+}
+
+body::-webkit-scrollbar {
+  width: 11px;
+}
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+body::-webkit-scrollbar-track {
+  background: var(--scrollbarBG);
+}
+body::-webkit-scrollbar-thumb {
+  background-color: var(--thumbBG);
+}
+body::-webkit-scrollbar-thumb:hover {
+  background-color: var(--thumbBGHover);
+}
+
 @keyframes scaleAnim {
   0% {
     transform: scale(1.15);

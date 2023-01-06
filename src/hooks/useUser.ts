@@ -1,5 +1,5 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { useQuery } from "@tanstack/react-query";
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useQuery } from '@tanstack/react-query';
 
 interface Profile {
   id: string;
@@ -7,6 +7,8 @@ interface Profile {
   website: string;
   profile_picture: string | null;
   is_moderator: boolean;
+  watchlist: string[] | null;
+  favorites: string[] | null;
 }
 
 const useUser = (uid: string) => {
@@ -15,16 +17,16 @@ const useUser = (uid: string) => {
   const fetchUser = async () => {
     if (!uid) return null;
     const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", uid);
+      .from('profiles')
+      .select('*')
+      .eq('id', uid);
     if (error) {
       throw new Error(error.message);
     }
     return data[0] as Profile;
   };
-  const { data, error, isLoading } = useQuery<Profile | null>(
-    ["profile", uid],
+  const { data, error, isLoading, refetch } = useQuery<Profile | null>(
+    ['profile', uid],
     fetchUser,
     {
       staleTime: Infinity,
@@ -36,6 +38,7 @@ const useUser = (uid: string) => {
     profile: data || null,
     error,
     isLoading,
+    refetch,
   };
 };
 

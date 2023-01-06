@@ -1,11 +1,18 @@
 import { useMemo } from 'react';
 
+const getVideoId = (url: string) => {
+  const urlObj = new URL(url);
+  if (urlObj.origin.includes('youtu.be')) {
+    return urlObj.pathname.slice(1);
+  }
+  return urlObj.searchParams.get('v');
+};
+
 const useMovieThumbnail = (url: string) => {
   const thumbnails = useMemo(() => {
     if (!url) return { lowest: '', low: '', mid: '', high: '', highest: '' };
 
-    const urlObj = new URL(url);
-    const videoId = urlObj.searchParams.get('v');
+    const videoId = getVideoId(url);
 
     return {
       lowest: `https://i3.ytimg.com/vi/${videoId}/default.jpg`,
@@ -22,8 +29,7 @@ const useMovieThumbnail = (url: string) => {
 export const useMovieThumbnails = (urls: string[]) => {
   const thumbnails = useMemo(() => {
     return urls.map((url) => {
-      const urlObj = new URL(url);
-      const videoId = urlObj.searchParams.get('v');
+      const videoId = getVideoId(url);
 
       return {
         lowest: `https://i3.ytimg.com/vi/${videoId}/default.jpg`,

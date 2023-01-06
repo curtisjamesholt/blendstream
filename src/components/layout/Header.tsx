@@ -22,10 +22,16 @@ const Header = () => {
             href={'/'}
             className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
           >
-            <span className="text-sm font-normal">Home</span>
+            <span className="text-lg font-bold">LOGO</span>
           </Link>
         </div>
         <div className="flex flex-row items-center gap-8">
+          <Link
+            href={'/'}
+            className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
+          >
+            <span className="text-sm font-normal">Home</span>
+          </Link>
           <Link
             href={'/discover'}
             className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
