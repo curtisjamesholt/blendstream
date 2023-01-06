@@ -80,7 +80,14 @@ export default function Movie() {
                   </div>
                   <span className="font-medium">{profile?.full_name}</span>
                 </div>
-                <span className="mt-6 block max-w-xl text-sm font-normal">
+                <div className="mt-6 flex gap-1">
+                  {[...movie.categories].sort().map((category) => (
+                    <span className="rounded bg-white bg-opacity-10 px-2 py-[2px] text-xs font-medium tracking-wide">
+                      {category}
+                    </span>
+                  ))}
+                </div>
+                <span className="mt-2 block max-w-xl text-sm font-normal">
                   {movie.description}
                 </span>
                 {session && (

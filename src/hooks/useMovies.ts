@@ -2,16 +2,16 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { Movie } from './usePublishMovie';
 import { useQuery } from '@tanstack/react-query';
 
-const useMovies = (ids?: string[]) => {
+export const useMoviesById = (ids: string[]) => {
   const supabase = useSupabaseClient();
 
   const fetchMovies = async () => {
-    if (!ids || !ids.length) return null;
+    if (!ids.length) return null;
     const { data, error } = await supabase
       .from('movies')
       .select('*')
-      .in('id', ids || [])
-      .in('published', [true])
+      .in('id', ids)
+      .filter('published', 'eq', true)
       .order('created_at', { ascending: false });
     if (error) {
       throw new Error(error.message);
@@ -23,11 +23,21 @@ const useMovies = (ids?: string[]) => {
     fetchMovies
   );
 
+  return {
+    movies: data || [],
+    error: error,
+    loading: isLoading,
+  };
+};
+
+export const useRecentMovies = () => {
+  const supabase = useSupabaseClient();
+
   const fetchRecentMovies = async () => {
     const { data, error } = await supabase
       .from('movies')
       .select('*')
-      .in('published', [true])
+      .filter('published', 'eq', true)
       .order('created_at', { ascending: false })
       .limit(10);
     if (error) {
@@ -35,20 +45,42 @@ const useMovies = (ids?: string[]) => {
     }
     return data as Movie[];
   };
-  const {
-    data: recentMovies,
-    error: recentMoviesError,
-    isLoading: recentMoviesLoading,
-  } = useQuery<Movie[] | null>(['recentMovies'], fetchRecentMovies);
+  const { data, error, isLoading } = useQuery<Movie[] | null>(
+    ['recentMovies'],
+    fetchRecentMovies
+  );
 
   return {
-    movies: data || [],
-    errorMovies: error,
-    loadingMovies: isLoading,
-    recentMovies: recentMovies || [],
-    errorRecentMovies: recentMoviesError,
-    loadingRecentMovies: recentMoviesLoading,
+    recentMovies: data || [],
+    error: error,
+    loading: isLoading,
   };
 };
 
-export default useMovies;
+export const useMoviesByCategory = (category: string) => {
+  const supabase = useSupabaseClient();
+
+  const fetchMoviesByCategory = async () => {
+    if (!category) return [];
+    const { data, error } = await supabase
+      .from('movies')
+      .select('*')
+      .filter('categories', 'cs', `{${category}}`)
+      .filter('published', 'eq', true)
+      .order('created_at', { ascending: false });
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data as Movie[];
+  };
+  const { data, error, isLoading } = useQuery<Movie[] | null>(
+    ['moviesByCategory', category],
+    fetchMoviesByCategory
+  );
+
+  return {
+    movies: data || [],
+    error: error,
+    loading: isLoading,
+  };
+};

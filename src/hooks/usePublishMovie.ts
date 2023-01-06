@@ -1,5 +1,5 @@
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
-import { useState } from "react";
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useState } from 'react';
 
 export interface Movie {
   id: string;
@@ -9,6 +9,7 @@ export interface Movie {
   url: string;
   description: string;
   published: boolean;
+  categories: string[];
 }
 
 const usePublishMovie = () => {
@@ -25,7 +26,7 @@ const usePublishMovie = () => {
     if (!session) return;
     setLoading(true);
     if (!title || !description || !url) return;
-    const { data, error } = await supabase.from("movies").insert({
+    const { data, error } = await supabase.from('movies').insert({
       title: title,
       description: description,
       creator: session.user.id,

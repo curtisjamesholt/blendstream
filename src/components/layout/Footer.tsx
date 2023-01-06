@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { FiGithub } from 'react-icons/fi';
 import { FaDiscord, FaGithub } from 'react-icons/fa';
 
 export default function Footer() {

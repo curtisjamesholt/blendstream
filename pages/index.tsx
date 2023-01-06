@@ -5,7 +5,11 @@ import Header from '../src/components/layout/Header';
 import MovieSlider from '../src/components/layout/MovieSlider';
 import MovieBanner from '../src/components/MovieBanner';
 import useFavorites from '../src/hooks/useFavorites';
-import useMovies from '../src/hooks/useMovies';
+import {
+  useMoviesByCategory,
+  useMoviesById,
+  useRecentMovies,
+} from '../src/hooks/useMovies';
 import useUpdateProfilePicture from '../src/hooks/useUpdateProfilePicture';
 import useWatchlist from '../src/hooks/useWatchlist';
 
@@ -14,9 +18,13 @@ export default function Home() {
 
   const { watchlist } = useWatchlist();
   const { favorites } = useFavorites();
-  const { movies: watchlistMovies } = useMovies(watchlist);
-  const { movies: favoritesMovies } = useMovies(favorites);
-  const { recentMovies } = useMovies();
+  const { movies: watchlistMovies } = useMoviesById(watchlist);
+  const { movies: favoritesMovies } = useMoviesById(favorites);
+  const { recentMovies } = useRecentMovies();
+
+  const { movies: photorealMovies } = useMoviesByCategory('photorealism');
+  const { movies: blenderMovies } = useMoviesByCategory('blender');
+  const { movies: comedyMovies } = useMoviesByCategory('comedy');
 
   useUpdateProfilePicture();
 
@@ -40,12 +48,9 @@ export default function Home() {
             </>
           )}
           <MovieSlider title="New Arrivals" movies={recentMovies} />
-          <MovieSlider title="Photorealism" movies={watchlistMovies} />
-          <MovieSlider title="NPR" movies={watchlistMovies} />
-          <MovieSlider title="One Person Production" movies={watchlistMovies} />
-          <MovieSlider title="Blender" movies={watchlistMovies} />
-          <MovieSlider title="Sci-Fi" movies={watchlistMovies} />
-          <MovieSlider title="Comedy" movies={watchlistMovies} />
+          <MovieSlider title="Comedy" movies={comedyMovies} />
+          <MovieSlider title="Made with Blender" movies={blenderMovies} />
+          <MovieSlider title="Photorealism" movies={photorealMovies} />
         </div>
       </main>
       <Footer />
