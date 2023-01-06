@@ -104,64 +104,69 @@ export default function Movie() {
                   <span className="mt-2 block max-w-xl text-sm font-normal">
                     {movie.description}
                   </span>
-                  {session && (
-                    <div className="mt-6 flex gap-2">
-                      <Link
-                        href={movie.url}
-                        onClick={(e) => e.stopPropagation()}
-                        target="_blank"
-                        className="flex items-center gap-4 rounded-md bg-white bg-opacity-10 px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all hover:bg-opacity-20"
-                      >
-                        <FaYoutube size={18} />
-                      </Link>
-                      <button
-                        onClick={onToggleWatchlist}
-                        disabled={togglingWatchlist}
-                        className={`flex items-center gap-4 rounded-md bg-white px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all ${
-                          watchlist.includes(movie?.id || '')
-                            ? 'bg-opacity-100 text-black'
-                            : 'bg-opacity-10 hover:bg-opacity-20'
-                        }`}
-                      >
-                        {togglingWatchlist ? (
-                          <Spinner size={16} />
-                        ) : watchlist.includes(movie?.id || '') ? (
-                          <FiCheck />
-                        ) : (
-                          <FiPlus strokeWidth={3} />
-                        )}
-                        {watchlist.includes(movie.id)
-                          ? 'Watchlist'
-                          : 'Add to Watchlist'}
-                      </button>
-                      <button
-                        onClick={onToggleFavorite}
-                        disabled={togglingFavorite}
-                        className={`flex items-center gap-4 rounded-md bg-white px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all ${
-                          favorites.includes(movie?.id || '')
-                            ? 'bg-opacity-100 text-black'
-                            : 'bg-opacity-10 hover:bg-opacity-20'
-                        }`}
-                      >
-                        {favorites.includes(movie.id) ? (
-                          togglingFavorite ? (
+                  <div className="mt-6 flex flex-col gap-4">
+                    {session && (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={onToggleWatchlist}
+                          disabled={togglingWatchlist}
+                          className={`flex items-center gap-4 rounded-md bg-white px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all ${
+                            watchlist.includes(movie?.id || '')
+                              ? 'bg-opacity-100 text-black'
+                              : 'bg-opacity-10 hover:bg-opacity-20'
+                          }`}
+                        >
+                          {togglingWatchlist ? (
                             <Spinner size={16} />
+                          ) : watchlist.includes(movie?.id || '') ? (
+                            <FiCheck />
                           ) : (
-                            <FiHeart className="fill-red-500 stroke-red-500 stroke-2" />
-                          )
-                        ) : (
-                          <>
-                            {togglingFavorite ? (
+                            <FiPlus strokeWidth={3} />
+                          )}
+                          {watchlist.includes(movie.id)
+                            ? 'Watchlist'
+                            : 'Add to Watchlist'}
+                        </button>
+                        <button
+                          onClick={onToggleFavorite}
+                          disabled={togglingFavorite}
+                          className={`flex items-center gap-4 rounded-md bg-white px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all ${
+                            favorites.includes(movie?.id || '')
+                              ? 'bg-opacity-100 text-black'
+                              : 'bg-opacity-10 hover:bg-opacity-20'
+                          }`}
+                        >
+                          {favorites.includes(movie.id) ? (
+                            togglingFavorite ? (
                               <Spinner size={16} />
                             ) : (
-                              <FiHeart strokeWidth={3} />
-                            )}
-                            Favorite
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  )}
+                              <FiHeart className="fill-red-500 stroke-red-500 stroke-2" />
+                            )
+                          ) : (
+                            <>
+                              {togglingFavorite ? (
+                                <Spinner size={16} />
+                              ) : (
+                                <FiHeart strokeWidth={3} />
+                              )}
+                              Favorite
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
+                    <Link
+                      href={movie.url}
+                      onClick={(e) => e.stopPropagation()}
+                      target="_blank"
+                      className="flex w-min items-center gap-4 rounded-md bg-white bg-opacity-10 px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all hover:bg-opacity-20"
+                    >
+                      <FaYoutube size={18} />
+                      <span className="whitespace-nowrap">
+                        Support {profile?.full_name || ''}
+                      </span>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </Link>
