@@ -72,6 +72,13 @@ const MovieSlider = (props: MovieSliderProps) => {
               <MovieCard movie={movie} />
             </div>
           ))}
+          {movies.length === 0 && (
+            <>
+              <div className="relative mr-2 inline-block aspect-video w-[200px] overflow-hidden rounded-md bg-gray-900 first:ml-2 md:mr-4 md:w-[250px] md:first:ml-8 md:last:mr-8">
+                <div className="shimmer"></div>
+              </div>
+            </>
+          )}
         </div>
         {hasOverflow && (
           <>

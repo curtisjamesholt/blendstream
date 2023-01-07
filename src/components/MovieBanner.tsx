@@ -27,8 +27,6 @@ const MovieBanner = (props: MovieBannerProps) => {
     };
   }, [movies]);
 
-  if (!movies.length) return <></>;
-
   return (
     <div className="relative">
       <div className="relative -mt-16 flex w-full justify-center">
@@ -56,23 +54,28 @@ const MovieBanner = (props: MovieBannerProps) => {
                   'linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0) 100%)',
               }}
             ></div>
+            {thumbnails.length === 0 && (
+              <div className="h-full w-full bg-gray-900"></div>
+            )}
           </div>
         </div>
         <div className="absolute left-4 right-4 bottom-4 flex flex-col gap-4 md:left-8 md:bottom-8">
           <span className="tracking-wid text-4xl font-bold opacity-100 md:text-5xl">
-            {movies[index].title}
+            {movies.length ? movies[index].title : ''}
           </span>
           <span className="mb-4 max-w-2xl text-base opacity-75">
-            {movies[index].description}
+            {movies.length ? movies[index].description : ''}
           </span>
-          <Link href={`/movies/${movies[index].id}`}>
-            <div className="mb-4 flex h-10 w-[150px] items-center justify-center gap-2 rounded bg-white">
-              <FiPlay className="fill-black stroke-black" size={16} />
-              <span className="text-base font-semibold tracking-wide text-black">
-                Watch
-              </span>
-            </div>
-          </Link>
+          {movies.length > 0 && (
+            <Link href={`/movies/${movies[index].id}`}>
+              <div className="mb-4 flex h-10 w-[150px] items-center justify-center gap-2 rounded bg-white">
+                <FiPlay className="fill-black stroke-black" size={16} />
+                <span className="text-base font-semibold tracking-wide text-black">
+                  Watch
+                </span>
+              </div>
+            </Link>
+          )}
         </div>
       </div>
     </div>
