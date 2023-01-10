@@ -38,20 +38,13 @@ const Header = () => {
           >
             <span className="text-sm font-normal">Discover</span>
           </Link>
-          <Link
+          {/* <Link
             href={'/'}
             target="_blank"
             className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
           >
             <FaDiscord />
-          </Link>
-          <Link
-            href={'https://github.com/joshuaKnauber/shortfilms'}
-            target="_blank"
-            className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
-          >
-            <FaGithub />
-          </Link>
+          </Link> */}
         </div>
         <div className="flex flex-row items-center gap-8">
           <Link
