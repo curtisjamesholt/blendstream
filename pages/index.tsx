@@ -6,6 +6,7 @@ import MovieSlider from '../src/components/layout/MovieSlider';
 import MovieBanner from '../src/components/MovieBanner';
 import useFavorites from '../src/hooks/useFavorites';
 import {
+  useFeaturedMovies,
   useMoviesByCategory,
   useMoviesById,
   useRecentMovies,
@@ -21,6 +22,7 @@ export default function Home() {
   const { movies: watchlistMovies } = useMoviesById(watchlist);
   const { movies: favoritesMovies } = useMoviesById(favorites);
   const { recentMovies } = useRecentMovies();
+  const { featuredMovies } = useFeaturedMovies();
 
   const { movies: photorealMovies } = useMoviesByCategory('photorealism');
   const { movies: blenderMovies } = useMoviesByCategory('blender');
@@ -35,7 +37,7 @@ export default function Home() {
       </Head>
       <Header />
       <main className="flex flex-col gap-4">
-        <MovieBanner movies={recentMovies} />
+        <MovieBanner movies={featuredMovies} />
         <div className="z-10 mb-16 flex flex-col gap-14">
           {session && (
             <>

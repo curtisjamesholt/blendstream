@@ -58,6 +58,34 @@ export const useRecentMovies = () => {
   };
 };
 
+export const useFeaturedMovies = () => {
+  const supabase = useSupabaseClient();
+
+  const fetchFeaturedMovies = async () => {
+    const { data, error } = await supabase
+      .from('movies')
+      .select('*')
+      .filter('published', 'eq', true)
+      .filter('featured', 'eq', true)
+      .order('created_at', { ascending: false });
+    if (error) {
+      throw new Error(error.message);
+    }
+    const shuffled = data.sort((a, b) => 0.5 - Math.random());
+    return shuffled as Movie[];
+  };
+  const { data, error, isLoading } = useQuery<Movie[] | null>(
+    ['featuredMovies'],
+    fetchFeaturedMovies
+  );
+
+  return {
+    featuredMovies: data || [],
+    error: error,
+    loading: isLoading,
+  };
+};
+
 export const useMoviesByCategory = (category: string) => {
   const supabase = useSupabaseClient();
 

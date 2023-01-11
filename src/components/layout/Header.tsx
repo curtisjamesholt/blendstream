@@ -3,14 +3,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import useUser from '../../hooks/useUser';
-import { FiGithub, FiMenu, FiX } from 'react-icons/fi';
-import { FaDiscord, FaGithub } from 'react-icons/fa';
+import { FiMenu, FiX } from 'react-icons/fi';
+import useSubmissions from '../../hooks/useSubmissions';
 
 const Header = () => {
   const session = useSession();
   const { profile } = useUser(session?.user.id || '');
 
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
+
+  const { movies: submissions } = useSubmissions();
 
   return (
     <>
@@ -55,6 +57,20 @@ const Header = () => {
               Submit
             </span>
           </Link>
+          {session && profile?.is_moderator && (
+            <Link href={'/submissions'} className="flex items-center gap-2">
+              <span className="relative text-sm font-normal">
+                <span className="opacity-60 transition-opacity hover:opacity-100">
+                  Submissions
+                </span>
+                {submissions.length > 0 && (
+                  <span className="absolute top-[-4px] right-[-20px] flex h-[15px] w-[15px] items-center justify-center rounded-full bg-cyan-600 text-xs font-bold text-black">
+                    {submissions.length}
+                  </span>
+                )}
+              </span>
+            </Link>
+          )}
           {session ? (
             <>
               <Link href={'/profile'}>
@@ -147,6 +163,18 @@ const Header = () => {
         >
           Submit
         </Link>
+        {session && (
+          <>
+            <div className="h-[1px] rounded bg-gray-700"></div>
+            <Link
+              href="/submissions"
+              onClick={() => setShowMobileMenu(false)}
+              className="py-2 px-4 text-sm font-medium"
+            >
+              Submissions
+            </Link>
+          </>
+        )}
       </div>
     </>
   );
