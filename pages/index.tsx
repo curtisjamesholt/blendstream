@@ -27,6 +27,7 @@ export default function Home() {
   const { movies: photorealMovies } = useMoviesByCategory('photorealism');
   const { movies: blenderMovies } = useMoviesByCategory('blender');
   const { movies: comedyMovies } = useMoviesByCategory('comedy');
+  const { movies: dummy } = useMoviesByCategory('dummy');
 
   useUpdateProfilePicture();
 
@@ -53,6 +54,7 @@ export default function Home() {
           <MovieSlider title="Comedy" movies={comedyMovies} />
           <MovieSlider title="Made with Blender" movies={blenderMovies} />
           <MovieSlider title="Photorealism" movies={photorealMovies} />
+          <MovieSlider title="Other" movies={dummy} />
         </div>
       </main>
       <Footer />
