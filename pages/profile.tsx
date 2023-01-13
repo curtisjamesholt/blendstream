@@ -58,7 +58,7 @@ export default function Profile() {
   return (
     <>
       <Head>
-        <title>Profile</title>
+        <title>Blend.Stream | Profile</title>
       </Head>
       <div className="flex min-h-[100vh] flex-col">
         <Header />

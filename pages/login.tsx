@@ -27,7 +27,7 @@ export default function Submit() {
   return (
     <>
       <Head>
-        <title>Login</title>
+        <title>Blend.Stream | Login</title>
       </Head>
       <div className="flex min-h-[100vh] flex-col">
         <Header />

@@ -51,7 +51,7 @@ export default function Submit() {
   return (
     <>
       <Head>
-        <title>Submit</title>
+        <title>Blend.Stream | Submit</title>
       </Head>
       <div className="flex min-h-[100vh] flex-col">
         <Header />

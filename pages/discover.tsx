@@ -15,7 +15,7 @@ export default function Discover() {
   return (
     <>
       <Head>
-        <title>Discover</title>
+        <title>Blend.Stream | Discover</title>
       </Head>
       <>
         <div className="flex min-h-[100vh] flex-col">

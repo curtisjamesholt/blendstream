@@ -43,7 +43,7 @@ export default function Curate() {
   return (
     <>
       <Head>
-        <title>Curate</title>
+        <title>Blend.Stream | Curate</title>
       </Head>
       <div className="flex min-h-[100vh] flex-col">
         <Header />
