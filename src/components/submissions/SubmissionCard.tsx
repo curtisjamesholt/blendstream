@@ -46,9 +46,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
     useSubmissions();
 
   const onAccept = () => {
-    if (
-      window.confirm(`Are you sure you want to publish '${submission.title}'?`)
-    ) {
+    if (window.confirm(`Are you sure you want to publish '${title}'?`)) {
       const newSubmission = JSON.parse(JSON.stringify(submission)) as Movie;
       newSubmission.title = title;
       newSubmission.description = description;
@@ -65,9 +63,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
 
   const onDecline = () => {
     if (
-      window.confirm(
-        `Are you sure you want to decline and delete '${submission.title}'?`
-      )
+      window.confirm(`Are you sure you want to decline and delete '${title}'?`)
     ) {
       deleteMovie(submission.id);
     }
