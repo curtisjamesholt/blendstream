@@ -21,7 +21,7 @@ export default function Movie() {
   const session = useSession();
 
   const { movie } = useMovie(typeof id === 'string' ? id : '');
-  const { highest: thumbnail } = useMovieThumbnail(movie?.url || '');
+  const { highest: thumbnail } = useMovieThumbnail(movie);
   const { profile } = useUser(movie?.creator || '');
   const { watchlist, toggleInWatchlist, togglingWatchlist } = useWatchlist();
   const { favorites, toggleFavorite, togglingFavorite } = useFavorites();

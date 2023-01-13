@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Movie } from './usePublishMovie';
 
 const getVideoId = (url: string) => {
   try {
@@ -12,11 +13,22 @@ const getVideoId = (url: string) => {
   }
 };
 
-const useMovieThumbnail = (url: string) => {
+const useMovieThumbnail = (movie: Movie | null) => {
   const thumbnails = useMemo(() => {
-    if (!url) return { lowest: '', low: '', mid: '', high: '', highest: '' };
+    if (!movie) return { lowest: '', low: '', mid: '', high: '', highest: '' };
 
-    const videoId = getVideoId(url);
+    if (movie.thumbnail) {
+      const thumbnailUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/thumbnails/${movie.thumbnail}`;
+      return {
+        lowest: thumbnailUrl,
+        low: thumbnailUrl,
+        mid: thumbnailUrl,
+        high: thumbnailUrl,
+        highest: thumbnailUrl,
+      };
+    }
+
+    const videoId = getVideoId(movie.url);
 
     return {
       lowest: `https://i3.ytimg.com/vi/${videoId}/default.jpg`,
@@ -25,15 +37,26 @@ const useMovieThumbnail = (url: string) => {
       high: `https://i3.ytimg.com/vi/${videoId}/sddefault.jpg`,
       highest: `https://i3.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
     };
-  }, [url]);
+  }, [movie]);
 
   return thumbnails;
 };
 
-export const useMovieThumbnails = (urls: string[]) => {
+export const useMovieThumbnails = (movies: Movie[]) => {
   const thumbnails = useMemo(() => {
-    return urls.map((url) => {
-      const videoId = getVideoId(url);
+    return movies.map((movie) => {
+      if (movie.thumbnail) {
+        const thumbnailUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/thumbnails/${movie.thumbnail}`;
+        return {
+          lowest: thumbnailUrl,
+          low: thumbnailUrl,
+          mid: thumbnailUrl,
+          high: thumbnailUrl,
+          highest: thumbnailUrl,
+        };
+      }
+
+      const videoId = getVideoId(movie.url);
 
       return {
         lowest: `https://i3.ytimg.com/vi/${videoId}/default.jpg`,
@@ -43,7 +66,7 @@ export const useMovieThumbnails = (urls: string[]) => {
         highest: `https://i3.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
       };
     });
-  }, [urls]);
+  }, [movies]);
 
   return thumbnails;
 };

@@ -8,6 +8,7 @@ const nextConfig = {
       'cdn.discordapp.com',
       'yt3.googleusercontent.com',
       'lh3.googleusercontent.com',
+      'envqvxpibtivexqcarug.supabase.co',
     ],
   },
 };

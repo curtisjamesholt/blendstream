@@ -11,6 +11,7 @@ export interface Movie {
   description: string;
   published: boolean;
   tags: string[];
+  thumbnail: string | null;
 }
 
 const usePublishMovie = () => {

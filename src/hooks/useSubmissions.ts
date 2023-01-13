@@ -2,7 +2,6 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useQuery } from '@tanstack/react-query';
 import { Movie } from './usePublishMovie';
 import { useState } from 'react';
-import { Profile } from './useUser';
 
 const useSubmissions = () => {
   const supabase = useSupabaseClient();
@@ -29,6 +28,7 @@ const useSubmissions = () => {
     useState<boolean>(false);
   const publishSubmission = async (
     movie: Movie,
+    thumbnail: File | null,
     profile_picture: string | null
   ) => {
     if (!session) return;
@@ -45,12 +45,21 @@ const useSubmissions = () => {
           ])
           .select('*')
           .single();
-        console.log(newUser);
         let newUserData = newUser as any;
         if (userError || !newUserData) {
           throw new Error(userError?.message || 'No user data');
         }
         movie.creator = newUserData.id;
+      }
+      if (thumbnail) {
+        const { data: newThumbnail, error: thumbnailError } =
+          await supabase.storage
+            .from('thumbnails')
+            .upload(`thumbnail-${movie.id}`, thumbnail);
+        if (thumbnailError || !newThumbnail) {
+          throw new Error(thumbnailError?.message || 'No thumbnail data');
+        }
+        movie.thumbnail = newThumbnail.path;
       }
       const { data, error } = await supabase
         .from('movies')

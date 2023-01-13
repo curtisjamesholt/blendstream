@@ -10,7 +10,7 @@ interface MovieCardProps {
 const MovieCard = (props: MovieCardProps) => {
   const { movie } = props;
 
-  const { mid: thumbnail } = useMovieThumbnail(movie.url);
+  const { mid: thumbnail } = useMovieThumbnail(movie);
 
   return (
     <Link href={`/movies/${movie.id}`}>

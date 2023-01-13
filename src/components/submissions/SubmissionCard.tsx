@@ -1,4 +1,3 @@
-import { useSession } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -29,13 +28,19 @@ export default function SubmissionCard(props: SubmissionCardProps) {
 
   const [creatorPicture, setCreatorPicture] = useState<string>('');
 
+  const [readFile, setReadFile] = useState<string>('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
   const { users } = useSearchedUsers(creator);
 
   const { profile } = useUser(creator);
 
   const { tags: allTags } = useTags();
 
-  const { highest: thumbnail } = useMovieThumbnail(url);
+  const { highest: thumbnail } = useMovieThumbnail({
+    ...submission,
+    url: url,
+  });
 
   const { publishSubmission, publishingSubmission, deleteMovie, deleting } =
     useSubmissions();
@@ -50,7 +55,11 @@ export default function SubmissionCard(props: SubmissionCardProps) {
       newSubmission.url = url;
       newSubmission.published = true;
       newSubmission.tags = tags;
-      publishSubmission(newSubmission, creatorPicture || null);
+      publishSubmission(
+        newSubmission,
+        selectedFile || null,
+        creatorPicture || null
+      );
     }
   };
 
@@ -64,15 +73,31 @@ export default function SubmissionCard(props: SubmissionCardProps) {
     }
   };
 
+  const onThumbnailChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    if (evt.target && evt.target.files && evt.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target && e.target.result) {
+          setReadFile(e.target.result as string);
+        }
+      };
+      reader.readAsDataURL(evt.target.files[0]);
+      setSelectedFile(evt.target.files[0]);
+    } else {
+      setSelectedFile(null);
+      setReadFile('');
+    }
+  };
+
   return (
     <div
       key={submission.id}
       className="flex w-full flex-col overflow-hidden rounded-md border-2 border-zinc-800 bg-zinc-900 bg-opacity-25 md:w-[350px]"
     >
       <div className="group relative aspect-video w-full">
-        {thumbnail && (
+        {(thumbnail || readFile) && (
           <Image
-            src={thumbnail}
+            src={readFile ? readFile : thumbnail}
             fill
             alt="Thumbnail"
             className="object-cover"
@@ -147,9 +172,17 @@ export default function SubmissionCard(props: SubmissionCardProps) {
           <label className="text-sm font-medium text-gray-400">URL</label>
           <input
             value={url}
+            type="url"
+            placeholder="https://www.youtube.com/watch?v=..."
             onChange={(e) => setUrl(e.target.value)}
             className="rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
           />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-medium text-gray-400">
+            {'Thumbnail (optional)'}
+          </label>
+          <input type={'file'} onChange={onThumbnailChange} />
         </div>
         <div className="flex flex-col gap-1">
           <label className="text-sm font-medium text-gray-400">Tags</label>
