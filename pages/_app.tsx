@@ -19,9 +19,13 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <meta
           name="description"
-          content="A curated collction of shortfilm productions"
+          content="A curated collection of shortfilm productions"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="Blend.Stream" key="title" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://blend.stream" />
+        <meta property="og:image" content="/embed_image.jpg" />
       </Head>
       <div className={inter.className}>
         <SessionContextProvider

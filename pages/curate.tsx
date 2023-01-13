@@ -4,18 +4,33 @@ import Link from 'next/link';
 import Footer from '../src/components/layout/Footer';
 import Header from '../src/components/layout/Header';
 import useUser from '../src/hooks/useUser';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CurateSubmissions from '../src/components/curate/CurateSubmissions';
 import CurateTags from '../src/components/curate/CurateTags';
 import CurateMovies from '../src/components/curate/CurateMovies';
 import CurateTab from '../src/components/curate/CurateTab';
-import { useSearchParam } from 'react-use';
 
 export default function Curate() {
   const session = useSession();
   const { profile } = useUser(session?.user.id || '');
 
-  const tab = useSearchParam('tab');
+  const [activeTab, setActiveTab] = useState<'submissions' | 'movies' | 'tags'>(
+    'submissions'
+  );
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const tab = url.searchParams.get('tab');
+    if (['submissions', 'movies', 'tags'].includes(tab || '')) {
+      setActiveTab(tab as 'submissions' | 'movies' | 'tags');
+    }
+  }, []);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', activeTab);
+    window.history.replaceState({}, '', url.toString());
+  }, [activeTab]);
 
   if (!session || !profile || (profile && !profile.is_moderator)) {
     return (
@@ -24,14 +39,6 @@ export default function Curate() {
       </div>
     );
   }
-
-  const activeTab = (
-    ['submissions', 'movies', 'tags'].includes(tab || '') ? tab : 'submissions'
-  ) as 'submissions' | 'movies' | 'tags';
-
-  const setActiveTab = (tab: 'submissions' | 'movies' | 'tags') => {
-    window.history.pushState({}, '', `?tab=${tab}`);
-  };
 
   return (
     <>
