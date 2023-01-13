@@ -21,7 +21,7 @@ const CurateMovies = () => {
 
   const { movie: editMovie } = useMovie(selectedEditMovie?.id || '');
 
-  const thumbnails = useMovieThumbnails(featuredMovies.map((m) => m.url));
+  const thumbnails = useMovieThumbnails(featuredMovies);
 
   const onFeaturedClick = (id: string) => {
     removeFeaturedMovie(id);
