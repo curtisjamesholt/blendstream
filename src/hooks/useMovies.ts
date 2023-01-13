@@ -1,7 +1,7 @@
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { Movie } from './usePublishMovie';
 import { useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 export const useMoviesById = (ids: string[]) => {
   const supabase = useSupabaseClient();
@@ -71,18 +71,50 @@ export const useFeaturedMovies = () => {
     if (error) {
       throw new Error(error.message);
     }
-    const shuffled = data.sort((a, b) => 0.5 - Math.random());
-    return shuffled as Movie[];
+
+    return data as Movie[];
   };
-  const { data, error, isLoading } = useQuery<Movie[] | null>(
+  const { data, error, isLoading, refetch } = useQuery<Movie[] | null>(
     ['featuredMovies'],
     fetchFeaturedMovies
   );
 
+  const shuffled = useMemo(() => {
+    const shuffled = JSON.parse(JSON.stringify(data || [])).sort(
+      (a: Movie, b: Movie) => 0.5 - Math.random()
+    ) as Movie[];
+    return shuffled;
+  }, [data]);
+
+  const [removing, setRemoving] = useState<boolean>(false);
+  const removeFeaturedMovie = async (id: string) => {
+    setRemoving(true);
+    try {
+      await supabase.from('movies').update({ featured: false }).match({ id });
+      await refetch();
+    } catch (error) {
+      console.error(error);
+    }
+    setRemoving(false);
+  };
+
+  const addFeaturedMovie = async (id: string) => {
+    try {
+      await supabase.from('movies').update({ featured: true }).match({ id });
+      await refetch();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     featuredMovies: data || [],
+    shuffledFeaturedMovies: shuffled,
     error: error,
     loading: isLoading,
+    removeFeaturedMovie,
+    removing,
+    addFeaturedMovie,
   };
 };
 

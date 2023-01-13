@@ -30,7 +30,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
 
   const { tags: allTags } = useTags();
 
-  const { mid: thumbnail } = useMovieThumbnail(url);
+  const { highest: thumbnail } = useMovieThumbnail(url);
 
   const { updateSubmission, updatingSubmission, deleteMovie, deleting } =
     useSubmissions();

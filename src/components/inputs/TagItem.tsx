@@ -36,7 +36,7 @@ const TagItem = (props: TagItemProps) => {
 
   return (
     <div
-      className={`flex w-full flex-col items-center gap-4 rounded-md bg-zinc-900 py-2 px-2 md:w-min md:flex-row md:px-4`}
+      className={`flex w-full flex-col items-center gap-4 rounded-md bg-zinc-900 py-3 px-2 md:w-min md:flex-row md:px-6`}
     >
       <div className="flex w-min flex-row gap-2">
         <button

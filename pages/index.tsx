@@ -23,7 +23,7 @@ export default function Home() {
   const { movies: watchlistMovies } = useMoviesById(watchlist);
   const { movies: favoritesMovies } = useMoviesById(favorites);
   const { recentMovies } = useRecentMovies();
-  const { featuredMovies } = useFeaturedMovies();
+  const { shuffledFeaturedMovies } = useFeaturedMovies();
 
   const { tags } = useTags();
 
@@ -36,7 +36,7 @@ export default function Home() {
       </Head>
       <Header />
       <main className="flex flex-col gap-4">
-        <MovieBanner movies={featuredMovies} />
+        <MovieBanner movies={shuffledFeaturedMovies} />
         <div className="z-10 mb-16 flex flex-col gap-14">
           {session && (
             <>
