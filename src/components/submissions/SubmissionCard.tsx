@@ -81,21 +81,41 @@ export default function SubmissionCard(props: SubmissionCardProps) {
       </div>
       <div className="flex flex-col gap-4 p-4">
         <div className="flex flex-col gap-1">
+          <label className="text-sm font-medium text-gray-400">Creator</label>
+          {profile ? (
+            <div className="flex items-center gap-4">
+              <div className="relative aspect-square w-[40px] overflow-hidden rounded-full">
+                {profile.profile_picture && (
+                  <Image
+                    src={profile.profile_picture}
+                    alt="Profile Picture"
+                    className="object-cover"
+                    fill
+                  />
+                )}
+              </div>
+              <span className="flex flex-1 text-sm font-medium opacity-75">
+                {profile.full_name}
+              </span>
+              <Link href={`/users/${profile.id}`} target="_blank">
+                <FiExternalLink />
+              </Link>
+            </div>
+          ) : (
+            <input
+              value={creator}
+              onChange={(e) => setCreator(e.target.value)}
+              className="rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
+            />
+          )}
+        </div>
+        <div className="flex flex-col gap-1">
           <label className="text-sm font-medium text-gray-400">Title</label>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
           />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-400">Creator</label>
-          <input
-            value={creator}
-            onChange={(e) => setCreator(e.target.value)}
-            className="rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
-          />
-          {/* {JSON.stringify(profile)} */}
         </div>
         <div className="flex flex-col gap-1">
           <label className="text-sm font-medium text-gray-400">URL</label>

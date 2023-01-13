@@ -1,4 +1,3 @@
-import { useSession } from '@supabase/auth-helpers-react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -19,6 +18,18 @@ export default function User() {
 
   const { profile } = useUser(typeof id === 'string' ? id : '');
   const { movies } = useMoviesByCreator(typeof id === 'string' ? id : '');
+
+  const isValidUrl = (url: string, origin?: string) => {
+    try {
+      new URL(url);
+    } catch (_) {
+      return false;
+    }
+    const urlItem = new URL(url);
+    return origin
+      ? urlItem.host === origin || urlItem.host === `www.${origin}`
+      : true;
+  };
 
   return (
     <>
@@ -64,7 +75,7 @@ export default function User() {
               </span>
             )}
             <div className="mb-12 flex gap-4">
-              {profile?.website && (
+              {profile?.website && isValidUrl(profile.website) && (
                 <Link
                   href={profile.website}
                   className={socialLink}
@@ -74,36 +85,39 @@ export default function User() {
                   Website
                 </Link>
               )}
-              {profile?.twitter && (
-                <Link
-                  href={profile.twitter}
-                  className={socialLink}
-                  target="_blank"
-                >
-                  <FaTwitter />
-                  Twitter
-                </Link>
-              )}
-              {profile?.instagram && (
-                <Link
-                  href={profile.instagram}
-                  className={socialLink}
-                  target="_blank"
-                >
-                  <FaInstagram />
-                  Instagram
-                </Link>
-              )}
-              {profile?.youtube && (
-                <Link
-                  href={profile.youtube}
-                  className={socialLink}
-                  target="_blank"
-                >
-                  <FaYoutube />
-                  YouTube
-                </Link>
-              )}
+              {profile?.twitter &&
+                isValidUrl(profile.twitter, 'twitter.com') && (
+                  <Link
+                    href={profile.twitter}
+                    className={socialLink}
+                    target="_blank"
+                  >
+                    <FaTwitter />
+                    Twitter
+                  </Link>
+                )}
+              {profile?.instagram &&
+                isValidUrl(profile.instagram, 'instagram.com') && (
+                  <Link
+                    href={profile.instagram}
+                    className={socialLink}
+                    target="_blank"
+                  >
+                    <FaInstagram />
+                    Instagram
+                  </Link>
+                )}
+              {profile?.youtube &&
+                isValidUrl(profile.youtube, 'youtube.com') && (
+                  <Link
+                    href={profile.youtube}
+                    className={socialLink}
+                    target="_blank"
+                  >
+                    <FaYoutube />
+                    YouTube
+                  </Link>
+                )}
             </div>
           </div>
           {movies.length > 0 && <MovieSlider title="Movies" movies={movies} />}

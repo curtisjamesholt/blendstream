@@ -5,6 +5,7 @@ import { useState } from 'react';
 import useUser from '../../hooks/useUser';
 import { FiMenu, FiX } from 'react-icons/fi';
 import useSubmissions from '../../hooks/useSubmissions';
+import Logo from '../logo/Logo';
 
 const Header = () => {
   const session = useSession();
@@ -20,11 +21,8 @@ const Header = () => {
         className={`sticky top-0 z-40 hidden h-16 w-full flex-row items-center justify-between bg-black bg-opacity-50 px-8 backdrop-blur transition-opacity md:flex`}
       >
         <div className="flex flex-1 flex-row items-center gap-8">
-          <Link
-            href={'/'}
-            className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
-          >
-            <span className="text-lg font-bold">LOGO</span>
+          <Link href={'/'} className="flex items-center">
+            <Logo />
           </Link>
         </div>
         <div className="flex flex-1 flex-row items-center justify-center gap-8">
