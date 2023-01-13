@@ -14,7 +14,7 @@ const MovieBanner = (props: MovieBannerProps) => {
 
   const [index, setIndex] = useState<number>(0);
 
-  const thumbnails = useMovieThumbnails(movies.map((movie) => movie.url));
+  const thumbnails = useMovieThumbnails(movies);
 
   const showDuration = 10000;
 
