@@ -14,6 +14,8 @@ const useMovieThumbnail = (url: string) => {
 
     const videoId = getVideoId(url);
 
+    // https://www.youtube.com/watch?v=eRsGyueVLvQ&ab_channel=Blender
+
     return {
       lowest: `https://i3.ytimg.com/vi/${videoId}/default.jpg`,
       low: `https://i3.ytimg.com/vi/${videoId}/mqdefault.jpg`,

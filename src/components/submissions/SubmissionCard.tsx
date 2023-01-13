@@ -1,3 +1,4 @@
+import { useSession } from '@supabase/auth-helpers-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -5,6 +6,9 @@ import { FiExternalLink } from 'react-icons/fi';
 import useMovieThumbnail from '../../hooks/useMovieThumbnail';
 import { Movie } from '../../hooks/usePublishMovie';
 import useSubmissions from '../../hooks/useSubmissions';
+import useTags from '../../hooks/useTags';
+import useUser from '../../hooks/useUser';
+import TagInput from '../inputs/TagInput';
 import Spinner from '../Spinner';
 
 interface SubmissionCardProps {
@@ -15,14 +19,21 @@ export default function SubmissionCard(props: SubmissionCardProps) {
   const { submission } = props;
 
   const [title, setTitle] = useState<string>(submission.title);
+  const [creator, setCreator] = useState<string>(submission.creator);
   const [description, setDescription] = useState<string>(
     submission.description
   );
   const [url, setUrl] = useState<string>(submission.url);
+  const [tags, setTags] = useState<string[]>(submission.tags);
+
+  const { profile } = useUser(submission.creator);
+
+  const { tags: allTags } = useTags();
 
   const { mid: thumbnail } = useMovieThumbnail(url);
 
-  const { updateSubmission, updatingSubmission } = useSubmissions();
+  const { updateSubmission, updatingSubmission, deleteMovie, deleting } =
+    useSubmissions();
 
   const onAccept = () => {
     if (
@@ -33,6 +44,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
       newSubmission.description = description;
       newSubmission.url = url;
       newSubmission.published = true;
+      newSubmission.tags = tags;
       updateSubmission(newSubmission);
     }
   };
@@ -43,14 +55,14 @@ export default function SubmissionCard(props: SubmissionCardProps) {
         `Are you sure you want to decline and delete '${submission.title}'?`
       )
     ) {
-      console.log('delete');
+      deleteMovie(submission.id);
     }
   };
 
   return (
     <div
       key={submission.id}
-      className="flex w-full flex-col overflow-hidden rounded-md bg-zinc-900 md:w-[350px]"
+      className="flex w-full flex-col overflow-hidden rounded-md border-2 border-zinc-800 bg-zinc-900 bg-opacity-25 md:w-[350px]"
     >
       <div className="group relative aspect-video w-full">
         {thumbnail && (
@@ -73,15 +85,34 @@ export default function SubmissionCard(props: SubmissionCardProps) {
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="rounded border-none bg-zinc-800 py-2 px-2 text-sm font-normal outline-none"
+            className="rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
           />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-medium text-gray-400">Creator</label>
+          <input
+            value={creator}
+            onChange={(e) => setCreator(e.target.value)}
+            className="rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
+          />
+          {/* {JSON.stringify(profile)} */}
         </div>
         <div className="flex flex-col gap-1">
           <label className="text-sm font-medium text-gray-400">URL</label>
           <input
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="rounded border-none bg-zinc-800 py-2 px-2 text-sm font-normal outline-none"
+            className="rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
+          />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-medium text-gray-400">Tags</label>
+          <TagInput
+            tags={tags}
+            setTags={setTags}
+            id="submission-tags"
+            options={allTags.map((tag) => tag.tag)}
+            validateTag={(tag) => allTags.map((t) => t.tag).includes(tag)}
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -91,7 +122,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="min-h-[100px] resize-y rounded border-none bg-zinc-800 p-2 text-sm font-normal outline-none"
+            className="min-h-[100px] resize-y rounded border-none bg-zinc-900 p-3 text-sm font-normal outline-none"
           />
         </div>
         <div className="flex flex-row gap-2">
@@ -104,10 +135,10 @@ export default function SubmissionCard(props: SubmissionCardProps) {
           </button>
           <button
             onClick={onDecline}
-            disabled={updatingSubmission}
+            disabled={deleting}
             className="flex flex-1 items-center justify-center rounded bg-red-400 bg-opacity-20 py-2 text-sm font-medium text-red-500 transition-all hover:bg-opacity-30"
           >
-            Decline
+            {deleting ? <Spinner /> : 'Decline'}
           </button>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { FaDiscord, FaGithub } from 'react-icons/fa';
 
 export default function Footer() {
   return (
-    <footer className="flex w-full flex-row items-center justify-center gap-2 bg-black py-4 px-8 md:py-8">
+    <footer className="z-10 flex w-full flex-row items-center justify-center gap-2 bg-black py-4 px-8 md:py-8">
       <span className="text-center text-sm opacity-50">
         Built with ❤️ by the{' '}
         <Link href="https://www.blender.org" target="_blank">

@@ -17,9 +17,9 @@ const Header = () => {
   return (
     <>
       <div
-        className={`sticky top-0 z-40 hidden h-16 w-full flex-row items-center justify-between bg-black bg-opacity-80 px-8 backdrop-blur transition-opacity md:flex`}
+        className={`sticky top-0 z-40 hidden h-16 w-full flex-row items-center justify-between bg-black bg-opacity-50 px-8 backdrop-blur transition-opacity md:flex`}
       >
-        <div className="flex flex-row items-center gap-8">
+        <div className="flex flex-1 flex-row items-center gap-8">
           <Link
             href={'/'}
             className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
@@ -27,18 +27,18 @@ const Header = () => {
             <span className="text-lg font-bold">LOGO</span>
           </Link>
         </div>
-        <div className="flex flex-row items-center gap-8">
+        <div className="flex flex-1 flex-row items-center justify-center gap-8">
           <Link
             href={'/'}
             className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
           >
-            <span className="text-sm font-normal">Home</span>
+            <span className="text-sm font-normal tracking-wide">Home</span>
           </Link>
           <Link
             href={'/discover'}
             className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
           >
-            <span className="text-sm font-normal">Discover</span>
+            <span className="text-sm font-normal tracking-wide">Discover</span>
           </Link>
           {/* <Link
             href={'/'}
@@ -48,23 +48,23 @@ const Header = () => {
             <FaDiscord />
           </Link> */}
         </div>
-        <div className="flex flex-row items-center gap-8">
+        <div className="flex flex-1 flex-row items-center justify-end gap-8">
           <Link
             href={'/submit'}
             className=" transition-transform hover:scale-105"
           >
-            <span className="rounded bg-white py-1 px-3 text-sm font-medium text-black">
+            <span className="rounded bg-gradient-to-br from-accent-400 to-accent-700 py-1 px-3 text-sm font-medium tracking-wide text-black">
               Submit
             </span>
           </Link>
           {session && profile?.is_moderator && (
-            <Link href={'/submissions'} className="flex items-center gap-2">
+            <Link href={'/curate'} className="flex items-center gap-2">
               <span className="relative text-sm font-normal">
-                <span className="opacity-60 transition-opacity hover:opacity-100">
-                  Submissions
+                <span className="tracking-wide opacity-60 transition-opacity hover:opacity-100">
+                  Curate
                 </span>
                 {submissions.length > 0 && (
-                  <span className="absolute top-[-4px] right-[-20px] flex h-[15px] w-[15px] items-center justify-center rounded-full bg-cyan-600 text-xs font-bold text-black">
+                  <span className="absolute top-[-4px] right-[-20px] flex h-[15px] w-[15px] items-center justify-center rounded-full bg-accent-500 text-xs font-bold text-black">
                     {submissions.length}
                   </span>
                 )}
@@ -90,7 +90,7 @@ const Header = () => {
               href={'/login'}
               className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
             >
-              <span className="text-sm font-normal">Login</span>
+              <span className="text-sm font-normal tracking-wide">Login</span>
             </Link>
           )}
         </div>
@@ -167,11 +167,11 @@ const Header = () => {
           <>
             <div className="h-[1px] rounded bg-gray-700"></div>
             <Link
-              href="/submissions"
+              href="/curate"
               onClick={() => setShowMobileMenu(false)}
               className="py-2 px-4 text-sm font-medium"
             >
-              Submissions
+              Curate
             </Link>
           </>
         )}

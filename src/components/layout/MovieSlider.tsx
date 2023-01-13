@@ -1,15 +1,19 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Movie } from '../../hooks/usePublishMovie';
 import MovieCard from '../MovieCard';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useMoviesByCategory } from '../../hooks/useMovies';
 
 interface MovieSliderProps {
-  movies: Movie[];
+  movies?: Movie[];
+  tag?: string;
   title: string;
 }
 
 const MovieSlider = (props: MovieSliderProps) => {
-  const { movies, title } = props;
+  const { movies, title, tag } = props;
+
+  const { movies: tagged } = useMoviesByCategory(tag || '');
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -44,7 +48,7 @@ const MovieSlider = (props: MovieSliderProps) => {
 
   useEffect(() => {
     updateHasOverflow();
-  }, [movies, wrapperRef.current, containerRef.current]);
+  }, [movies, tagged, wrapperRef.current, containerRef.current]);
 
   useEffect(() => {
     window.addEventListener('resize', updateHasOverflow);
@@ -52,6 +56,8 @@ const MovieSlider = (props: MovieSliderProps) => {
       window.removeEventListener('resize', updateHasOverflow);
     };
   }, []);
+
+  const displayMovies = movies ? movies : tag ? tagged : [];
 
   return (
     <div className="flex w-full flex-col overflow-x-hidden">
@@ -64,7 +70,7 @@ const MovieSlider = (props: MovieSliderProps) => {
           style={{ transform: `translateX(-${offset}px)` }}
           className={`mt-1.5 w-full overflow-x-auto whitespace-nowrap transition-transform md:overflow-x-visible`}
         >
-          {movies.map((movie) => (
+          {displayMovies.map((movie) => (
             <div
               key={movie.id}
               className="mr-2 inline-block aspect-video w-[200px] overflow-visible first:ml-2 md:mr-4 md:w-[250px] md:first:ml-8 md:last:mr-8"
@@ -72,7 +78,7 @@ const MovieSlider = (props: MovieSliderProps) => {
               <MovieCard movie={movie} />
             </div>
           ))}
-          {movies.length === 0 && (
+          {displayMovies.length === 0 && (
             <>
               <div className="relative mr-2 inline-block aspect-video w-[200px] overflow-hidden rounded-md bg-gray-900 first:ml-2 md:mr-4 md:w-[250px] md:first:ml-8 md:last:mr-8">
                 <div className="shimmer"></div>

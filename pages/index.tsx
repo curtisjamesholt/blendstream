@@ -11,6 +11,7 @@ import {
   useMoviesById,
   useRecentMovies,
 } from '../src/hooks/useMovies';
+import useTags from '../src/hooks/useTags';
 import useUpdateProfilePicture from '../src/hooks/useUpdateProfilePicture';
 import useWatchlist from '../src/hooks/useWatchlist';
 
@@ -24,17 +25,14 @@ export default function Home() {
   const { recentMovies } = useRecentMovies();
   const { featuredMovies } = useFeaturedMovies();
 
-  const { movies: photorealMovies } = useMoviesByCategory('photorealism');
-  const { movies: blenderMovies } = useMoviesByCategory('blender');
-  const { movies: comedyMovies } = useMoviesByCategory('comedy');
-  const { movies: dummy } = useMoviesByCategory('dummy');
+  const { tags } = useTags();
 
   useUpdateProfilePicture();
 
   return (
     <>
       <Head>
-        <title>Shortfilms</title>
+        <title>Blend.Stream</title>
       </Head>
       <Header />
       <main className="flex flex-col gap-4">
@@ -50,11 +48,15 @@ export default function Home() {
               ) : null}
             </>
           )}
-          <MovieSlider title="New Arrivals" movies={recentMovies} />
-          <MovieSlider title="Comedy" movies={comedyMovies} />
-          <MovieSlider title="Made with Blender" movies={blenderMovies} />
-          <MovieSlider title="Photorealism" movies={photorealMovies} />
-          <MovieSlider title="Other" movies={dummy} />
+          <MovieSlider movies={recentMovies} title="New Arrivals" />
+          {tags.map((tag) => {
+            if (tag.order !== null) {
+              return (
+                <MovieSlider key={tag.tag} title={tag.title} tag={tag.tag} />
+              );
+            }
+            return null;
+          })}
         </div>
       </main>
       <Footer />

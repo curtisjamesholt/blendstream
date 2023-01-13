@@ -6,13 +6,7 @@ import Head from 'next/head';
 import useMovieThumbnail from '../../src/hooks/useMovieThumbnail';
 import Header from '../../src/components/layout/Header';
 import Image from 'next/image';
-import {
-  FiCheck,
-  FiExternalLink,
-  FiHeart,
-  FiPlay,
-  FiPlus,
-} from 'react-icons/fi';
+import { FiCheck, FiHeart, FiPlay, FiPlus } from 'react-icons/fi';
 import { useSession } from '@supabase/auth-helpers-react';
 import Footer from '../../src/components/layout/Footer';
 import useWatchlist from '../../src/hooks/useWatchlist';
@@ -55,31 +49,41 @@ export default function Movie() {
         <div className="flex min-h-[100vh] flex-col">
           <Header />
           {movie ? (
-            <Link href={`/watch/${movie.id}`} className="flex-grow">
-              <div className="relative h-[80vh] min-h-[600px] overflow-hidden md:mx-8 md:mt-4 md:rounded-xl">
-                {thumbnail && (
-                  <Image
-                    className="aspect-video object-cover gradient-mask-b-50 md:[mask-image:none]"
-                    src={thumbnail}
-                    alt="Thumbnail"
-                    fill
-                  />
-                )}
-                <div
-                  className="absolute h-full w-full"
-                  style={{
-                    background:
-                      'linear-gradient(0deg, rgba(0,0,0,.9) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0) 100%)',
-                  }}
-                ></div>
+            <div className="flex-grow">
+              <div className="relative h-[90vh] min-h-[600px] w-full overflow-hidden md:h-[80vh]">
+                <Link
+                  href={`/watch/${movie.id}`}
+                  className="fixed top-0 left-0 h-[90vh] w-full"
+                >
+                  {thumbnail && (
+                    <Image
+                      className="aspect-video object-cover"
+                      src={thumbnail}
+                      alt="Thumbnail"
+                      fill
+                    />
+                  )}
+                  <div
+                    className="absolute h-full w-full"
+                    style={{
+                      background:
+                        'linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 100%)',
+                    }}
+                  ></div>
+                </Link>
 
                 <div className="absolute top-1/2 left-1/2 flex aspect-square w-[70px] translate-x-[-50%] translate-y-[-50%] items-center justify-center rounded-full bg-black bg-opacity-40 transition-all hover:bg-opacity-70">
                   <FiPlay className="ml-1 fill-white" size={24} />
                 </div>
 
                 <div className="absolute left-4 bottom-4 md:left-8 md:bottom-8">
-                  <span className="text-5xl font-semibold">{movie.title}</span>
-                  <div className="mt-2 flex items-center gap-4">
+                  <span className="text-4xl font-semibold md:text-5xl">
+                    {movie.title}
+                  </span>
+                  <Link
+                    className="mt-4 flex w-min items-center gap-4"
+                    href={`/users/${profile?.id || ''}`}
+                  >
                     <div className="relative aspect-square w-6 overflow-hidden rounded-full">
                       {profile?.profile_picture && (
                         <Image
@@ -89,10 +93,12 @@ export default function Movie() {
                         />
                       )}
                     </div>
-                    <span className="font-medium">{profile?.full_name}</span>
-                  </div>
+                    <span className="whitespace-nowrap text-sm font-medium md:text-base">
+                      {profile?.full_name}
+                    </span>
+                  </Link>
                   <div className="mt-6 flex gap-1">
-                    {[...movie.categories].sort().map((category) => (
+                    {[...movie.tags].sort().map((category) => (
                       <span
                         key={category}
                         className="rounded bg-white bg-opacity-10 px-2 py-[2px] text-xs font-medium tracking-wide"
@@ -169,7 +175,7 @@ export default function Movie() {
                   </div>
                 </div>
               </div>
-            </Link>
+            </div>
           ) : (
             <LoadingPage />
           )}

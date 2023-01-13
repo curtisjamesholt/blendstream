@@ -40,12 +40,34 @@ const useSubmissions = () => {
     setUpdatingSubmission(false);
   };
 
+  const [deleting, setDeleting] = useState<boolean>(false);
+
+  const deleteMovie = async (id: string) => {
+    if (!session) return;
+    setDeleting(true);
+    try {
+      const { data, error } = await supabase
+        .from('movies')
+        .delete()
+        .match({ id });
+      if (error) {
+        throw new Error(error.message);
+      }
+      await refetch();
+    } catch (error) {
+      console.error(error);
+    }
+    setDeleting(false);
+  };
+
   return {
     movies: data || [],
     error: error,
     loading: isLoading,
     updateSubmission,
     updatingSubmission,
+    deleteMovie,
+    deleting,
   };
 };
 

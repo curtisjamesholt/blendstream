@@ -30,7 +30,7 @@ const MovieBanner = (props: MovieBannerProps) => {
   return (
     <div className="relative">
       <div className="relative -mt-16 flex w-full justify-center">
-        <div className="flex h-[70vh] w-full items-start justify-center overflow-x-hidden md:items-start md:overflow-x-visible">
+        <div className="flex h-[90vh] w-full items-start justify-center overflow-x-hidden md:h-[70vh] md:items-start md:overflow-x-visible">
           <div className="relative aspect-video h-[100%] overflow-hidden md:h-auto md:max-h-[90vh] md:w-[100vw]">
             {thumbnails.map((thumbnail, i) => (
               <Image

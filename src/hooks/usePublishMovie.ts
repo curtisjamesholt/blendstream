@@ -9,33 +9,44 @@ export interface Movie {
   url: string;
   description: string;
   published: boolean;
-  categories: string[];
+  tags: string[];
 }
 
 const usePublishMovie = () => {
   const supabase = useSupabaseClient();
   const session = useSession();
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const submitMovie = async (
     title: string,
     description: string,
-    url: string
+    url: string,
+    creator: string,
+    tags: string[]
   ) => {
     if (!session) return;
-    setLoading(true);
+    setSubmitting(true);
     if (!title || !description || !url) return;
-    const { data, error } = await supabase.from('movies').insert({
-      title: title,
-      description: description,
-      creator: session.user.id,
-      url: url,
-    } as Movie);
-    setLoading(false);
+    try {
+      const { data, error } = await supabase.from('movies').insert({
+        title: title,
+        description: description,
+        creator: creator ? creator : session.user.id,
+        url: url,
+        tags: tags,
+        published: true,
+      } as Movie);
+      if (error) {
+        throw new Error(error.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setSubmitting(false);
   };
 
-  return { submitMovie, loading };
+  return { submitMovie, submitting };
 };
 
 export default usePublishMovie;

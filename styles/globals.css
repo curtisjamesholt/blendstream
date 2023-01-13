@@ -62,6 +62,10 @@ body::-webkit-scrollbar-thumb:hover {
   -webkit-tap-highlight-color: transparent !important;
 }
 
+input::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
+
 .shimmer {
   position: absolute;
   top: 0;

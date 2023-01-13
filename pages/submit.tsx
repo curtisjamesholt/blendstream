@@ -2,12 +2,14 @@ import { useSession } from '@supabase/auth-helpers-react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { FormEvent, useEffect, useState } from 'react';
 import Footer from '../src/components/layout/Footer';
 import Header from '../src/components/layout/Header';
 import usePublishMovie from '../src/hooks/usePublishMovie';
 import ReactConfetti from 'react-confetti';
+import { FiInfo } from 'react-icons/fi';
+import useTags from '../src/hooks/useTags';
+import TagInput from '../src/components/inputs/TagInput';
 
 export default function Submit() {
   const session = useSession();
@@ -24,14 +26,16 @@ export default function Submit() {
   const [description, setDescription] = useState<string>('');
   const [url, setUrl] = useState<string>('');
   const [creator, setCreator] = useState<string>('');
+  const [tags, setTags] = useState<string[]>([]);
 
-  const { submitMovie, loading } = usePublishMovie();
+  const { submitMovie, submitting } = usePublishMovie();
+
+  const { tags: allTags } = useTags();
 
   const onSubmitForm = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    // await submitMovie(title, description, url);
-    // router.push("/profile");
+    await submitMovie(title, description, url, isOwnMovie ? '' : creator, tags);
   };
 
   useEffect(() => {
@@ -64,11 +68,19 @@ export default function Submit() {
               >
                 Submit
               </span>
+              <div className="flex flex-row items-start justify-start gap-2 rounded-md border-2 border-zinc-800 bg-zinc-900 bg-opacity-25 p-4">
+                <FiInfo size={32} className={'h-5'} />
+                <span className="text-sm tracking-wide text-zinc-300">
+                  Submit your own or another creators movie below. We will
+                  review your submission and add it to the site as soon as
+                  possible.
+                </span>
+              </div>
               <div className="flex gap-4">
                 <div
-                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-md border-2 border-transparent bg-white bg-opacity-10 py-[20px] text-sm font-semibold tracking-wide text-white transition-all hover:bg-opacity-20 ${
+                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-md bg-white bg-opacity-5 py-[28px] text-sm font-semibold tracking-wide transition-all hover:bg-opacity-10 ${
                     isOwnMovie
-                      ? 'border-cyan-600 bg-cyan-600 text-cyan-600'
+                      ? 'bg-gradient-to-br from-brand-600 to-brand-300 text-black'
                       : ''
                   }`}
                   onClick={() => setIsOwnMovie(true)}
@@ -77,9 +89,9 @@ export default function Submit() {
                 </div>
                 <div
                   onClick={() => setIsOwnMovie(false)}
-                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-md border-2 border-transparent bg-white bg-opacity-10 py-[20px] text-sm font-semibold tracking-wide text-white transition-all hover:bg-opacity-20 ${
+                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-md bg-white bg-opacity-5 py-[28px] text-sm font-semibold tracking-wide transition-all hover:bg-opacity-10 ${
                     !isOwnMovie
-                      ? 'border-cyan-600 bg-cyan-600 text-cyan-600'
+                      ? 'bg-gradient-to-br from-brand-600 to-brand-300 text-black'
                       : ''
                   }`}
                 >
@@ -99,7 +111,7 @@ export default function Submit() {
                   name="title"
                   id="title"
                   placeholder="Movie Title"
-                  className="rounded border-none bg-zinc-900 p-2 text-sm font-normal outline-none"
+                  className="rounded border-none bg-zinc-900 p-2 px-3 text-sm font-normal outline-none"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
@@ -135,7 +147,7 @@ export default function Submit() {
                 <textarea
                   name="description"
                   id="description"
-                  placeholder="A short description for the movie"
+                  placeholder="A short description of the movie"
                   className="min-h-[100px] resize-y rounded border-none bg-zinc-900 p-2 text-sm font-normal outline-none"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -158,10 +170,24 @@ export default function Submit() {
                   onChange={(e) => setUrl(e.target.value)}
                 />
               </div>
+              <div className="flex flex-col gap-1">
+                <label
+                  htmlFor="tags"
+                  className="text-sm font-medium text-gray-400"
+                >
+                  Tags
+                </label>
+                <TagInput
+                  id="tags"
+                  options={allTags.map((t) => t.tag)}
+                  setTags={setTags}
+                  tags={tags}
+                />
+              </div>
               <button
                 type="submit"
                 disabled={
-                  loading ||
+                  submitting ||
                   !title ||
                   !description ||
                   !url ||
@@ -173,7 +199,7 @@ export default function Submit() {
               </button>
             </form>
           ) : submitted ? (
-            <div className="mx-4 flex flex-col items-center justify-center gap-4 md:mx-8">
+            <div className="mx-4 mt-[30vh] flex flex-col items-center justify-center gap-4 md:mx-8">
               <ReactConfetti
                 width={width}
                 height={height}
@@ -184,6 +210,14 @@ export default function Submit() {
                 Your submission will be reviewed and published as soon as
                 possible.
               </span>
+              <button
+                onClick={() => {
+                  window.location.reload();
+                }}
+                className="mt-4 flex items-center justify-center rounded-md bg-white bg-opacity-10 py-2 px-8 text-sm tracking-wide transition-all hover:bg-opacity-20"
+              >
+                Submit Another
+              </button>
             </div>
           ) : (
             <div className="flex flex-col">

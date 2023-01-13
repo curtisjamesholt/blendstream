@@ -94,7 +94,7 @@ export const useMoviesByCategory = (category: string) => {
     const { data, error } = await supabase
       .from('movies')
       .select('*')
-      .filter('categories', 'cs', `{${category}}`)
+      .filter('tags', 'cs', `{${category}}`)
       .filter('published', 'eq', true)
       .order('created_at', { ascending: false });
     if (error) {
@@ -105,6 +105,34 @@ export const useMoviesByCategory = (category: string) => {
   const { data, error, isLoading } = useQuery<Movie[] | null>(
     ['moviesByCategory', category],
     fetchMoviesByCategory
+  );
+
+  return {
+    movies: data || [],
+    error: error,
+    loading: isLoading,
+  };
+};
+
+export const useMoviesByCreator = (creator: string) => {
+  const supabase = useSupabaseClient();
+
+  const fetchMoviesByCreator = async () => {
+    if (!creator) return [];
+    const { data, error } = await supabase
+      .from('movies')
+      .select('*')
+      .filter('creator', 'eq', creator)
+      .filter('published', 'eq', true)
+      .order('created_at', { ascending: false });
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data as Movie[];
+  };
+  const { data, error, isLoading } = useQuery<Movie[] | null>(
+    ['moviesByCreator', creator],
+    fetchMoviesByCreator
   );
 
   return {

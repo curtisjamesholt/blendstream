@@ -34,7 +34,7 @@ export default function Submit() {
         <div className="flex flex-grow flex-col items-center gap-16">
           <button
             onClick={onSignIn}
-            className="mt-[30vh] flex items-center gap-4 rounded bg-[#7289da] px-10 py-[14px] text-sm font-semibold text-black transition-all hover:brightness-110"
+            className="mt-[30vh] flex items-center gap-4 rounded bg-[#5865F2] px-10 py-[14px] text-sm font-medium tracking-wide text-white transition-all hover:brightness-110"
           >
             <FaDiscord size={18} /> Sign In With Discord
           </button>
