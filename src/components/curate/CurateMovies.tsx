@@ -77,7 +77,9 @@ const CurateMovies = () => {
         />
         <datalist id="new-featured-list">
           {searchResults.map((m) => (
-            <option key={m.id} value={m.title} />
+            <option key={m.id} value={m.title}>
+              {m.id}
+            </option>
           ))}
         </datalist>
         <button
@@ -99,7 +101,9 @@ const CurateMovies = () => {
         />
         <datalist id="edit-list">
           {editResults.map((m) => (
-            <option key={m.id} value={m.title} />
+            <option key={m.id} value={m.title}>
+              {m.id}
+            </option>
           ))}
         </datalist>
       </span>

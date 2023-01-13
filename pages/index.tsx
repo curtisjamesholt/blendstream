@@ -7,7 +7,6 @@ import MovieBanner from '../src/components/MovieBanner';
 import useFavorites from '../src/hooks/useFavorites';
 import {
   useFeaturedMovies,
-  useMoviesByCategory,
   useMoviesById,
   useRecentMovies,
 } from '../src/hooks/useMovies';

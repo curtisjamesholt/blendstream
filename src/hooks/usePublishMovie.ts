@@ -1,5 +1,6 @@
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useState } from 'react';
+import useSubmissions from './useSubmissions';
 
 export interface Movie {
   id: string;
@@ -16,6 +17,8 @@ const usePublishMovie = () => {
   const supabase = useSupabaseClient();
   const session = useSession();
 
+  const { refetch } = useSubmissions();
+
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const submitMovie = async (
@@ -27,7 +30,7 @@ const usePublishMovie = () => {
   ) => {
     if (!session) return;
     setSubmitting(true);
-    if (!title || !description || !url) return;
+    if (!title || !url) return;
     try {
       const { data, error } = await supabase.from('movies').insert({
         title: title,
@@ -35,8 +38,8 @@ const usePublishMovie = () => {
         creator: creator ? creator : session.user.id,
         url: url,
         tags: tags,
-        published: true,
       } as Movie);
+      await refetch();
       if (error) {
         throw new Error(error.message);
       }

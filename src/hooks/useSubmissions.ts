@@ -2,6 +2,7 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useQuery } from '@tanstack/react-query';
 import { Movie } from './usePublishMovie';
 import { useState } from 'react';
+import { Profile } from './useUser';
 
 const useSubmissions = () => {
   const supabase = useSupabaseClient();
@@ -24,11 +25,33 @@ const useSubmissions = () => {
     fetchSubmissions
   );
 
-  const [updatingSubmission, setUpdatingSubmission] = useState<boolean>(false);
-  const updateSubmission = async (movie: Movie) => {
+  const [publishingSubmission, setPublishingSubmission] =
+    useState<boolean>(false);
+  const publishSubmission = async (
+    movie: Movie,
+    profile_picture: string | null
+  ) => {
     if (!session) return;
-    setUpdatingSubmission(true);
+    setPublishingSubmission(true);
     try {
+      if (profile_picture) {
+        const { data: newUser, error: userError } = await supabase
+          .from('profiles')
+          .insert([
+            {
+              full_name: movie.creator,
+              profile_picture: profile_picture,
+            },
+          ])
+          .select('*')
+          .single();
+        console.log(newUser);
+        let newUserData = newUser as any;
+        if (userError || !newUserData) {
+          throw new Error(userError?.message || 'No user data');
+        }
+        movie.creator = newUserData.id;
+      }
       const { data, error } = await supabase
         .from('movies')
         .update(movie)
@@ -37,7 +60,7 @@ const useSubmissions = () => {
     } catch (error) {
       console.error(error);
     }
-    setUpdatingSubmission(false);
+    setPublishingSubmission(false);
   };
 
   const [deleting, setDeleting] = useState<boolean>(false);
@@ -64,8 +87,9 @@ const useSubmissions = () => {
     movies: data || [],
     error: error,
     loading: isLoading,
-    updateSubmission,
-    updatingSubmission,
+    publishSubmission,
+    refetch,
+    publishingSubmission,
     deleteMovie,
     deleting,
   };

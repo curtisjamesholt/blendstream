@@ -8,6 +8,7 @@ import { Movie } from '../../hooks/usePublishMovie';
 import useSubmissions from '../../hooks/useSubmissions';
 import useTags from '../../hooks/useTags';
 import useUser from '../../hooks/useUser';
+import { useSearchedUsers } from '../../hooks/useUsers';
 import TagInput from '../inputs/TagInput';
 import Spinner from '../Spinner';
 
@@ -26,13 +27,17 @@ export default function SubmissionCard(props: SubmissionCardProps) {
   const [url, setUrl] = useState<string>(submission.url);
   const [tags, setTags] = useState<string[]>(submission.tags);
 
-  const { profile } = useUser(submission.creator);
+  const [creatorPicture, setCreatorPicture] = useState<string>('');
+
+  const { users } = useSearchedUsers(creator);
+
+  const { profile } = useUser(creator);
 
   const { tags: allTags } = useTags();
 
   const { highest: thumbnail } = useMovieThumbnail(url);
 
-  const { updateSubmission, updatingSubmission, deleteMovie, deleting } =
+  const { publishSubmission, publishingSubmission, deleteMovie, deleting } =
     useSubmissions();
 
   const onAccept = () => {
@@ -45,7 +50,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
       newSubmission.url = url;
       newSubmission.published = true;
       newSubmission.tags = tags;
-      updateSubmission(newSubmission);
+      publishSubmission(newSubmission, creatorPicture || null);
     }
   };
 
@@ -82,37 +87,58 @@ export default function SubmissionCard(props: SubmissionCardProps) {
       <div className="flex flex-col gap-4 p-4">
         <div className="flex flex-col gap-1">
           <label className="text-sm font-medium text-gray-400">Creator</label>
-          {profile ? (
-            <div className="flex items-center gap-4">
-              <div className="relative aspect-square w-[40px] overflow-hidden rounded-full">
-                {profile.profile_picture && (
-                  <Image
-                    src={profile.profile_picture}
-                    alt="Profile Picture"
-                    className="object-cover"
-                    fill
-                  />
-                )}
+          <div className="flex items-center gap-2">
+            {profile?.profile_picture && (
+              <div className="relative block aspect-square w-[40px] overflow-hidden rounded-full bg-zinc-900">
+                <Image
+                  src={profile.profile_picture}
+                  alt="Profile Picture"
+                  className="object-cover"
+                  fill
+                />
+                <Link
+                  target={'_blank'}
+                  href={`/users/${profile.id}`}
+                  className="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black bg-opacity-25 opacity-0 transition-opacity hover:opacity-100"
+                >
+                  <FiExternalLink />
+                </Link>
               </div>
-              <span className="flex flex-1 text-sm font-medium opacity-75">
-                {profile.full_name}
-              </span>
-              <Link href={`/users/${profile.id}`} target="_blank">
-                <FiExternalLink />
-              </Link>
-            </div>
-          ) : (
+            )}
             <input
               value={creator}
+              list="creators"
+              placeholder="Creator"
               onChange={(e) => setCreator(e.target.value)}
+              className="flex-1 rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
+            />
+            <datalist id="creators">
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.full_name}
+                </option>
+              ))}
+            </datalist>
+          </div>
+        </div>
+        {!profile && (
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-400">
+              Creator Profile Picture
+            </label>
+            <input
+              value={creatorPicture}
+              placeholder="https://yt3.googleusercontent.com/ytc/..."
+              onChange={(e) => setCreatorPicture(e.target.value)}
               className="rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
             />
-          )}
-        </div>
+          </div>
+        )}
         <div className="flex flex-col gap-1">
           <label className="text-sm font-medium text-gray-400">Title</label>
           <input
             value={title}
+            placeholder="Title"
             onChange={(e) => setTitle(e.target.value)}
             className="rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
           />
@@ -141,6 +167,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
           </label>
           <textarea
             value={description}
+            placeholder="Description"
             onChange={(e) => setDescription(e.target.value)}
             className="min-h-[100px] resize-y rounded border-none bg-zinc-900 p-3 text-sm font-normal outline-none"
           />
@@ -148,10 +175,10 @@ export default function SubmissionCard(props: SubmissionCardProps) {
         <div className="flex flex-row gap-2">
           <button
             onClick={onAccept}
-            disabled={updatingSubmission}
+            disabled={publishingSubmission}
             className="flex flex-1 items-center justify-center rounded bg-green-400 bg-opacity-20 py-2 text-sm font-medium text-green-500 transition-all hover:bg-opacity-30"
           >
-            {updatingSubmission ? <Spinner /> : 'Accept'}
+            {publishingSubmission ? <Spinner /> : 'Accept'}
           </button>
           <button
             onClick={onDecline}

@@ -70,11 +70,10 @@ export default function Movie() {
                         'linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 100%)',
                     }}
                   ></div>
+                  <div className="absolute top-1/2 left-1/2 flex aspect-square w-[70px] translate-x-[-50%] translate-y-[-50%] items-center justify-center rounded-full bg-black bg-opacity-40 transition-all hover:bg-opacity-70">
+                    <FiPlay className="ml-1 fill-white" size={24} />
+                  </div>
                 </Link>
-
-                <div className="absolute top-1/2 left-1/2 flex aspect-square w-[70px] translate-x-[-50%] translate-y-[-50%] items-center justify-center rounded-full bg-black bg-opacity-40 transition-all hover:bg-opacity-70">
-                  <FiPlay className="ml-1 fill-white" size={24} />
-                </div>
 
                 <div className="absolute left-4 bottom-4 md:left-8 md:bottom-8">
                   <span className="text-4xl font-semibold md:text-5xl">
