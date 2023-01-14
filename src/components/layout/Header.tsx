@@ -51,7 +51,7 @@ const Header = () => {
             href={'/submit'}
             className=" transition-transform hover:scale-105"
           >
-            <span className="rounded bg-gradient-to-br from-accent-400 to-accent-700 py-1 px-3 text-sm font-medium tracking-wide text-black">
+            <span className="rounded bg-gradient-to-br from-accent-300 to-accent-700 py-1 px-3 text-sm font-semibold tracking-wide text-black">
               Submit
             </span>
           </Link>
@@ -93,7 +93,7 @@ const Header = () => {
           )}
         </div>
       </div>
-      <div className="fixed top-2 right-2 z-10 flex md:hidden">
+      <div className="fixed top-2 right-2 z-40 flex md:hidden">
         <button
           className="flex aspect-square w-[40px] items-center justify-center rounded bg-black bg-opacity-30"
           onClick={() => setShowMobileMenu(true)}
@@ -102,7 +102,7 @@ const Header = () => {
         </button>
       </div>
       <div
-        className={`fixed top-0 left-0 z-20 flex h-full w-full origin-top flex-col gap-2 bg-black px-4 pt-4 transition-transform md:hidden ${
+        className={`fixed top-0 left-0 z-40 flex h-full w-full origin-top flex-col gap-2 bg-black px-4 pt-4 transition-transform md:hidden ${
           showMobileMenu ? 'scale-y-100' : 'scale-y-0'
         }`}
       >
