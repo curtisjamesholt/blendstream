@@ -34,7 +34,7 @@ export default function User() {
   return (
     <>
       <Head>
-        <title>{profile?.full_name || 'User'}</title>
+        <title>Blend.Stream | {profile?.full_name || ''}</title>
       </Head>
       <div className="flex min-h-[100vh] flex-col">
         <Header />

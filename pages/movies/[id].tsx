@@ -43,7 +43,7 @@ export default function Movie() {
   return (
     <>
       <Head>
-        <title>Blend.Stream | {movie?.title || 'Movie'}</title>
+        <title>Blend.Stream | {movie?.title || ''}</title>
       </Head>
       <>
         <div className="flex min-h-[100vh] flex-col">

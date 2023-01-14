@@ -60,13 +60,10 @@ const useTags = () => {
   };
 
   const [movingTag, setMovingTag] = useState<boolean>(false);
-  const moveTag = async (tag: Tag, offset: number) => {
+  const moveTags = async (newTags: Tag[]) => {
     setMovingTag(true);
     try {
-      const { error } = await supabase
-        .from('tags')
-        .update({ order: tag.order !== null ? tag.order + offset : 0 })
-        .match({ tag: tag.tag });
+      const { error } = await supabase.from('tags').upsert(newTags);
       if (error) {
         throw new Error(error.message);
       }
@@ -114,7 +111,7 @@ const useTags = () => {
     toggleTagOrder,
     togglingTag,
     updateTagTitle,
-    moveTag,
+    moveTags,
     movingTag,
     addTag,
     removeTag,

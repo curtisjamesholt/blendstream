@@ -190,7 +190,7 @@ export const useFilteredMovies = (search: string) => {
     }
     return data as Movie[];
   };
-  const { data, error, isLoading } = useQuery<Movie[] | null>(
+  const { data, error, isLoading, refetch } = useQuery<Movie[] | null>(
     ['filteredMovies', search],
     fetchFilteredMovies
   );
@@ -199,5 +199,6 @@ export const useFilteredMovies = (search: string) => {
     movies: data || [],
     error: error,
     loading: isLoading,
+    refetch,
   };
 };

@@ -16,7 +16,7 @@ export interface Profile {
   youtube: string | null;
 }
 
-const isUuid4 = (text: string) => {
+export const isUuid4 = (text: string) => {
   const uuid4Regex =
     /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
   return uuid4Regex.test(text);

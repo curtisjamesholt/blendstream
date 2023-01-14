@@ -3,7 +3,7 @@ import useMovie from '../../src/hooks/useMovie';
 import ReactPlayer from 'react-player';
 import Link from 'next/link';
 import Head from 'next/head';
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
 import LoadingPage from '../../src/components/LoadingPage';
 
@@ -27,6 +27,16 @@ export default function Player() {
       setShowBack(false);
     }, 2000);
   };
+
+  const movieId = useMemo(() => {
+    try {
+      const url = new URL(movie?.url || '');
+      const searchParams = new URLSearchParams(url.search);
+      return searchParams.get('v') || '';
+    } catch (e) {
+      return '';
+    }
+  }, [movie]);
 
   return (
     <>

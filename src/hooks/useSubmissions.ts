@@ -55,7 +55,7 @@ const useSubmissions = () => {
         const { data: newThumbnail, error: thumbnailError } =
           await supabase.storage
             .from('thumbnails')
-            .upload(`thumbnail-${movie.id}`, thumbnail);
+            .upload(`thumbnail-${new Date().getTime()}`, thumbnail);
         if (thumbnailError || !newThumbnail) {
           throw new Error(thumbnailError?.message || 'No thumbnail data');
         }

@@ -10,6 +10,7 @@ export interface Movie {
   url: string;
   description: string;
   published: boolean;
+  featured: boolean;
   tags: string[];
   thumbnail: string | null;
 }

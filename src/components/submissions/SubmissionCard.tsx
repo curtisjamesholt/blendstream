@@ -6,9 +6,8 @@ import useMovieThumbnail from '../../hooks/useMovieThumbnail';
 import { Movie } from '../../hooks/usePublishMovie';
 import useSubmissions from '../../hooks/useSubmissions';
 import useTags from '../../hooks/useTags';
-import useUser from '../../hooks/useUser';
-import { useSearchedUsers } from '../../hooks/useUsers';
 import TagInput from '../inputs/TagInput';
+import UserProfileInput from '../inputs/UserProfileInput';
 import Spinner from '../Spinner';
 
 interface SubmissionCardProps {
@@ -31,9 +30,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
   const [readFile, setReadFile] = useState<string>('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const { users } = useSearchedUsers(creator);
-
-  const { profile } = useUser(creator);
+  const [featured, setFeatured] = useState<boolean>(false);
 
   const { tags: allTags } = useTags();
 
@@ -53,6 +50,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
       newSubmission.url = url;
       newSubmission.published = true;
       newSubmission.tags = tags;
+      newSubmission.featured = featured;
       publishSubmission(
         newSubmission,
         selectedFile || null,
@@ -106,55 +104,12 @@ export default function SubmissionCard(props: SubmissionCardProps) {
         </Link>
       </div>
       <div className="flex flex-col gap-4 p-4">
-        <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-400">Creator</label>
-          <div className="flex items-center gap-2">
-            {profile?.profile_picture && (
-              <div className="relative block aspect-square w-[40px] overflow-hidden rounded-full bg-zinc-900">
-                <Image
-                  src={profile.profile_picture}
-                  alt="Profile Picture"
-                  className="object-cover"
-                  fill
-                />
-                <Link
-                  target={'_blank'}
-                  href={`/users/${profile.id}`}
-                  className="absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black bg-opacity-25 opacity-0 transition-opacity hover:opacity-100"
-                >
-                  <FiExternalLink />
-                </Link>
-              </div>
-            )}
-            <input
-              value={creator}
-              list="creators"
-              placeholder="Creator"
-              onChange={(e) => setCreator(e.target.value)}
-              className="flex-1 rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
-            />
-            <datalist id="creators">
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.full_name}
-                </option>
-              ))}
-            </datalist>
-          </div>
-        </div>
-        {!profile && (
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-400">
-              Creator Profile Picture
-            </label>
-            <input
-              value={creatorPicture}
-              placeholder="https://yt3.googleusercontent.com/ytc/..."
-              onChange={(e) => setCreatorPicture(e.target.value)}
-              className="rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
-            />
-          </div>
-        )}
+        <UserProfileInput
+          creator={creator}
+          setCreator={setCreator}
+          setCreatorPicture={setCreatorPicture}
+          creatorPicture={creatorPicture}
+        />
         <div className="flex flex-col gap-1">
           <label className="text-sm font-medium text-gray-400">Title</label>
           <input
@@ -201,6 +156,18 @@ export default function SubmissionCard(props: SubmissionCardProps) {
             className="min-h-[100px] resize-y rounded border-none bg-zinc-900 p-3 text-sm font-normal outline-none"
           />
         </div>
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={featured}
+            onChange={(e) => setFeatured(e.target.checked)}
+            className="rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
+          />
+          <label className="cursor-pointer text-sm font-medium text-gray-400">
+            Featured
+          </label>
+        </div>
+
         <div className="flex flex-row gap-2">
           <button
             onClick={onAccept}
