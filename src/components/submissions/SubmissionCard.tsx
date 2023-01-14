@@ -51,6 +51,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
       newSubmission.published = true;
       newSubmission.tags = tags;
       newSubmission.featured = featured;
+      newSubmission.creator = creator;
       publishSubmission(
         newSubmission,
         selectedFile || null,

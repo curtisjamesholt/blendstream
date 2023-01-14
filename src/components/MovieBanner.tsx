@@ -63,7 +63,7 @@ const MovieBanner = (props: MovieBannerProps) => {
           <span className="tracking-wid text-4xl font-bold opacity-100 md:text-5xl">
             {movies.length ? movies[index].title : ''}
           </span>
-          <span className="mb-4 max-w-2xl text-base opacity-75">
+          <span className="mb-4 max-w-xl text-ellipsis text-base opacity-75 line-clamp-2">
             {movies.length ? movies[index].description : ''}
           </span>
           {movies.length > 0 && (

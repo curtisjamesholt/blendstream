@@ -96,7 +96,6 @@ const CurateMovies = () => {
           description: editDescription,
           url: editUrl,
           tags: editTags,
-          thumbnail: '',
           creator: editCreator,
           published: editPublished,
         },

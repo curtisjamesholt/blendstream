@@ -220,9 +220,16 @@ export default function Submit() {
               </button>
             </div>
           ) : (
-            <div className="flex flex-col">
-              <span>user is required to submit, please sign in</span>
-              <Link href={'/login'}>Sign In</Link>
+            <div className="m-auto mt-8 flex w-min flex-col items-center justify-center">
+              <span className="whitespace-nowrap text-sm font-medium">
+                Please sign in to submit a movie!
+              </span>
+              <Link
+                href={'/login'}
+                className="mt-4 rounded bg-white px-6 py-2 text-sm font-semibold text-black transition-all hover:bg-opacity-90"
+              >
+                Sign In
+              </Link>
             </div>
           )}
         </div>
