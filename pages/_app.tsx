@@ -8,6 +8,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import posthog from 'posthog-js';
 import Script from 'next/script';
+import CookieBanner from '../src/components/CookieBanner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -43,6 +44,7 @@ export default function App({ Component, pageProps }: AppProps) {
         }}
       />
       <div className={inter.className}>
+        <CookieBanner />
         <SessionContextProvider
           supabaseClient={supabase}
           initialSession={pageProps.initialSession}
