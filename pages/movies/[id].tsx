@@ -57,7 +57,7 @@ export default function Movie() {
                 >
                   {thumbnail && (
                     <Image
-                      className="f-ull w-full object-cover"
+                      className="h-full w-full object-cover"
                       src={thumbnail}
                       alt="Thumbnail"
                       width={1920}

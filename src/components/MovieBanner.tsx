@@ -41,7 +41,7 @@ const MovieBanner = (props: MovieBannerProps) => {
                 style={{
                   animation: `scaleAnim ${showDuration}ms linear infinite, fadeAnim ${showDuration}ms linear infinite`,
                 }}
-                className={`duration-400 w-full ${
+                className={`duration-400 h-full w-full object-cover ${
                   i === index ? 'block' : 'hidden'
                 }`}
                 alt="Thumbnail"
