@@ -67,8 +67,9 @@ const CurateFeatured = () => {
                 <Image
                   src={thumbnails[index].mid}
                   alt="Thumbnail"
-                  fill
-                  className="object-cover"
+                  width={960}
+                  height={540}
+                  className="h-full w-full object-cover"
                 />
               </Link>
             )}

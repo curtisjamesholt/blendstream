@@ -42,13 +42,14 @@ export default function User() {
           {profile?.profile_picture && (
             <Image
               src={profile.profile_picture}
-              fill
               alt="Profile Picture"
-              className="scale-110 object-cover blur-xl"
+              className="w-full scale-110 object-cover blur-xl"
+              height={250}
+              width={250}
             />
           )}
           <div
-            className="absolute h-full w-full"
+            className="absolute top-0 left-0 h-full w-full"
             style={{
               background:
                 'linear-gradient(0deg, rgba(0,0,0,1) 5%, rgba(0,0,0,0.5) 100%)',
@@ -61,7 +62,9 @@ export default function User() {
               {profile?.profile_picture && (
                 <Image
                   src={profile.profile_picture}
-                  fill
+                  width={250}
+                  height={250}
+                  className="h-full w-full object-cover"
                   alt="Profile Picture"
                 />
               )}

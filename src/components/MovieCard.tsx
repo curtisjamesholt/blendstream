@@ -11,7 +11,7 @@ interface MovieCardProps {
 const MovieCard = (props: MovieCardProps) => {
   const { movie } = props;
 
-  const { mid: thumbnail } = useMovieThumbnail(movie);
+  const { low: thumbnail } = useMovieThumbnail(movie);
 
   const onCardClick = () => {
     posthog.capture('movie card clicked', {
@@ -27,8 +27,9 @@ const MovieCard = (props: MovieCardProps) => {
           <Image
             src={thumbnail}
             alt="Thumbnail"
-            fill
-            style={{ objectFit: 'cover' }}
+            width={960}
+            height={540}
+            className="h-full w-full object-cover"
           />
         )}
       </div>

@@ -53,21 +53,22 @@ export default function Movie() {
               <div className="relative h-[90vh] min-h-[600px] w-full overflow-hidden md:h-[80vh]">
                 <Link
                   href={`/watch/${movie.id}`}
-                  className="fixed top-0 left-0 h-[90vh] w-full"
+                  className="fixed top-0 left-0 h-[90vh] w-full overflow-hidden"
                 >
                   {thumbnail && (
                     <Image
-                      className="aspect-video object-cover"
+                      className="f-ull w-full object-cover"
                       src={thumbnail}
                       alt="Thumbnail"
-                      fill
+                      width={1920}
+                      height={1080}
                     />
                   )}
                   <div
-                    className="absolute h-full w-full"
+                    className="absolute top-0 left-0 h-full w-full"
                     style={{
                       background:
-                        'linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 100%)',
+                        'linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0) 100%)',
                     }}
                   ></div>
                   <div className="absolute top-1/2 left-1/2 flex aspect-square w-[70px] translate-x-[-50%] translate-y-[-50%] items-center justify-center rounded-full bg-black bg-opacity-40 transition-all hover:bg-opacity-70">
@@ -88,7 +89,9 @@ export default function Movie() {
                         <Image
                           src={profile.profile_picture}
                           alt="Profile"
-                          fill
+                          height={50}
+                          width={50}
+                          className="h-full w-full object-cover"
                         />
                       )}
                     </div>

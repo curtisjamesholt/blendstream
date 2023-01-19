@@ -68,7 +68,9 @@ export default function Profile() {
               {profile?.profile_picture && (
                 <Image
                   src={profile.profile_picture}
-                  fill
+                  width={100}
+                  height={100}
+                  className="h-full w-full object-cover"
                   alt="Profile Picture"
                 />
               )}

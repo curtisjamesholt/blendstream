@@ -148,8 +148,9 @@ const CurateMovies = () => {
                 <Image
                   src={editThumbnail ? editThumbnail : highest}
                   alt="Thumbnail"
-                  fill
-                  className="object-cover"
+                  width={1280}
+                  height={720}
+                  className="h-full w-full object-cover"
                 />
               )}
               <Link

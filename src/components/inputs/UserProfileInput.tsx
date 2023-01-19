@@ -28,8 +28,9 @@ const UserProfileInput = (props: UserProfileInputProps) => {
               <Image
                 src={profile.profile_picture}
                 alt="Profile Picture"
-                className="object-cover"
-                fill
+                className="h-full w-full object-cover"
+                width={250}
+                height={250}
               />
               <Link
                 target={'_blank'}

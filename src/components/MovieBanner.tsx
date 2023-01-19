@@ -35,12 +35,13 @@ const MovieBanner = (props: MovieBannerProps) => {
             {thumbnails.map((thumbnail, i) => (
               <Image
                 key={i}
-                fill
+                width={1920}
+                height={1080}
+                priority
                 style={{
-                  objectFit: 'cover',
                   animation: `scaleAnim ${showDuration}ms linear infinite, fadeAnim ${showDuration}ms linear infinite`,
                 }}
-                className={`duration-400 aspect-video ${
+                className={`duration-400 w-full ${
                   i === index ? 'block' : 'hidden'
                 }`}
                 alt="Thumbnail"
@@ -48,7 +49,7 @@ const MovieBanner = (props: MovieBannerProps) => {
               />
             ))}
             <div
-              className="absolute h-full w-full"
+              className="absolute top-0 left-0 h-full w-full"
               style={{
                 background:
                   'linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0) 100%)',

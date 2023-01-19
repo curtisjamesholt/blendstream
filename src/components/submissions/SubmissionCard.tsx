@@ -93,9 +93,10 @@ export default function SubmissionCard(props: SubmissionCardProps) {
         {(thumbnail || readFile) && (
           <Image
             src={readFile ? readFile : thumbnail}
-            fill
+            width={1280}
+            height={720}
+            className="h-full w-full object-cover"
             alt="Thumbnail"
-            className="object-cover"
           />
         )}
         <Link href={url} target="_blank">

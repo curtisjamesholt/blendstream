@@ -51,7 +51,7 @@ const Header = () => {
             href={'/submit'}
             className=" transition-transform hover:scale-105"
           >
-            <span className="rounded bg-gradient-to-br from-accent-300 to-accent-700 py-1 px-3 text-sm font-semibold tracking-wide text-black">
+            <span className="rounded bg-brand-500 py-1 px-3 text-sm font-semibold tracking-wide text-black">
               Submit
             </span>
           </Link>
@@ -76,8 +76,10 @@ const Header = () => {
                   {profile?.profile_picture && (
                     <Image
                       src={profile.profile_picture}
-                      fill
                       alt="Profile Picture"
+                      width={50}
+                      height={50}
+                      className="h-full w-full object-cover"
                     />
                   )}
                 </div>
@@ -121,7 +123,9 @@ const Header = () => {
               {profile?.profile_picture && (
                 <Image
                   src={profile.profile_picture}
-                  fill
+                  width={50}
+                  height={50}
+                  className="h-full w-full object-cover"
                   alt="Profile Picture"
                 />
               )}
