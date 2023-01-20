@@ -100,7 +100,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
           />
         )}
         <Link href={url} target="_blank">
-          <div className="absolute flex h-full w-full cursor-pointer items-center justify-center bg-black bg-opacity-50 opacity-0 transition-all group-hover:opacity-100">
+          <div className="absolute top-0 left-0 flex h-full w-full cursor-pointer items-center justify-center bg-black bg-opacity-50 opacity-0 transition-all group-hover:opacity-100">
             <FiExternalLink size={20} />
           </div>
         </Link>
