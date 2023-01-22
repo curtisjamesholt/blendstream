@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <>
       <div
-        className={`sticky top-0 z-40 hidden h-16 w-full flex-row items-center justify-between bg-black bg-opacity-50 px-8 backdrop-blur transition-opacity md:flex`}
+        className={`sticky top-0 z-40 hidden h-14 w-full flex-row items-center justify-between border-b-[1px] border-b-white border-opacity-20 bg-black bg-opacity-0 px-8 backdrop-blur-md transition-opacity md:flex`}
       >
         <div className="flex flex-1 flex-row items-center gap-8">
           <Link href={'/'} className="flex items-center">
@@ -28,15 +28,15 @@ const Header = () => {
         <div className="flex flex-1 flex-row items-center justify-center gap-8">
           <Link
             href={'/'}
-            className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
+            className="flex items-center gap-2 opacity-80 transition-opacity hover:opacity-100"
           >
-            <span className="text-sm font-normal tracking-wide">Home</span>
+            <span className="text-sm font-medium tracking-wide">Home</span>
           </Link>
           <Link
             href={'/discover'}
-            className="flex items-center gap-2 opacity-60 transition-opacity hover:opacity-100"
+            className="flex items-center gap-2 opacity-80 transition-opacity hover:opacity-100"
           >
-            <span className="text-sm font-normal tracking-wide">Discover</span>
+            <span className="text-sm font-medium tracking-wide">Discover</span>
           </Link>
           {/* <Link
             href={'/'}
@@ -51,18 +51,18 @@ const Header = () => {
             href={'/submit'}
             className=" transition-transform hover:scale-105"
           >
-            <span className="rounded bg-brand-500 py-1 px-3 text-sm font-semibold tracking-wide text-black">
+            <span className="rounded-full bg-gradient-to-br from-accent-300 to-rose-600 py-1.5 px-4 text-sm font-medium tracking-wide text-black">
               Submit
             </span>
           </Link>
           {session && profile?.is_moderator && (
             <Link href={'/curate'} className="flex items-center gap-2">
               <span className="relative text-sm font-normal">
-                <span className="tracking-wide opacity-60 transition-opacity hover:opacity-100">
+                <span className="font-medium tracking-wide opacity-80 transition-opacity hover:opacity-100">
                   Curate
                 </span>
                 {submissions.length > 0 && (
-                  <span className="absolute top-[-4px] right-[-20px] flex h-[15px] w-[15px] items-center justify-center rounded-full bg-accent-500 text-xs font-bold text-black">
+                  <span className="absolute top-[-4px] right-[-20px] flex h-[15px] w-[15px] items-center justify-center rounded-full bg-accent-400 text-xs font-bold text-black">
                     {submissions.length}
                   </span>
                 )}

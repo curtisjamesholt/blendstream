@@ -78,9 +78,9 @@ export default function Submit() {
               </div>
               <div className="flex gap-4">
                 <div
-                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-md bg-white bg-opacity-5 py-[28px] text-sm font-semibold tracking-wide transition-all hover:bg-opacity-10 ${
+                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-md bg-white bg-opacity-5 py-[28px] font-medium tracking-wide transition-all hover:bg-opacity-10 ${
                     isOwnMovie
-                      ? 'bg-gradient-to-br from-brand-600 to-brand-300 text-black'
+                      ? 'bg-gradient-to-br from-accent-300 to-rose-500 text-black'
                       : ''
                   }`}
                   onClick={() => setIsOwnMovie(true)}
@@ -89,9 +89,9 @@ export default function Submit() {
                 </div>
                 <div
                   onClick={() => setIsOwnMovie(false)}
-                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-md bg-white bg-opacity-5 py-[28px] text-sm font-semibold tracking-wide transition-all hover:bg-opacity-10 ${
+                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-md bg-white bg-opacity-5 py-[28px] font-medium tracking-wide transition-all hover:bg-opacity-10 ${
                     !isOwnMovie
-                      ? 'bg-gradient-to-br from-brand-600 to-brand-300 text-black'
+                      ? 'bg-gradient-to-br from-accent-300 to-rose-500 text-black'
                       : ''
                   }`}
                 >
