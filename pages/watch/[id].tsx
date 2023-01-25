@@ -3,9 +3,10 @@ import useMovie from '../../src/hooks/useMovie';
 import ReactPlayer from 'react-player';
 import Link from 'next/link';
 import Head from 'next/head';
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
 import LoadingPage from '../../src/components/LoadingPage';
+import { posthog } from 'posthog-js';
 
 export default function Player() {
   const router = useRouter();
@@ -37,6 +38,13 @@ export default function Player() {
       return '';
     }
   }, [movie]);
+
+  useEffect(() => {
+    posthog.capture('watching movie', {
+      movieTitle: movie?.title || '',
+      movieId: movieId,
+    });
+  }, []);
 
   return (
     <>

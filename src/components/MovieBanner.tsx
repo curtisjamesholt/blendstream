@@ -61,17 +61,17 @@ const MovieBanner = (props: MovieBannerProps) => {
           </div>
         </div>
         <div className="absolute left-4 right-4 bottom-4 flex flex-col gap-4 md:left-8 md:bottom-8">
-          <span className="tracking-wid text-4xl font-bold opacity-100 md:text-5xl">
+          <span className="text-3xl font-bold tracking-wide opacity-100 md:text-5xl">
             {movies.length ? movies[index].title : ''}
           </span>
-          <span className="mb-4 max-w-xl text-ellipsis text-base opacity-75 line-clamp-2">
+          <span className="mb-4 max-w-xl text-ellipsis text-sm opacity-75 line-clamp-2 md:text-base">
             {movies.length ? movies[index].description : ''}
           </span>
           {movies.length > 0 && (
             <Link href={`/movies/${movies[index].id}`}>
-              <div className="mb-4 flex h-10 w-[150px] items-center justify-center gap-2 rounded bg-white">
+              <div className="mb-4 flex h-9 w-36 items-center justify-center gap-2 rounded bg-white md:h-10 md:w-40">
                 <FiPlay className="fill-black stroke-black" size={16} />
-                <span className="text-base font-semibold tracking-wide text-black">
+                <span className="text-sm font-semibold tracking-wide text-black md:text-base">
                   Watch
                 </span>
               </div>

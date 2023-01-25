@@ -6,14 +6,18 @@ import { useMoviesByCategory } from '../../hooks/useMovies';
 
 interface MovieSliderProps {
   movies?: Movie[];
+  shuffled?: boolean;
   tag?: string;
   title: string;
 }
 
 const MovieSlider = (props: MovieSliderProps) => {
-  const { movies, title, tag } = props;
+  const { movies, title, tag, shuffled } = props;
 
-  const { movies: tagged } = useMoviesByCategory(tag || '');
+  const { movies: sortedMovies, shuffledMovies } = useMoviesByCategory(
+    tag || ''
+  );
+  const tagged = shuffled ? shuffledMovies : sortedMovies;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,7 +26,7 @@ const MovieSlider = (props: MovieSliderProps) => {
 
   const [hasOverflow, setHasOverflow] = useState<boolean>(false);
 
-  const itemWidth = 250;
+  const itemWidth = 350;
 
   const onPrev = () => {
     setOffset((prev) => Math.max(0, prev - itemWidth));
@@ -73,14 +77,14 @@ const MovieSlider = (props: MovieSliderProps) => {
           {displayMovies.map((movie) => (
             <div
               key={movie.id}
-              className="mr-2 inline-block aspect-video w-[200px] overflow-visible first:ml-2 md:mr-4 md:w-[250px] md:first:ml-8 md:last:mr-8"
+              className="mr-2 inline-block aspect-video w-52 overflow-visible first:ml-2 md:mr-5 md:w-64 md:first:ml-8 md:last:mr-8"
             >
               <MovieCard movie={movie} />
             </div>
           ))}
           {displayMovies.length === 0 && (
             <>
-              <div className="relative mr-2 inline-block aspect-video w-[200px] overflow-hidden rounded-md bg-gray-900 first:ml-2 md:mr-4 md:w-[250px] md:first:ml-8 md:last:mr-8">
+              <div className="relative mr-2 inline-block aspect-video w-[200px] overflow-hidden rounded-md bg-gray-900 first:ml-2 md:mr-4 md:w-64 md:first:ml-8 md:last:mr-8">
                 <div className="shimmer"></div>
               </div>
             </>

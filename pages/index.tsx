@@ -51,7 +51,12 @@ export default function Home() {
           {tags.map((tag) => {
             if (tag.order !== null) {
               return (
-                <MovieSlider key={tag.tag} title={tag.title} tag={tag.tag} />
+                <MovieSlider
+                  key={tag.tag}
+                  title={tag.title}
+                  tag={tag.tag}
+                  shuffled
+                />
               );
             }
             return null;

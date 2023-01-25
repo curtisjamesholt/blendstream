@@ -22,7 +22,7 @@ const MovieCard = (props: MovieCardProps) => {
 
   return (
     <Link href={`/movies/${movie.id}`} onClick={onCardClick}>
-      <div className="relative aspect-video w-full overflow-hidden rounded-md md:transition-transform md:hover:scale-105">
+      <div className="relative aspect-video w-full overflow-hidden rounded md:transition-transform md:hover:scale-105">
         {thumbnail && (
           <Image
             src={thumbnail}

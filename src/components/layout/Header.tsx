@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <>
       <div
-        className={`sticky top-0 z-40 hidden h-14 w-full flex-row items-center justify-between border-b-[1px] border-b-white border-opacity-20 bg-black bg-opacity-0 px-8 backdrop-blur-md transition-opacity md:flex`}
+        className={`sticky top-0 z-40 hidden h-14 w-full flex-row items-center justify-between border-b-[1px] border-b-white border-opacity-20 bg-black bg-opacity-0 px-8 backdrop-blur-md backdrop-brightness-75 transition-opacity md:flex`}
       >
         <div className="flex flex-1 flex-row items-center gap-8">
           <Link href={'/'} className="flex items-center">
@@ -51,7 +51,7 @@ const Header = () => {
             href={'/submit'}
             className=" transition-transform hover:scale-105"
           >
-            <span className="rounded-full bg-gradient-to-br from-accent-300 to-rose-600 py-1.5 px-4 text-sm font-medium tracking-wide text-black">
+            <span className="rounded-full bg-gradient-to-br from-accent-300 to-rose-500 py-1 px-3 text-sm font-medium tracking-wide text-black">
               Submit
             </span>
           </Link>

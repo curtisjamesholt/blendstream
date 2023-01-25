@@ -139,8 +139,16 @@ export const useMoviesByCategory = (category: string) => {
     fetchMoviesByCategory
   );
 
+  const shuffled = useMemo(() => {
+    const shuffled = JSON.parse(JSON.stringify(data || [])).sort(
+      (a: Movie, b: Movie) => 0.5 - Math.random()
+    ) as Movie[];
+    return shuffled;
+  }, [data]);
+
   return {
     movies: data || [],
+    shuffledMovies: shuffled,
     error: error,
     loading: isLoading,
   };
