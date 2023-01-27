@@ -92,17 +92,25 @@ const MovieSlider = (props: MovieSliderProps) => {
         </div>
         {hasOverflow && (
           <>
+            {offset > 0 && (
+              <button
+                className="group absolute left-0 top-0 hidden h-full w-44 items-center justify-start rounded bg-gradient-to-r from-black to-transparent px-8 opacity-100 transition-opacity hover:opacity-100 md:flex"
+                onClick={onPrev}
+              >
+                <FiChevronLeft
+                  size={30}
+                  className="opacity-75 transition-opacity group-hover:opacity-100"
+                />
+              </button>
+            )}
             <button
-              className="absolute left-0 top-0 hidden h-full w-28 items-center justify-center rounded bg-gradient-to-r from-black to-transparent opacity-50 transition-opacity hover:opacity-100 md:flex"
-              onClick={onPrev}
-            >
-              <FiChevronLeft size={30} />
-            </button>
-            <button
-              className="absolute right-0 top-0 hidden h-full w-28 items-center justify-center rounded bg-gradient-to-l from-black to-transparent opacity-50 transition-opacity hover:opacity-100 md:flex"
+              className="group absolute right-0 top-0 hidden h-full w-44 items-center justify-end rounded bg-gradient-to-l from-black to-transparent px-8 opacity-100 transition-opacity hover:opacity-100 md:flex"
               onClick={onNext}
             >
-              <FiChevronRight size={30} />
+              <FiChevronRight
+                size={30}
+                className="opacity-75 transition-opacity group-hover:opacity-100"
+              />
             </button>
           </>
         )}
