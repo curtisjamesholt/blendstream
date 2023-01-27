@@ -8,6 +8,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import { usePostHog } from 'next-use-posthog';
 import CookieBanner from '../src/components/CookieBanner';
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -38,6 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta property="og:url" content="https://blend.stream" />
         <meta property="og:image" content="/embed_image.jpg" />
       </Head>
+      <Analytics />
       <div className={inter.className}>
         <CookieBanner />
         <SessionContextProvider
