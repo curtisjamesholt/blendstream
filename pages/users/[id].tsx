@@ -43,7 +43,7 @@ export default function User() {
             <Image
               src={profile.profile_picture}
               alt="Profile Picture"
-              className="w-full scale-110 object-cover blur-xl"
+              className="ph-no-capture w-full scale-110 object-cover blur-xl"
               height={250}
               width={250}
             />
@@ -64,20 +64,20 @@ export default function User() {
                   src={profile.profile_picture}
                   width={250}
                   height={250}
-                  className="h-full w-full object-cover"
+                  className="ph-no-capture h-full w-full object-cover"
                   alt="Profile Picture"
                 />
               )}
             </div>
-            <span className="text-2xl font-semibold">
+            <span className="ph-no-capture text-2xl font-semibold">
               {profile?.full_name || ''}
             </span>
             {profile?.bio && (
-              <span className="max-w-md text-sm font-normal">
+              <span className="ph-no-capture max-w-md text-sm font-normal">
                 {profile?.bio || ''}
               </span>
             )}
-            <div className="mb-12 flex gap-4">
+            <div className="ph-no-capture mb-12 flex gap-4">
               {profile?.website && isValidUrl(profile.website) && (
                 <Link
                   href={profile.website}
@@ -123,7 +123,11 @@ export default function User() {
                 )}
             </div>
           </div>
-          {movies.length > 0 && <MovieSlider title="Movies" movies={movies} />}
+          <div className="ph-no-capture">
+            {movies.length > 0 && (
+              <MovieSlider title="Movies" movies={movies} />
+            )}
+          </div>
         </div>
         <Footer />
       </div>

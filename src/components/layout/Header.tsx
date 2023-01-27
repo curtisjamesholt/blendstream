@@ -79,7 +79,7 @@ const Header = () => {
                       alt="Profile Picture"
                       width={50}
                       height={50}
-                      className="h-full w-full object-cover"
+                      className="ph-no-capture h-full w-full object-cover"
                     />
                   )}
                 </div>

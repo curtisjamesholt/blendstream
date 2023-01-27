@@ -19,6 +19,10 @@ export default function App({ Component, pageProps }: AppProps) {
   usePostHog('phc_ndZDodibehHFJArgqFdPFUOlk7Kvq7Ed2qId45nBYZv', {
     api_host: 'https://eu.posthog.com',
     autocapture: true,
+    session_recording: {
+      maskAllInputs: true,
+    },
+    enable_recording_console_log: true,
   });
 
   return (

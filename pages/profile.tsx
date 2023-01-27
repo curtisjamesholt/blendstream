@@ -63,14 +63,14 @@ export default function Profile() {
       <div className="flex min-h-[100vh] flex-col">
         <Header />
         <div className="mx-4 flex-grow pt-8 md:mx-8">
-          <div className="m-auto flex flex-col gap-4 md:max-w-[500px]">
+          <div className="ph-no-capture m-auto flex flex-col gap-4 md:max-w-[500px]">
             <div className="relative aspect-square w-[100px] overflow-hidden rounded-full">
               {profile?.profile_picture && (
                 <Image
                   src={profile.profile_picture}
                   width={100}
                   height={100}
-                  className="h-full w-full object-cover"
+                  className="ph-no-capture h-full w-full object-cover"
                   alt="Profile Picture"
                 />
               )}
