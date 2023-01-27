@@ -115,7 +115,7 @@ export default function Profile() {
             <input
               placeholder="https://youtube.com/..."
               value={youtube}
-              onChange={(e) => setInstagram(e.target.value)}
+              onChange={(e) => setYoutube(e.target.value)}
               onBlur={onSaveChange}
               className="rounded border-none bg-zinc-900 px-4 py-2 text-sm outline-none"
             />
