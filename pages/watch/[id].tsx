@@ -57,7 +57,7 @@ export default function Player() {
             }`}
           >
             <Link href={`/movies/${movie.id}`}>
-              <div className="flex aspect-square w-[60px] items-center justify-center rounded-full bg-black bg-opacity-30 transition-all hover:bg-opacity-50">
+              <div className="flex aspect-square w-14 items-center justify-center rounded-full bg-black bg-opacity-30 transition-all hover:bg-opacity-50">
                 <FiChevronLeft size={24} />
               </div>
             </Link>
@@ -71,7 +71,8 @@ export default function Player() {
             controls
           /> */}
           <iframe
-            src={`https://www.youtube.com/embed/${movieId}`}
+            src={`https://www.youtube.com/embed/${movieId}?color=white&fs=1`}
+            allowFullScreen
             width={width}
             height={height}
           />
