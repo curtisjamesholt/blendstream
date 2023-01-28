@@ -1,5 +1,4 @@
-import { useRouter } from 'next/router';
-import useMovie from '../../src/hooks/useMovie';
+import { getMovie } from '../../src/hooks/useMovie';
 import Link from 'next/link';
 import useUser from '../../src/hooks/useUser';
 import Head from 'next/head';
@@ -14,13 +13,21 @@ import Spinner from '../../src/components/Spinner';
 import useFavorites from '../../src/hooks/useFavorites';
 import LoadingPage from '../../src/components/LoadingPage';
 import { FaYoutube } from 'react-icons/fa';
+import { GetServerSideProps } from 'next';
+import { Movie } from '../../src/hooks/usePublishMovie';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-export default function Movie() {
-  const router = useRouter();
-  const { id } = router.query;
+interface MovieProps {
+  movie: Movie | null;
+}
+
+export default function MoviePage(props: MovieProps) {
+  const { movie } = props;
+
   const session = useSession();
+  const router = useRouter();
 
-  const { movie } = useMovie(typeof id === 'string' ? id : '');
   const { highest: thumbnail } = useMovieThumbnail(movie);
   const { profile } = useUser(movie?.creator || '');
   const { watchlist, toggleInWatchlist, togglingWatchlist } = useWatchlist();
@@ -40,10 +47,19 @@ export default function Movie() {
     }
   };
 
+  useEffect(() => {
+    if (!movie) {
+      router.push('/');
+    }
+  }, []);
+
+  if (!movie) return <></>;
+
   return (
     <>
       <Head>
-        <title>Blend.Stream | {movie?.title || ''}</title>
+        <title>Blend.Stream | {movie.title}</title>
+        <meta property="og:image" content={movie.thumbnail || ''} />
       </Head>
       <>
         <div className="flex min-h-[100vh] flex-col">
@@ -119,14 +135,14 @@ export default function Movie() {
                           onClick={onToggleWatchlist}
                           disabled={togglingWatchlist}
                           className={`flex items-center gap-4 rounded-md bg-white px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all ${
-                            watchlist.includes(movie?.id || '')
+                            watchlist.includes(movie.id || '')
                               ? 'bg-opacity-100 text-black'
                               : 'bg-opacity-10 hover:bg-opacity-20'
                           }`}
                         >
                           {togglingWatchlist ? (
                             <Spinner size={16} />
-                          ) : watchlist.includes(movie?.id || '') ? (
+                          ) : watchlist.includes(movie.id || '') ? (
                             <FiCheck />
                           ) : (
                             <FiPlus strokeWidth={3} />
@@ -139,7 +155,7 @@ export default function Movie() {
                           onClick={onToggleFavorite}
                           disabled={togglingFavorite}
                           className={`flex items-center gap-4 rounded-md bg-white px-4 py-2 text-sm font-medium backdrop-blur-sm transition-all ${
-                            favorites.includes(movie?.id || '')
+                            favorites.includes(movie.id || '')
                               ? 'bg-opacity-100 text-black'
                               : 'bg-opacity-10 hover:bg-opacity-20'
                           }`}
@@ -187,3 +203,15 @@ export default function Movie() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const { id } = query;
+
+  const movie = await getMovie(typeof id === 'string' ? id : '');
+
+  return {
+    props: {
+      movie,
+    },
+  };
+};

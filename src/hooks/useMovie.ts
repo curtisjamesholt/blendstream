@@ -1,23 +1,30 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { Movie } from "./usePublishMovie";
-import { useQuery } from "@tanstack/react-query";
+import {
+  SupabaseClient,
+  useSupabaseClient,
+} from '@supabase/auth-helpers-react';
+import { Movie } from './usePublishMovie';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '../utils/supabase';
+
+export const getMovie = async (id: string) => {
+  if (!id) return null;
+  const { data, error } = await supabase
+    .from('movies')
+    .select('*')
+    .eq('id', id);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data[0] as Movie;
+};
 
 const useMovie = (id: string) => {
-  const supabase = useSupabaseClient();
-
   const fetchMovie = async () => {
-    if (!id) return null;
-    const { data, error } = await supabase
-      .from("movies")
-      .select("*")
-      .eq("id", id);
-    if (error) {
-      throw new Error(error.message);
-    }
-    return data[0] as Movie;
+    const movie = await getMovie(id);
+    return movie;
   };
   const { data, error, isLoading } = useQuery<Movie | null>(
-    ["movie", id],
+    ['movie', id],
     fetchMovie
   );
 

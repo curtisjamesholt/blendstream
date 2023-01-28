@@ -7,14 +7,13 @@ import { useState } from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
 import { Analytics } from '@vercel/analytics/react';
+import { supabase } from '../src/utils/supabase';
 
 const inter = Inter({ subsets: ['latin'] });
 
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [supabase] = useState(() => createBrowserSupabaseClient());
-
   return (
     <>
       <Head>
