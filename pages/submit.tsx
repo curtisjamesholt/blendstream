@@ -210,14 +210,22 @@ export default function Submit() {
                 Your submission will be reviewed and published as soon as
                 possible.
               </span>
-              <button
-                onClick={() => {
-                  window.location.reload();
-                }}
-                className="mt-4 flex items-center justify-center rounded-md bg-white bg-opacity-10 py-2 px-8 text-sm tracking-wide transition-all hover:bg-opacity-20"
-              >
-                Submit Another
-              </button>
+              <div className="mt-4 flex flex-col gap-4">
+                <button
+                  onClick={() => {
+                    window.location.reload();
+                  }}
+                  className="flex items-center justify-center rounded-md bg-white bg-opacity-10 py-2 px-8 text-sm tracking-wide transition-all hover:bg-opacity-20"
+                >
+                  Submit Another
+                </button>
+                <Link
+                  href={'/profile'}
+                  className="flex items-center justify-center rounded-md bg-white bg-opacity-10 py-2 px-8 text-sm tracking-wide transition-all hover:bg-opacity-20"
+                >
+                  View Submissions
+                </Link>
+              </div>
             </div>
           ) : (
             <div className="m-auto mt-8 flex w-min flex-col items-center justify-center">
