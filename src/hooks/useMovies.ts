@@ -136,7 +136,11 @@ export const useMoviesByCategory = (category: string) => {
   };
   const { data, error, isLoading } = useQuery<Movie[] | null>(
     ['moviesByCategory', category],
-    fetchMoviesByCategory
+    fetchMoviesByCategory,
+    {
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+    }
   );
 
   const shuffled = useMemo(() => {
