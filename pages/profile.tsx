@@ -135,7 +135,7 @@ export default function Profile() {
             <span className="mt-8 text-xl font-semibold">Submissions</span>
             {submissions.length === 0 && (
               <span className="text-sm opacity-50">
-                You haven't submitted any movies yet
+                {"You haven't submitted any movies yet"}
               </span>
             )}
             {submissions.map((submission) => (
