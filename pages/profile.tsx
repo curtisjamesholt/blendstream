@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from 'react';
 import { FiExternalLink } from 'react-icons/fi';
 import Footer from '../src/components/layout/Footer';
 import Header from '../src/components/layout/Header';
-import MovieSlider from '../src/components/layout/MovieSlider';
 import Spinner from '../src/components/Spinner';
 import useAuth from '../src/hooks/useAuth';
 import useUser from '../src/hooks/useUser';
@@ -140,7 +139,10 @@ export default function Profile() {
               </span>
             )}
             {submissions.map((submission) => (
-              <div className="flex flex-row items-center justify-between gap-4 rounded-md bg-zinc-900 p-4">
+              <div
+                key={submission.id}
+                className="flex flex-row items-center justify-between gap-4 rounded-md bg-zinc-900 p-4"
+              >
                 <span className="font-medium">{submission.title}</span>
                 {submission.published ? (
                   <div className="flex flex-row items-center justify-center gap-4">
