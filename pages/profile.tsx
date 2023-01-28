@@ -4,11 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import { FiExternalLink } from 'react-icons/fi';
 import Footer from '../src/components/layout/Footer';
 import Header from '../src/components/layout/Header';
+import MovieSlider from '../src/components/layout/MovieSlider';
 import Spinner from '../src/components/Spinner';
 import useAuth from '../src/hooks/useAuth';
 import useUser from '../src/hooks/useUser';
+import useUserSubmissions from '../src/hooks/useUserSubmissions';
 
 export default function Profile() {
   const session = useSession();
@@ -19,6 +22,8 @@ export default function Profile() {
   const { profile, updateProfile, updatingProfile } = useUser(
     session?.user.id || ''
   );
+
+  const { submissions } = useUserSubmissions(session?.user.id || '');
 
   const initializedDefaults = useRef<boolean>(false);
   const [bio, setBio] = useState<string>('');
@@ -128,6 +133,31 @@ export default function Profile() {
               </Link>
               {updatingProfile && <Spinner />}
             </div>
+            <span className="mt-8 text-xl font-semibold">Submissions</span>
+            {submissions.length === 0 && (
+              <span className="text-sm opacity-50">
+                You haven't submitted any movies yet
+              </span>
+            )}
+            {submissions.map((submission) => (
+              <div className="flex flex-row items-center justify-between gap-4 rounded-md bg-zinc-900 p-4">
+                <span className="font-medium">{submission.title}</span>
+                {submission.published ? (
+                  <div className="flex flex-row items-center justify-center gap-4">
+                    <span className="rounded-md border-2 border-green-500 border-opacity-50 bg-green-500 bg-opacity-25 px-2 py-1 text-sm font-medium text-green-500">
+                      Published
+                    </span>
+                    <Link href={`/movies/${submission.id}`}>
+                      <FiExternalLink />
+                    </Link>
+                  </div>
+                ) : (
+                  <span className="rounded-md border-2 border-yellow-500 border-opacity-50 bg-yellow-500 bg-opacity-25 px-2 py-1 text-sm font-medium text-yellow-500">
+                    Under Review
+                  </span>
+                )}
+              </div>
+            ))}
           </div>
         </div>
         <Footer />

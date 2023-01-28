@@ -13,6 +13,7 @@ export interface Movie {
   featured: boolean;
   tags: string[];
   thumbnail: string | null;
+  submitter: string;
 }
 
 const usePublishMovie = () => {
@@ -40,6 +41,7 @@ const usePublishMovie = () => {
         creator: creator ? creator : session.user.id,
         url: url,
         tags: tags,
+        submitter: session.user.id,
       } as Movie);
       await refetch();
       if (error) {
