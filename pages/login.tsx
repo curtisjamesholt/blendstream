@@ -41,10 +41,11 @@ export default function Submit() {
             >
               <FaDiscord size={18} /> Sign In With Discord
             </button>
-            <div className="flex flex-row items-center justify-center gap-2 opacity-50">
+            <div className="flex flex-row items-start justify-center gap-2 opacity-50">
               <FiInfo size={24} className={'h-4'} />
               <span className="text-sm tracking-wide">
-                We use cookies to keep you logged in
+                By signing in you agree to our use of cookies. We only use
+                necessary cookies to authorize certain actions.
               </span>
             </div>
           </div>
