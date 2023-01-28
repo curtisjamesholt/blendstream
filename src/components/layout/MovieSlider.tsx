@@ -26,7 +26,7 @@ const MovieSlider = (props: MovieSliderProps) => {
 
   const [hasOverflow, setHasOverflow] = useState<boolean>(false);
 
-  const itemWidth = 350;
+  const itemWidth = 600;
 
   const onPrev = () => {
     setOffset((prev) => Math.max(0, prev - itemWidth));
