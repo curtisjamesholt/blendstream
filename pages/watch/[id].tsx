@@ -6,11 +6,13 @@ import Head from 'next/head';
 import { useState, useRef, useMemo, useEffect } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
 import LoadingPage from '../../src/components/LoadingPage';
-import { posthog } from 'posthog-js';
+import { useWindowSize } from 'react-use';
 
 export default function Player() {
   const router = useRouter();
   const { id } = router.query;
+
+  const { width, height } = useWindowSize();
 
   const [showBack, setShowBack] = useState<boolean>(true);
 
@@ -31,20 +33,15 @@ export default function Player() {
 
   const movieId = useMemo(() => {
     try {
-      const url = new URL(movie?.url || '');
-      const searchParams = new URLSearchParams(url.search);
-      return searchParams.get('v') || '';
+      const urlObj = new URL(movie?.url || '');
+      if (urlObj.origin.includes('youtu.be')) {
+        return urlObj.pathname.slice(1);
+      }
+      return urlObj.searchParams.get('v');
     } catch (e) {
       return '';
     }
   }, [movie]);
-
-  useEffect(() => {
-    posthog.capture('watching movie', {
-      movieTitle: movie?.title || '',
-      movieId: movieId,
-    });
-  }, []);
 
   return (
     <>
@@ -65,13 +62,18 @@ export default function Player() {
               </div>
             </Link>
           </div>
-          <ReactPlayer
+          {/* <ReactPlayer
             ref={playerRef}
             url={movie.url}
             playing={true}
-            width={'100vw'}
-            height={'100vh'}
+            width={width}
+            height={height}
             controls
+          /> */}
+          <iframe
+            src={`https://www.youtube.com/embed/${movieId}`}
+            width={width}
+            height={height}
           />
         </div>
       ) : (

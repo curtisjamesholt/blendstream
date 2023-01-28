@@ -6,8 +6,6 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { useState } from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import Head from 'next/head';
-import { usePostHog } from 'next-use-posthog';
-import CookieBanner from '../src/components/CookieBanner';
 import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -16,15 +14,6 @@ const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   const [supabase] = useState(() => createBrowserSupabaseClient());
-
-  usePostHog('phc_ndZDodibehHFJArgqFdPFUOlk7Kvq7Ed2qId45nBYZv', {
-    api_host: 'https://eu.posthog.com',
-    autocapture: true,
-    session_recording: {
-      maskAllInputs: true,
-    },
-    enable_recording_console_log: true,
-  });
 
   return (
     <>
@@ -41,7 +30,6 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <Analytics />
       <div className={inter.className}>
-        <CookieBanner />
         <SessionContextProvider
           supabaseClient={supabase}
           initialSession={pageProps.initialSession}
