@@ -169,6 +169,15 @@ export default function Submit() {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                 />
+                {url &&
+                  !(
+                    url.includes('youtube.com/watch?v=') ||
+                    url.includes('youtu.be/')
+                  ) && (
+                    <span className="text-sm text-red-600">
+                      Only youtube.com/watch urls are allowed!
+                    </span>
+                  )}
               </div>
               <div className="flex flex-col gap-1">
                 <label
