@@ -5,6 +5,7 @@ import useUser from '../../hooks/useUser';
 import { useSearchedUsers } from '../../hooks/useUsers';
 
 interface UserProfileInputProps {
+  id: string;
   creator: string;
   setCreator: (creator: string) => void;
   creatorPicture: string;
@@ -12,7 +13,7 @@ interface UserProfileInputProps {
 }
 
 const UserProfileInput = (props: UserProfileInputProps) => {
-  const { creator, setCreator, creatorPicture, setCreatorPicture } = props;
+  const { id, creator, setCreator, creatorPicture, setCreatorPicture } = props;
 
   const { users } = useSearchedUsers(creator);
 
@@ -43,12 +44,12 @@ const UserProfileInput = (props: UserProfileInputProps) => {
           )}
           <input
             value={creator}
-            list="creators"
+            list={`creators-${id}`}
             placeholder="Creator"
             onChange={(e) => setCreator(e.target.value)}
             className="flex-1 rounded border-none bg-zinc-900 py-2 px-3 text-sm font-normal outline-none"
           />
-          <datalist id="creators">
+          <datalist id={`creators-${id}`}>
             {users.map((user) => (
               <option key={user.id} value={user.id}>
                 {user.full_name}

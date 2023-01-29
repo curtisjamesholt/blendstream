@@ -177,6 +177,7 @@ const CurateMovies = () => {
               <input type={'file'} onChange={onThumbnailChange} />
             </div>
             <UserProfileInput
+              id={'edit'}
               creator={editCreator}
               setCreator={setEditCreator}
               creatorPicture={editCreatorPicture}

@@ -107,6 +107,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
       </div>
       <div className="flex flex-col gap-4 p-4">
         <UserProfileInput
+          id={submission.id}
           creator={creator}
           setCreator={setCreator}
           setCreatorPicture={setCreatorPicture}

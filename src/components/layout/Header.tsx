@@ -62,7 +62,7 @@ const Header = () => {
                   Curate
                 </span>
                 {submissions.length > 0 && (
-                  <span className="absolute top-[-4px] right-[-20px] flex h-[15px] w-[15px] items-center justify-center rounded-full bg-accent-400 text-xs font-bold text-black">
+                  <span className="absolute -top-2 left-12 flex h-4 items-center justify-center rounded-full bg-accent-400 px-1.5 text-xs font-bold text-black">
                     {submissions.length}
                   </span>
                 )}
