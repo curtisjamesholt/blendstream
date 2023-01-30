@@ -70,11 +70,33 @@ export default function Submit() {
               </span>
               <div className="flex flex-row items-start justify-start gap-2 rounded-md border-2 border-zinc-800 bg-zinc-900 bg-opacity-25 p-4">
                 <FiInfo size={32} className={'h-5'} />
-                <span className="text-sm tracking-wide text-zinc-300">
-                  Submit your own or another creators movie below. We will
-                  review your submission and add it to the site as soon as
-                  possible.
-                </span>
+                <div className="flex flex-col gap-4">
+                  <span className="text-sm tracking-wide text-zinc-300">
+                    Submit your own or another creators movie below. We will
+                    review your submission and add it to the site as soon as
+                    possible.
+                  </span>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-sm font-semibold tracking-wide text-zinc-100">
+                      Criteria:
+                    </span>
+                    <ul>
+                      <li className="text-sm tracking-wide text-zinc-300">
+                        - Should be appropriate for{' '}
+                        <Link
+                          href="https://www.esrb.org/ratings-guide/"
+                          target={'_blank'}
+                          className="underline"
+                        >
+                          ESRB Teen
+                        </Link>
+                      </li>
+                      <span className="text-sm italic tracking-wide text-zinc-300">
+                        {'(More details coming soon)'}
+                      </span>
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div className="flex gap-4">
                 <div

@@ -14,6 +14,7 @@ import Spinner from '../../src/components/Spinner';
 import useFavorites from '../../src/hooks/useFavorites';
 import LoadingPage from '../../src/components/LoadingPage';
 import { FaYoutube } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
 
 export default function Movie() {
   const router = useRouter();
@@ -21,7 +22,8 @@ export default function Movie() {
   const session = useSession();
 
   const { movie } = useMovie(typeof id === 'string' ? id : '');
-  const { highest: thumbnail } = useMovieThumbnail(movie);
+  const { highest, mid } = useMovieThumbnail(movie);
+  const [thumbnail, setThumbnail] = useState<string>('');
   const { profile } = useUser(movie?.creator || '');
   const { watchlist, toggleInWatchlist, togglingWatchlist } = useWatchlist();
   const { favorites, toggleFavorite, togglingFavorite } = useFavorites();
@@ -39,6 +41,16 @@ export default function Movie() {
       toggleFavorite(movie.id);
     }
   };
+
+  const onImageError = () => {
+    setThumbnail(mid);
+  };
+
+  useEffect(() => {
+    if (highest && !thumbnail) {
+      setThumbnail(highest);
+    }
+  }, [highest, thumbnail]);
 
   return (
     <>
@@ -62,6 +74,7 @@ export default function Movie() {
                       alt="Thumbnail"
                       width={1920}
                       height={1080}
+                      onError={onImageError}
                     />
                   )}
                   <div

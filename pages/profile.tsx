@@ -143,10 +143,10 @@ export default function Profile() {
                 key={submission.id}
                 className="flex flex-row items-center justify-between gap-4 rounded-md bg-zinc-900 p-4"
               >
-                <span className="font-medium">{submission.title}</span>
+                <span className="text-sm font-medium">{submission.title}</span>
                 {submission.published ? (
                   <div className="flex flex-row items-center justify-center gap-4">
-                    <span className="rounded-md border-2 border-green-500 border-opacity-50 bg-green-500 bg-opacity-25 px-2 py-1 text-sm font-medium text-green-500">
+                    <span className="whitespace-nowrap rounded-md border-2 border-green-500 border-opacity-50 bg-green-500 bg-opacity-25 px-2 py-1 text-sm font-medium text-green-500">
                       Published
                     </span>
                     <Link href={`/movies/${submission.id}`}>
@@ -154,7 +154,7 @@ export default function Profile() {
                     </Link>
                   </div>
                 ) : (
-                  <span className="rounded-md border-2 border-yellow-500 border-opacity-50 bg-yellow-500 bg-opacity-25 px-2 py-1 text-sm font-medium text-yellow-500">
+                  <span className="whitespace-nowrap rounded-md border-2 border-yellow-500 border-opacity-50 bg-yellow-500 bg-opacity-25 px-2 py-1 text-sm font-medium text-yellow-500">
                     Under Review
                   </span>
                 )}
