@@ -25,6 +25,7 @@ export default function Profile() {
   const { submissions } = useUserSubmissions(session?.user.id || '');
 
   const initializedDefaults = useRef<boolean>(false);
+  const [username, setUsername] = useState<string>('');
   const [bio, setBio] = useState<string>('');
   const [website, setWebsite] = useState<string>('');
   const [twitter, setTwitter] = useState<string>('');
@@ -37,7 +38,7 @@ export default function Profile() {
   };
 
   const onSaveChange = () => {
-    updateProfile(bio, website, twitter, instagram, youtube);
+    updateProfile(username, bio, website, twitter, instagram, youtube);
   };
 
   useEffect(() => {
@@ -47,6 +48,7 @@ export default function Profile() {
       setTwitter(profile.twitter || '');
       setInstagram(profile.instagram || '');
       setYoutube(profile.youtube || '');
+      setUsername(profile.full_name || '');
       initializedDefaults.current = true;
     }
   }, [profile]);
@@ -88,6 +90,13 @@ export default function Profile() {
             >
               Sign Out
             </button>
+            <input
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              onBlur={onSaveChange}
+              className="rounded border-none bg-zinc-900 px-4 py-2 text-sm outline-none"
+            />
             <textarea
               placeholder="Bio"
               value={bio}

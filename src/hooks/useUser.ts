@@ -47,6 +47,7 @@ const useUser = (uid: string) => {
 
   const [updatingProfile, setUpdatingProfile] = useState<boolean>(false);
   const updateProfile = async (
+    username: string,
     bio: string,
     website: string,
     twitter: string,
@@ -57,7 +58,14 @@ const useUser = (uid: string) => {
     try {
       const { error } = await supabase
         .from('profiles')
-        .update({ bio, website, twitter, instagram, youtube })
+        .update({
+          full_name: username || 'Unknown',
+          bio,
+          website,
+          twitter,
+          instagram,
+          youtube,
+        })
         .match({ id: uid });
       if (error) {
         throw new Error(error.message);
