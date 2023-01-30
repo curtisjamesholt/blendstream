@@ -60,7 +60,7 @@ export default function Submit() {
             <form
               ref={animationParent as any}
               onSubmit={onSubmitForm}
-              className="flex flex-col gap-4 md:m-auto md:w-[400px]"
+              className="flex flex-col gap-4 md:m-auto md:max-w-md"
             >
               <span
                 className="text-2xl font-bold
@@ -69,7 +69,6 @@ export default function Submit() {
                 Submit
               </span>
               <div className="flex flex-row items-start justify-start gap-2 rounded-md border-2 border-zinc-800 bg-zinc-900 bg-opacity-25 p-4">
-                <FiInfo size={32} className={'h-5'} />
                 <div className="flex flex-col gap-4">
                   <span className="text-sm tracking-wide text-zinc-300">
                     Submit your own or another creators movie below. We will
@@ -80,20 +79,23 @@ export default function Submit() {
                     <span className="text-sm font-semibold tracking-wide text-zinc-100">
                       Criteria:
                     </span>
-                    <ul>
+                    <ul className="flex flex-col gap-1">
                       <li className="text-sm tracking-wide text-zinc-300">
-                        - Should be appropriate for{' '}
-                        <Link
-                          href="https://www.esrb.org/ratings-guide/"
-                          target={'_blank'}
-                          className="underline"
-                        >
-                          ESRB Teen
-                        </Link>
+                        - YouTube videos only. Please make sure thumbnails are
+                        at least 1920x1080 {'(no vertical YouTube shorts)'}
                       </li>
-                      <span className="text-sm italic tracking-wide text-zinc-300">
-                        {'(More details coming soon)'}
-                      </span>
+                      <li className="text-sm tracking-wide text-zinc-300">
+                        - Artistic content only. No tutorials, breakdowns, or
+                        other type of video.{' '}
+                        {'(Some breakdown shots at the end are fine)'}
+                      </li>
+                      <li className="text-sm tracking-wide text-zinc-300">
+                        - Family-friendly {'(within reason)'}. No excessive gore
+                        or nudity
+                      </li>
+                      <li className="text-sm tracking-wide text-zinc-300">
+                        - No product advertisements
+                      </li>
                     </ul>
                   </div>
                 </div>

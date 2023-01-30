@@ -33,7 +33,7 @@ export default function Submit() {
       <div className="flex min-h-[100vh] flex-col">
         <Header />
         <div className="w-full flex-grow px-4 pt-8">
-          <div className="flex flex-col items-start gap-4 md:m-auto md:w-[400px]">
+          <div className="flex w-full flex-col items-start gap-4 md:m-auto md:max-w-md">
             <span className="text-2xl font-bold">Login</span>
             <button
               onClick={onSignIn}
