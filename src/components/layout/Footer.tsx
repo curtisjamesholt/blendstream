@@ -1,17 +1,11 @@
 import Link from 'next/link';
-import { FaDiscord, FaGithub } from 'react-icons/fa';
+import { FaDiscord, FaGithub, FaYoutube } from 'react-icons/fa';
 
 export default function Footer() {
   return (
-    <footer className="z-10 flex w-full flex-row items-center justify-center gap-2 bg-black py-4 px-8 md:py-8">
+    <footer className="z-10 flex w-full flex-col items-center justify-between gap-2 bg-black py-4 px-8 md:flex-row md:py-8">
+      <span></span>
       <div className="flex flex-col gap-2">
-        {/* <span className="text-center text-sm opacity-50">
-          Built with ❤️ by the{' '}
-          <Link href="https://www.blender.org" target="_blank">
-            <u>blender</u>
-          </Link>{' '}
-          community
-        </span> */}
         <span className="text-center text-sm opacity-50">
           <i>
             <Link href="/">blend.stream</Link>
@@ -34,19 +28,15 @@ export default function Footer() {
           </Link>
         </span>
       </div>
-      {/* <span className="hidden text-sm opacity-50 md:block">
-        Built with ❤️ by the{' '}
-        <Link href="https://www.blender.org" target="_blank">
-          <u>blender</u>
-        </Link>{' '}
-        community
-      </span> */}
-      {/* <Link href={''} target="_blank">
+      <Link
+        href={'https://www.youtube.com/watch?v=EJLg0fX2yFI'}
+        target="_blank"
+      >
         <span className="flex items-center gap-2 text-sm opacity-50">
-          <FaDiscord />
-          Discord
+          <FaYoutube />
+          About
         </span>
-      </Link> */}
+      </Link>
     </footer>
   );
 }
