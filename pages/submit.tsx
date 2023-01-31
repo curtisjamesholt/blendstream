@@ -81,6 +81,10 @@ export default function Submit() {
                     </span>
                     <ul className="flex flex-col gap-1">
                       <li className="text-sm tracking-wide text-zinc-300">
+                        - Must make significant use of Blender{' '}
+                        {'(but does not need to exclusively use the software)'}
+                      </li>
+                      <li className="text-sm tracking-wide text-zinc-300">
                         - YouTube videos only. Please make sure thumbnails are
                         at least 1920x1080 {'(no vertical YouTube shorts)'}
                       </li>
