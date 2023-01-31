@@ -39,6 +39,7 @@ export const useRecentMovies = () => {
       .from('movies')
       .select('*')
       .filter('published', 'eq', true)
+      .order('published_at', { ascending: false, nullsFirst: false })
       .order('created_at', { ascending: false })
       .limit(10);
     if (error) {

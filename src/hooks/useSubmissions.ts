@@ -47,7 +47,6 @@ const useSubmissions = () => {
           .select('*')
           .single();
         let newUserData = newUser as any;
-        console.log(newUserData);
         if (userError || !newUserData) {
           throw new Error(userError?.message || 'No user data');
         }

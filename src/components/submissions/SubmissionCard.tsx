@@ -52,6 +52,7 @@ export default function SubmissionCard(props: SubmissionCardProps) {
       newSubmission.tags = tags;
       newSubmission.featured = featured;
       newSubmission.creator = creator;
+      newSubmission.published_at = new Date().toISOString();
       publishSubmission(
         newSubmission,
         selectedFile || null,
