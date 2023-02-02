@@ -47,8 +47,8 @@ export default function Categories() {
           </select>
           <div className="mb-4 flex flex-row flex-wrap justify-center gap-5 md:mx-4 md:justify-start">
             {movies.map((movie) => (
-              <div className="aspect-video w-full md:w-auto">
-                <MovieCard key={movie.id} movie={movie} fullWidth />
+              <div key={movie.id} className="aspect-video w-full md:w-auto">
+                <MovieCard movie={movie} fullWidth />
               </div>
             ))}
           </div>
