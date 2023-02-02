@@ -62,12 +62,7 @@ export default function Submit() {
               onSubmit={onSubmitForm}
               className="flex flex-col gap-4 md:m-auto md:max-w-md"
             >
-              <span
-                className="text-2xl font-bold
-              "
-              >
-                Submit
-              </span>
+              <span className="text-2xl font-bold">Submit</span>
               <div className="flex flex-row items-start justify-start gap-2 rounded-md border-2 border-zinc-800 bg-zinc-900 bg-opacity-25 p-4">
                 <div className="flex flex-col gap-4">
                   <span className="text-sm tracking-wide text-zinc-300">

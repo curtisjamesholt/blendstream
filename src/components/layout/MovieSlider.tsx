@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Movie } from '../../hooks/usePublishMovie';
 import MovieCard from '../MovieCard';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiHash } from 'react-icons/fi';
 import { useMoviesByCategory } from '../../hooks/useMovies';
+import Link from 'next/link';
 
 interface MovieSliderProps {
   movies?: Movie[];
@@ -65,9 +66,28 @@ const MovieSlider = (props: MovieSliderProps) => {
 
   return (
     <div className="flex w-full flex-col overflow-x-hidden">
-      <span className="mx-2 mb-1 text-lg font-medium tracking-wide md:mx-8">
-        {title}
-      </span>
+      {!tag ? (
+        <span className="mx-2 mb-1 text-lg font-medium tracking-wide md:mx-8">
+          {title}
+        </span>
+      ) : (
+        <div className="flex flex-row items-center justify-between">
+          <Link
+            href={`/categories/${encodeURIComponent(tag)}`}
+            className="mx-2 mb-1 flex w-min flex-row items-center gap-1 whitespace-nowrap text-lg font-medium tracking-wide transition-all hover:underline md:mx-8"
+          >
+            {title}
+          </Link>
+          {offset > 0 && (
+            <Link
+              href={`/categories/${encodeURIComponent(tag)}`}
+              className="mr-8 hidden text-sm opacity-50 animate-in fade-in hover:underline md:block"
+            >
+              See all
+            </Link>
+          )}
+        </div>
+      )}
       <div ref={wrapperRef} className={`relative w-full`}>
         <div
           ref={containerRef}

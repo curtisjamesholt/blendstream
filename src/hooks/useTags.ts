@@ -118,4 +118,10 @@ const useTags = () => {
   };
 };
 
+export const useTagTitle = (tag: string) => {
+  const { tags } = useTags();
+  const tagData = tags.find((t) => t.tag === tag);
+  return tagData?.title || '';
+};
+
 export default useTags;

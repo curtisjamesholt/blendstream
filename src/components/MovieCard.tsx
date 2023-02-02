@@ -7,10 +7,11 @@ import useUser from '../hooks/useUser';
 
 interface MovieCardProps {
   movie: Movie;
+  fullWidth?: boolean;
 }
 
 const MovieCard = (props: MovieCardProps) => {
-  const { movie } = props;
+  const { movie, fullWidth } = props;
 
   const [movieCreatorId, setMovieCreatorId] = useState<string>('');
 

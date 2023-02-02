@@ -173,7 +173,7 @@ const Header = () => {
               onClick={() => setShowMobileMenu(false)}
               className="py-2 px-4 text-sm font-medium"
             >
-              Curate
+              Curate {`(${submissions.length})`}
             </Link>
           </>
         )}
