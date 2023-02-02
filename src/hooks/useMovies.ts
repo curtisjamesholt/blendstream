@@ -119,7 +119,7 @@ export const useFeaturedMovies = () => {
   };
 };
 
-export const useMoviesByCategory = (category: string) => {
+export const useMoviesByCategory = (category: string, limit?: number) => {
   const supabase = useSupabaseClient();
 
   const fetchMoviesByCategory = async () => {
@@ -127,6 +127,7 @@ export const useMoviesByCategory = (category: string) => {
     const { data, error } = await supabase
       .from('movies')
       .select('*')
+      .limit(limit || Infinity)
       .filter('tags', 'cs', `{${category}}`)
       .filter('published', 'eq', true)
       .order('created_at', { ascending: false });
@@ -136,7 +137,7 @@ export const useMoviesByCategory = (category: string) => {
     return data as Movie[];
   };
   const { data, error, isLoading } = useQuery<Movie[] | null>(
-    ['moviesByCategory', category],
+    ['moviesByCategory', category, limit],
     fetchMoviesByCategory,
     {
       staleTime: 1000 * 60 * 60,

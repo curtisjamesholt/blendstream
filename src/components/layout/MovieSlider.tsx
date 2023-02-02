@@ -16,7 +16,8 @@ const MovieSlider = (props: MovieSliderProps) => {
   const { movies, title, tag, shuffled } = props;
 
   const { movies: sortedMovies, shuffledMovies } = useMoviesByCategory(
-    tag || ''
+    tag || '',
+    15
   );
   const tagged = shuffled ? shuffledMovies : sortedMovies;
 
