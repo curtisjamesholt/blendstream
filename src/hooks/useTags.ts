@@ -78,7 +78,7 @@ const useTags = () => {
     try {
       const { error } = await supabase
         .from('tags')
-        .insert([{ tag, title, order: 0 }]);
+        .insert([{ tag, title, order: null }]);
       if (error) {
         throw new Error(error.message);
       }
