@@ -45,7 +45,11 @@ export default function Submit() {
               <FiInfo size={24} className={'h-4'} />
               <span className="text-sm tracking-wide">
                 By signing in you agree to our use of cookies. We only use
-                necessary cookies to authorize certain actions.
+                necessary cookies to authorize certain actions.<br/><br/>
+                Signing in will create a profile using your Discord username 
+                and profile picture (you can change your name later in the 
+                profile settings). If we approve your short film, it will 
+                connect to your profile automatically.
               </span>
             </div>
           </div>

@@ -74,26 +74,26 @@ export default function Submit() {
                     <span className="text-sm font-semibold tracking-wide text-zinc-100">
                       Criteria:
                     </span>
-                    <ul className="flex flex-col gap-1">
+                    <ul className="flex flex-col gap-3">
                       <li className="text-sm tracking-wide text-zinc-300">
-                        - Must make significant use of Blender{' '}
-                        {'(but does not need to exclusively use the software)'}
+                        - Must make significant use of Blender, particularly for rendering{' '}
+                        {'(but does not need to exclusively use the software).'}
                       </li>
                       <li className="text-sm tracking-wide text-zinc-300">
                         - YouTube videos only. Please make sure thumbnails are
-                        at least 1920x1080 {'(no vertical YouTube shorts)'}
+                        at least 1920x1080 {'(no vertical YouTube shorts).'}
                       </li>
                       <li className="text-sm tracking-wide text-zinc-300">
                         - Artistic content only. No tutorials, breakdowns, or
                         other type of video.{' '}
-                        {'(Some breakdown shots at the end are fine)'}
+                        {'(Some breakdown shots at the end are fine).'}
                       </li>
                       <li className="text-sm tracking-wide text-zinc-300">
                         - Family-friendly {'(within reason)'}. No excessive gore
-                        or nudity
+                        or nudity.
                       </li>
                       <li className="text-sm tracking-wide text-zinc-300">
-                        - No product advertisements
+                        - No product advertisements {'(product-viz styled shorts are fine, so long as they are not exploiting the site to advertise a product or service).'}
                       </li>
                     </ul>
                   </div>
