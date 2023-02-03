@@ -125,12 +125,11 @@ export const useMoviesByCategory = (category: string, limit?: number) => {
   const fetchMoviesByCategory = async () => {
     if (!category) return [];
     const { data, error } = await supabase
-      .from('movies')
+      .from('random_movies')
       .select('*')
-      .limit(limit || Infinity)
       .filter('tags', 'cs', `{${category}}`)
       .filter('published', 'eq', true)
-      .order('created_at', { ascending: false });
+      .limit(limit || Infinity);
     if (error) {
       throw new Error(error.message);
     }
