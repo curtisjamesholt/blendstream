@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import usePublishMovie from '../../hooks/usePublishMovie';
 import useSubmissions from '../../hooks/useSubmissions';
@@ -8,8 +9,12 @@ const CurateSubmissions = () => {
   const { submitMovie, submitting } = usePublishMovie();
 
   const submitEmptyMovie = () => {
-    submitMovie('Untitled', '', 'www.some.url', '', []);
+    submitMovie('Untitled', '', 'www.some.url', '', [], '');
   };
+
+  const reversedSubmissions = useMemo(() => {
+    return [...submissions].reverse();
+  }, [submissions]);
 
   return (
     <>
@@ -29,7 +34,7 @@ const CurateSubmissions = () => {
         )}
       </div>
       <div className="flex flex-row flex-wrap gap-4">
-        {submissions.map((submission) => (
+        {reversedSubmissions.map((submission) => (
           <SubmissionCard key={submission.id} submission={submission} />
         ))}
       </div>

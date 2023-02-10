@@ -107,6 +107,9 @@ export default function SubmissionCard(props: SubmissionCardProps) {
         </Link>
       </div>
       <div className="flex flex-col gap-4 p-4">
+        <span className="text-sm text-gray-400">
+          Submitted: {new Date(submission.created_at).toDateString()}
+        </span>
         <UserProfileInput
           id={submission.id}
           creator={creator}
@@ -159,6 +162,12 @@ export default function SubmissionCard(props: SubmissionCardProps) {
             onChange={(e) => setDescription(e.target.value)}
             className="min-h-[100px] resize-y rounded border-none bg-zinc-900 p-3 text-sm font-normal outline-none"
           />
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-medium text-gray-400">
+            Blender Usage
+          </label>
+          <span>{submission.blender_details || '-'}</span>
         </div>
         <div className="flex items-center gap-2">
           <input

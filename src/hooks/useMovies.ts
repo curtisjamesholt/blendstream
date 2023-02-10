@@ -126,7 +126,7 @@ export const useMoviesByCategory = (category: string, limit?: number) => {
     if (!category) return [];
     const { data, error } = await supabase
       .from('random_movies')
-      .select('*')
+      .select('id, title, creator, url')
       .filter('tags', 'cs', `{${category}}`)
       .filter('published', 'eq', true)
       .limit(limit || Infinity);

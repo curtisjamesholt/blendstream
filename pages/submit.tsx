@@ -24,6 +24,7 @@ export default function Submit() {
 
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  const [blender_details, setBlenderDetails] = useState<string>('');
   const [url, setUrl] = useState<string>('');
   const [creator, setCreator] = useState<string>('');
   const [tags, setTags] = useState<string[]>([]);
@@ -35,7 +36,14 @@ export default function Submit() {
   const onSubmitForm = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    await submitMovie(title, description, url, isOwnMovie ? '' : creator, tags);
+    await submitMovie(
+      title,
+      description,
+      url,
+      isOwnMovie ? '' : creator,
+      tags,
+      blender_details
+    );
   };
 
   useEffect(() => {
@@ -58,9 +66,8 @@ export default function Submit() {
         <div className="w-full flex-grow px-4 pt-8">
           {session && !submitted ? (
             <form
-              ref={animationParent as any}
               onSubmit={onSubmitForm}
-              className="flex flex-col gap-4 md:m-auto md:max-w-md"
+              className="flex flex-col gap-4 md:m-auto md:max-w-lg"
             >
               <span className="text-2xl font-bold">Submit</span>
               <div className="flex flex-row items-start justify-start gap-2 rounded-md border-2 border-zinc-800 bg-zinc-900 bg-opacity-25 p-4">
@@ -76,7 +83,8 @@ export default function Submit() {
                     </span>
                     <ul className="flex flex-col gap-3">
                       <li className="text-sm tracking-wide text-zinc-300">
-                        - Must make significant use of Blender, particularly for rendering{' '}
+                        - Must make significant use of Blender, particularly for
+                        rendering{' '}
                         {'(but does not need to exclusively use the software).'}
                       </li>
                       <li className="text-sm tracking-wide text-zinc-300">
@@ -93,142 +101,164 @@ export default function Submit() {
                         or nudity.
                       </li>
                       <li className="text-sm tracking-wide text-zinc-300">
-                        - No product advertisements {'(product-viz styled shorts are fine, so long as they are not exploiting the site to advertise a product or service).'}
+                        - No product advertisements{' '}
+                        {
+                          '(product-viz styled shorts are fine, so long as they are not exploiting the site to advertise a product or service).'
+                        }
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
-              <div className="flex gap-4">
-                <div
-                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-md bg-white bg-opacity-5 py-[28px] font-medium tracking-wide transition-all hover:bg-opacity-10 ${
-                    isOwnMovie
-                      ? 'bg-gradient-to-br from-accent-300 to-rose-500 text-black'
-                      : ''
-                  }`}
-                  onClick={() => setIsOwnMovie(true)}
-                >
-                  Your Movie
+              <div className="flex flex-col gap-4" ref={animationParent as any}>
+                <div className="flex gap-4">
+                  <div
+                    className={`flex flex-1 cursor-pointer items-center justify-center rounded-md bg-white bg-opacity-5 py-[28px] font-medium tracking-wide transition-all hover:bg-opacity-10 ${
+                      isOwnMovie
+                        ? 'bg-gradient-to-br from-accent-300 to-rose-500 text-black'
+                        : ''
+                    }`}
+                    onClick={() => setIsOwnMovie(true)}
+                  >
+                    Your Movie
+                  </div>
+                  <div
+                    onClick={() => setIsOwnMovie(false)}
+                    className={`flex flex-1 cursor-pointer items-center justify-center rounded-md bg-white bg-opacity-5 py-[28px] font-medium tracking-wide transition-all hover:bg-opacity-10 ${
+                      !isOwnMovie
+                        ? 'bg-gradient-to-br from-accent-300 to-rose-500 text-black'
+                        : ''
+                    }`}
+                  >
+                    Other Creator
+                  </div>
                 </div>
-                <div
-                  onClick={() => setIsOwnMovie(false)}
-                  className={`flex flex-1 cursor-pointer items-center justify-center rounded-md bg-white bg-opacity-5 py-[28px] font-medium tracking-wide transition-all hover:bg-opacity-10 ${
-                    !isOwnMovie
-                      ? 'bg-gradient-to-br from-accent-300 to-rose-500 text-black'
-                      : ''
-                  }`}
-                >
-                  Other Creator
-                </div>
-              </div>
 
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="title"
-                  className="text-sm font-medium text-gray-400"
-                >
-                  Title
-                </label>
-                <input
-                  type="text"
-                  name="title"
-                  id="title"
-                  placeholder="Movie Title"
-                  className="rounded border-none bg-zinc-900 p-2 px-3 text-sm font-normal outline-none"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
-              {!isOwnMovie ? (
                 <div className="flex flex-col gap-1">
                   <label
-                    htmlFor="creator"
+                    htmlFor="title"
                     className="text-sm font-medium text-gray-400"
                   >
-                    Creator Name
+                    Title
                   </label>
                   <input
                     type="text"
-                    name="creator"
-                    id="creator"
-                    placeholder="Name of the creator"
-                    className="rounded border-none bg-zinc-900 p-2 text-sm font-normal outline-none"
-                    value={creator}
-                    onChange={(e) => setCreator(e.target.value)}
+                    name="title"
+                    id="title"
+                    placeholder="Movie Title"
+                    className="rounded border-none bg-zinc-900 p-3 px-3 text-sm font-normal outline-none"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                   />
                 </div>
-              ) : (
-                <></>
-              )}
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="description"
-                  className="text-sm font-medium text-gray-400"
+                {!isOwnMovie ? (
+                  <div className="flex flex-col gap-1">
+                    <label
+                      htmlFor="creator"
+                      className="text-sm font-medium text-gray-400"
+                    >
+                      Creator Name
+                    </label>
+                    <input
+                      type="text"
+                      name="creator"
+                      id="creator"
+                      placeholder="Name of the creator"
+                      className="rounded border-none bg-zinc-900 p-3 text-sm font-normal outline-none"
+                      value={creator}
+                      onChange={(e) => setCreator(e.target.value)}
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+                <div className="flex flex-col gap-1">
+                  <label
+                    htmlFor="description"
+                    className="text-sm font-medium text-gray-400"
+                  >
+                    Description
+                  </label>
+                  <textarea
+                    name="description"
+                    id="description"
+                    placeholder="A short description of the movie"
+                    className="min-h-[100px] resize-y rounded border-none bg-zinc-900 p-3 text-sm font-normal outline-none"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label
+                    htmlFor="url"
+                    className="text-sm font-medium text-gray-400"
+                  >
+                    URL
+                  </label>
+                  <input
+                    type="url"
+                    name="url"
+                    id="url"
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    className="rounded border-none bg-zinc-900 p-3 text-sm font-normal outline-none"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                  />
+                  {url &&
+                    !(
+                      url.includes('youtube.com/watch?v=') ||
+                      url.includes('youtu.be/')
+                    ) && (
+                      <span className="text-sm text-red-600">
+                        Only youtube.com/watch urls are allowed!
+                      </span>
+                    )}
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label
+                    htmlFor="tags"
+                    className="text-sm font-medium text-gray-400"
+                  >
+                    Tags
+                  </label>
+                  <TagInput
+                    id="tags"
+                    options={allTags.map((t) => t.tag)}
+                    setTags={setTags}
+                    tags={tags}
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label
+                    htmlFor="blender_usage"
+                    className="text-sm font-medium text-gray-400"
+                  >
+                    Blender Usage
+                  </label>
+                  <textarea
+                    name="blender_usage"
+                    id="blender_usage"
+                    placeholder="Quickly describe how blender was used (if possible link to a breakdown)"
+                    className="min-h-[100px] resize-y rounded border-none bg-zinc-900 p-3 text-sm font-normal outline-none"
+                    value={blender_details}
+                    onChange={(e) => setBlenderDetails(e.target.value)}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={
+                    submitting ||
+                    !title ||
+                    !description ||
+                    !url ||
+                    (!creator && !isOwnMovie) ||
+                    !blender_details
+                  }
+                  className="rounded-md bg-white py-2 text-sm font-medium text-black transition-all hover:bg-opacity-80 disabled:bg-opacity-50"
                 >
-                  Description
-                </label>
-                <textarea
-                  name="description"
-                  id="description"
-                  placeholder="A short description of the movie"
-                  className="min-h-[100px] resize-y rounded border-none bg-zinc-900 p-2 text-sm font-normal outline-none"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
+                  Submit
+                </button>
               </div>
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="url"
-                  className="text-sm font-medium text-gray-400"
-                >
-                  URL
-                </label>
-                <input
-                  type="url"
-                  name="url"
-                  id="url"
-                  placeholder="https://www.youtube.com/watch?v=..."
-                  className="rounded border-none bg-zinc-900 p-2 text-sm font-normal outline-none"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                />
-                {url &&
-                  !(
-                    url.includes('youtube.com/watch?v=') ||
-                    url.includes('youtu.be/')
-                  ) && (
-                    <span className="text-sm text-red-600">
-                      Only youtube.com/watch urls are allowed!
-                    </span>
-                  )}
-              </div>
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="tags"
-                  className="text-sm font-medium text-gray-400"
-                >
-                  Tags
-                </label>
-                <TagInput
-                  id="tags"
-                  options={allTags.map((t) => t.tag)}
-                  setTags={setTags}
-                  tags={tags}
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={
-                  submitting ||
-                  !title ||
-                  !description ||
-                  !url ||
-                  (!creator && !isOwnMovie)
-                }
-                className="rounded-md bg-white py-2 text-sm font-medium text-black transition-all hover:bg-opacity-80 disabled:bg-opacity-50"
-              >
-                Submit
-              </button>
             </form>
           ) : submitted ? (
             <div className="mx-4 mt-[30vh] flex flex-col items-center justify-center gap-4 md:mx-8">

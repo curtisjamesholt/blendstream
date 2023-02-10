@@ -15,6 +15,7 @@ export interface Movie {
   thumbnail: string | null;
   submitter: string;
   published_at: string | null;
+  blender_details: string | null;
 }
 
 const usePublishMovie = () => {
@@ -30,7 +31,8 @@ const usePublishMovie = () => {
     description: string,
     url: string,
     creator: string,
-    tags: string[]
+    tags: string[],
+    blender_details: string
   ) => {
     if (!session) return;
     setSubmitting(true);
@@ -43,6 +45,7 @@ const usePublishMovie = () => {
         url: url,
         tags: tags,
         submitter: session.user.id,
+        blender_details: blender_details,
       } as Movie);
       await refetch();
       if (error) {
