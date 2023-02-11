@@ -66,7 +66,9 @@ export default function MoviePage() {
         />
         <meta
           property="og:image"
-          content={`https://blend.stream/api/og?${encodeURIComponent(highest)}`}
+          content={`https://blend.stream/api/og?thumbnail=${encodeURIComponent(
+            highest
+          )}`}
         />
         <meta
           property="og:description"
