@@ -72,7 +72,7 @@ export default function MoviePage() {
         />
         <meta
           property="og:description"
-          content={movie?.description.substring(0, 30) + '...' || ''}
+          content={movie?.description.substring(0, 60) + '...' || ''}
         />
       </Head>
       <>
