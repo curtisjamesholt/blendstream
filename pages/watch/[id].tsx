@@ -1,35 +1,23 @@
 import { useRouter } from 'next/router';
-import useMovie from '../../src/hooks/useMovie';
-import ReactPlayer from 'react-player';
+import useMovie, { getMovie } from '../../src/hooks/useMovie';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
-import { useState, useRef, useMemo, useEffect } from 'react';
+import { useMemo } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
 import LoadingPage from '../../src/components/LoadingPage';
-import { useWindowSize } from 'react-use';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
+import useMovieThumbnail from '../../src/hooks/useMovieThumbnail';
 
 export default function Player() {
   const router = useRouter();
   const { id } = router.query;
 
-  const { width, height } = useWindowSize();
-
-  const [showBack, setShowBack] = useState<boolean>(true);
+  const [windowSize, setWindowSize] = useState<[number, number]>([0, 0]);
 
   const { movie } = useMovie(typeof id === 'string' ? id : '');
-
-  const moveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const playerRef = useRef<ReactPlayer | null>(null);
-
-  const onMouseMove = () => {
-    setShowBack(true);
-    if (moveTimeoutRef.current) {
-      clearTimeout(moveTimeoutRef.current);
-    }
-    moveTimeoutRef.current = setTimeout(() => {
-      setShowBack(false);
-    }, 2000);
-  };
+  const { highest } = useMovieThumbnail(movie);
 
   const movieId = useMemo(() => {
     try {
@@ -43,18 +31,45 @@ export default function Player() {
     }
   }, [movie]);
 
+  useEffect(() => {
+    setWindowSize([window.innerWidth, window.innerHeight]);
+
+    const handleResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <>
       <Head>
-        <title>{movie?.title || ''}</title>
+        <title>{`Blend.Stream | ${movie?.title || ''}`}</title>
+        <meta
+          property="og:title"
+          content={movie?.title || 'Blend.Stream'}
+          key="title"
+        />
+        <meta
+          property="og:image"
+          content={`https://blend.stream/api/og?thumbnail=${encodeURIComponent(
+            highest
+          )}`}
+        />
+        <meta
+          property="og:description"
+          content={movie?.description.substring(0, 60) + '...' || ''}
+        />
       </Head>
       {movie ? (
         <div className="overflow-hidden">
           <div className="pointer-events-none fixed top-0 left-0 h-full w-full"></div>
           <div
-            className={`fixed top-1/2 left-4 hidden transition-transform md:block ${
-              showBack ? 'translate-x-[0px]' : 'translate-x-[-100px]'
-            }`}
+            className={`fixed top-1/2 left-4 hidden transition-transform md:block`}
           >
             <Link href={`/movies/${movie.id}`}>
               <div className="flex aspect-square w-14 items-center justify-center rounded-full bg-black bg-opacity-30 transition-all hover:bg-opacity-50">
@@ -62,19 +77,11 @@ export default function Player() {
               </div>
             </Link>
           </div>
-          {/* <ReactPlayer
-            ref={playerRef}
-            url={movie.url}
-            playing={true}
-            width={width}
-            height={height}
-            controls
-          /> */}
           <iframe
             src={`https://www.youtube.com/embed/${movieId}?color=white&fs=1`}
             allowFullScreen
-            width={width}
-            height={height}
+            width={windowSize[0]}
+            height={windowSize[1]}
           />
         </div>
       ) : (
@@ -85,3 +92,25 @@ export default function Player() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const id = context.params?.id as string;
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(['movie', id], () => getMovie(id));
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+    // revalidate every 24 hours
+    revalidate: 60 * 60 * 24,
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};
