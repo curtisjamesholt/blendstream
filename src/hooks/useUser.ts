@@ -44,11 +44,7 @@ const useUser = (uid: string) => {
   };
   const { data, error, isLoading, refetch } = useQuery<Profile | null>(
     ['profile', uid],
-    fetchUser,
-    {
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
-    }
+    fetchUser
   );
 
   const [updatingProfile, setUpdatingProfile] = useState<boolean>(false);

@@ -58,13 +58,13 @@ export default function MoviePage() {
   return (
     <>
       <Head>
-        <title>Blend.Stream | {movie?.title || ''}</title>
+        <title>{`Blend.Stream | ${movie?.title || ''}`}</title>
         <meta
           property="og:title"
           content={movie?.title || 'Blend.Stream'}
           key="title"
         />
-        <meta property="og:image" content={highest} />
+        <meta property="og:image" content={'https://blend.stream/api/og'} />
       </Head>
       <>
         <div className="flex min-h-[100vh] flex-col">
@@ -217,7 +217,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   await queryClient.prefetchQuery(['movie', id], () => getMovie(id));
   const movie = queryClient.getQueryData(['movie', id]) as Movie | null;
   await queryClient.prefetchQuery(['profile', movie?.creator || ''], () =>
-    getUser(id)
+    getUser(movie?.creator || '')
   );
 
   return {
