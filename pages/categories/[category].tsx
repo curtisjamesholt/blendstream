@@ -22,6 +22,7 @@ export default function Categories() {
     <>
       <Head>
         <title>Blend.Stream | Categories</title>
+        <meta property="og:image" content="/embed_image.jpg" />
       </Head>
       <div className="flex min-h-[100vh] flex-col">
         <Header />

@@ -38,7 +38,6 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta property="og:title" content="Blend.Stream" key="title" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://blend.stream" />
-        <meta property="og:image" content="/embed_image.jpg" />
       </Head>
       <Analytics />
       <div className={inter.className}>

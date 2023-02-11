@@ -32,6 +32,7 @@ export default function Home() {
     <>
       <Head>
         <title>Blend.Stream</title>
+        <meta property="og:image" content="/embed_image.jpg" />
       </Head>
       <Header />
       <main className="flex flex-col gap-4">

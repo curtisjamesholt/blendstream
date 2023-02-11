@@ -60,6 +60,7 @@ export default function Submit() {
     <>
       <Head>
         <title>Blend.Stream | Submit</title>
+        <meta property="og:image" content="/embed_image.jpg" />
       </Head>
       <div className="flex min-h-[100vh] flex-col">
         <Header />

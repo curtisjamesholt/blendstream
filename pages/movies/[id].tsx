@@ -65,6 +65,10 @@ export default function MoviePage() {
           key="title"
         />
         <meta property="og:image" content={'https://blend.stream/api/og'} />
+        <meta
+          property="og:description"
+          content={movie?.description.substring(0, 30) + '...' || ''}
+        />
       </Head>
       <>
         <div className="flex min-h-[100vh] flex-col">

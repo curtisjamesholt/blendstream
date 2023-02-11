@@ -47,6 +47,7 @@ export default function Curate() {
     <>
       <Head>
         <title>Blend.Stream | Curate</title>
+        <meta property="og:image" content="/embed_image.jpg" />
       </Head>
       <div className="flex min-h-[100vh] flex-col">
         <Header />

@@ -65,6 +65,7 @@ export default function Profile() {
     <>
       <Head>
         <title>Blend.Stream | Profile</title>
+        <meta property="og:image" content="/embed_image.jpg" />
       </Head>
       <div className="flex min-h-[100vh] flex-col">
         <Header />
