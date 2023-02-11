@@ -1,7 +1,3 @@
-import {
-  SupabaseClient,
-  useSupabaseClient,
-} from '@supabase/auth-helpers-react';
 import { Movie } from './usePublishMovie';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../utils/supabase';
@@ -25,7 +21,11 @@ const useMovie = (id: string) => {
   };
   const { data, error, isLoading } = useQuery<Movie | null>(
     ['movie', id],
-    fetchMovie
+    fetchMovie,
+    {
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+    }
   );
 
   return {

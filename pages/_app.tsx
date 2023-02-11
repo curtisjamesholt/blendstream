@@ -1,19 +1,32 @@
 import '../styles/globals.css';
 import { Inter } from '@next/font/google';
 import type { AppProps } from 'next/app';
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
-import { useState } from 'react';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  QueryClientProvider,
+  Hydrate,
+} from '@tanstack/react-query';
 import Head from 'next/head';
 import { Analytics } from '@vercel/analytics/react';
 import { supabase } from '../src/utils/supabase';
+import { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
-const queryClient = new QueryClient();
-
 export default function App({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 1000 * 60 * 60 * 24, // 24 hours
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  );
+
   return (
     <>
       <Head>
@@ -34,7 +47,9 @@ export default function App({ Component, pageProps }: AppProps) {
           initialSession={pageProps.initialSession}
         >
           <QueryClientProvider client={queryClient}>
-            <Component {...pageProps} />
+            <Hydrate state={pageProps.dehydratedState}>
+              <Component {...pageProps} />
+            </Hydrate>
           </QueryClientProvider>
         </SessionContextProvider>
       </div>

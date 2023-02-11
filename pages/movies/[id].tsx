@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
-import useMovie from '../../src/hooks/useMovie';
+import useMovie, { getMovie } from '../../src/hooks/useMovie';
 import Link from 'next/link';
-import useUser from '../../src/hooks/useUser';
+import useUser, { getUser } from '../../src/hooks/useUser';
 import Head from 'next/head';
 import useMovieThumbnail from '../../src/hooks/useMovieThumbnail';
 import Header from '../../src/components/layout/Header';
@@ -15,8 +15,11 @@ import useFavorites from '../../src/hooks/useFavorites';
 import LoadingPage from '../../src/components/LoadingPage';
 import { FaYoutube } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
+import { GetStaticProps, GetStaticPaths } from 'next';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
+import { Movie } from '../../src/hooks/usePublishMovie';
 
-export default function Movie() {
+export default function MoviePage() {
   const router = useRouter();
   const { id } = router.query;
   const session = useSession();
@@ -56,6 +59,12 @@ export default function Movie() {
     <>
       <Head>
         <title>Blend.Stream | {movie?.title || ''}</title>
+        <meta
+          property="og:title"
+          content={movie?.title || 'Blend.Stream'}
+          key="title"
+        />
+        <meta property="og:image" content={highest} />
       </Head>
       <>
         <div className="flex min-h-[100vh] flex-col">
@@ -200,3 +209,27 @@ export default function Movie() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const id = context.params?.id as string;
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(['movie', id], () => getMovie(id));
+  const movie = queryClient.getQueryData(['movie', id]) as Movie | null;
+  await queryClient.prefetchQuery(['profile', movie?.creator || ''], () =>
+    getUser(id)
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};

@@ -1,6 +1,7 @@
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { supabase } from '../utils/supabase';
 
 export interface Profile {
   id: string;
@@ -22,19 +23,24 @@ export const isUuid4 = (text: string) => {
   return uuid4Regex.test(text);
 };
 
+export const getUser = async (uid: string) => {
+  if (!uid || (uid && !isUuid4(uid))) return null;
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', uid);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data.length > 0 ? (data[0] as Profile) : null;
+};
+
 const useUser = (uid: string) => {
   const supabase = useSupabaseClient();
 
   const fetchUser = async () => {
-    if (!uid || (uid && !isUuid4(uid))) return null;
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', uid);
-    if (error) {
-      throw new Error(error.message);
-    }
-    return data.length > 0 ? (data[0] as Profile) : null;
+    const user = await getUser(uid);
+    return user;
   };
   const { data, error, isLoading, refetch } = useQuery<Profile | null>(
     ['profile', uid],
