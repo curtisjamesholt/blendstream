@@ -33,6 +33,9 @@ export default function Home() {
       <Head>
         <title>Blend.Stream</title>
         <meta property="og:image" content="/embed_image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={'Blend.Stream'} />
+        <meta name="twitter:image" content="/embed_image.jpg" />
       </Head>
       <Header />
       <main className="flex flex-col gap-4">

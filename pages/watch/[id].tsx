@@ -64,6 +64,19 @@ export default function Player() {
           property="og:description"
           content={movie?.description.substring(0, 60) + '...' || ''}
         />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={movie?.title || 'Blend.Stream'} />
+        <meta
+          name="twitter:description"
+          content={movie?.description.substring(0, 60) + '...' || ''}
+        />
+        <meta
+          name="twitter:image"
+          content={`https://blend.stream/api/og?thumbnail=${encodeURIComponent(
+            highest
+          )}`}
+        />
       </Head>
       {movie ? (
         <div className="overflow-hidden">
