@@ -1,10 +1,15 @@
+import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Footer from '../../src/components/layout/Footer';
 import Header from '../../src/components/layout/Header';
 import MovieCard from '../../src/components/MovieCard';
-import { useMoviesByCategory } from '../../src/hooks/useMovies';
+import {
+  getMoviesByCategory,
+  useMoviesByCategory,
+} from '../../src/hooks/useMovies';
 import useTags, { useTagTitle } from '../../src/hooks/useTags';
 
 export default function Categories() {
@@ -13,7 +18,7 @@ export default function Categories() {
 
   const tag = typeof category === 'string' ? category : '';
 
-  const { shuffledMovies: movies } = useMoviesByCategory(tag);
+  const { movies } = useMoviesByCategory(tag);
 
   const { tags } = useTags();
   const title = useTagTitle(tag);
@@ -59,3 +64,27 @@ export default function Categories() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const category = context.params?.category as string;
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(['moviesByCategory', category, ''], () =>
+    getMoviesByCategory(category)
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+    // revalidate every 24 hours
+    revalidate: 60 * 60 * 24,
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  };
+};

@@ -1,4 +1,6 @@
 import { useSession } from '@supabase/auth-helpers-react';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Footer from '../src/components/layout/Footer';
 import Header from '../src/components/layout/Header';
@@ -6,11 +8,14 @@ import MovieSlider from '../src/components/layout/MovieSlider';
 import MovieBanner from '../src/components/MovieBanner';
 import useFavorites from '../src/hooks/useFavorites';
 import {
+  getFeaturedMovies,
+  getMoviesByCategory,
+  getRecentMovies,
   useFeaturedMovies,
   useMoviesById,
   useRecentMovies,
 } from '../src/hooks/useMovies';
-import useTags from '../src/hooks/useTags';
+import useTags, { getTags, Tag } from '../src/hooks/useTags';
 import useUpdateProfilePicture from '../src/hooks/useUpdateProfilePicture';
 import useWatchlist from '../src/hooks/useWatchlist';
 
@@ -22,7 +27,7 @@ export default function Home() {
   const { movies: watchlistMovies } = useMoviesById(watchlist);
   const { movies: favoritesMovies } = useMoviesById(favorites);
   const { recentMovies } = useRecentMovies();
-  const { shuffledFeaturedMovies } = useFeaturedMovies();
+  const { featuredMovies } = useFeaturedMovies();
 
   const { tags } = useTags();
 
@@ -39,7 +44,7 @@ export default function Home() {
       </Head>
       <Header />
       <main className="flex flex-col gap-4">
-        <MovieBanner movies={shuffledFeaturedMovies} />
+        <MovieBanner movies={featuredMovies} />
         <div className="z-10 mb-16 flex flex-col gap-14">
           {session && (
             <>
@@ -71,3 +76,41 @@ export default function Home() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const queryClient = new QueryClient();
+
+  try {
+    await queryClient.prefetchQuery(['tags'], () => getTags());
+    const tags = queryClient.getQueryData(['tags']) as Tag[] | null;
+
+    for (let tag of tags || []) {
+      if (tag.order !== null) {
+        await queryClient.prefetchQuery(['moviesByCategory', tag.tag, 15], () =>
+          getMoviesByCategory(tag.tag, 15)
+        );
+      }
+    }
+
+    await queryClient.prefetchQuery(['featuredMovies'], () =>
+      getFeaturedMovies()
+    );
+
+    await queryClient.prefetchQuery(['recentMovies'], () => getRecentMovies());
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+      },
+      // revalidate every hour
+      revalidate: 60 * 60,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+      },
+    };
+  }
+};

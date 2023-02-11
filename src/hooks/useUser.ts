@@ -23,6 +23,33 @@ export const isUuid4 = (text: string) => {
   return uuid4Regex.test(text);
 };
 
+export const useSimpleUser = (uid: string) => {
+  const supabase = useSupabaseClient();
+
+  const fetchUser = async () => {
+    if (!uid || (uid && !isUuid4(uid))) return null;
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id, full_name, profile_picture')
+      .eq('id', uid);
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data.length > 0 ? (data[0] as Profile) : null;
+  };
+  const { data, error, isLoading, refetch } = useQuery<Profile | null>(
+    ['simple_profile', uid],
+    fetchUser
+  );
+
+  return {
+    profile: data || null,
+    error,
+    isLoading,
+    refetch,
+  };
+};
+
 export const getUser = async (uid: string) => {
   if (!uid || (uid && !isUuid4(uid))) return null;
   const { data, error } = await supabase

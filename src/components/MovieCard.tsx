@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import useMovieThumbnail from '../hooks/useMovieThumbnail';
 import { Movie } from '../hooks/usePublishMovie';
-import useUser from '../hooks/useUser';
+import { useSimpleUser } from '../hooks/useUser';
 
 interface MovieCardProps {
   movie: Movie;
@@ -15,7 +15,7 @@ const MovieCard = (props: MovieCardProps) => {
 
   const [movieCreatorId, setMovieCreatorId] = useState<string>('');
 
-  const { profile } = useUser(movieCreatorId);
+  const { profile } = useSimpleUser(movieCreatorId);
 
   const { low: thumbnail } = useMovieThumbnail(movie);
 

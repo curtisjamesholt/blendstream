@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useQuery } from '@tanstack/react-query';
+import { supabase } from '../utils/supabase';
 
 export interface Tag {
   tag: string;
@@ -8,18 +9,22 @@ export interface Tag {
   order: number | null;
 }
 
+export const getTags = async () => {
+  const { data, error } = await supabase
+    .from('tags')
+    .select('*')
+    .order('order', { ascending: true });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data as Tag[];
+};
+
 const useTags = () => {
   const supabase = useSupabaseClient();
 
   const fetchTags = async () => {
-    const { data, error } = await supabase
-      .from('tags')
-      .select('*')
-      .order('order', { ascending: true });
-    if (error) {
-      throw new Error(error.message);
-    }
-    return data as Tag[];
+    return await getTags();
   };
   const { data, isLoading, error, refetch } = useQuery(['tags'], fetchTags, {
     staleTime: Infinity,

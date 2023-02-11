@@ -2,6 +2,7 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { Movie } from './usePublishMovie';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
+import { supabase } from '../utils/supabase';
 
 export const useMoviesById = (ids: string[]) => {
   const supabase = useSupabaseClient();
@@ -10,7 +11,7 @@ export const useMoviesById = (ids: string[]) => {
     if (!ids.length) return null;
     const { data, error } = await supabase
       .from('movies')
-      .select('*')
+      .select('id, title, creator, url')
       .in('id', ids)
       .filter('published', 'eq', true)
       .order('created_at', { ascending: false });
@@ -31,21 +32,23 @@ export const useMoviesById = (ids: string[]) => {
   };
 };
 
-export const useRecentMovies = () => {
-  const supabase = useSupabaseClient();
+export const getRecentMovies = async () => {
+  const { data, error } = await supabase
+    .from('movies')
+    .select('id, title, creator, url')
+    .filter('published', 'eq', true)
+    .order('published_at', { ascending: false, nullsFirst: false })
+    .order('created_at', { ascending: false })
+    .limit(10);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data as Movie[];
+};
 
+export const useRecentMovies = () => {
   const fetchRecentMovies = async () => {
-    const { data, error } = await supabase
-      .from('movies')
-      .select('*')
-      .filter('published', 'eq', true)
-      .order('published_at', { ascending: false, nullsFirst: false })
-      .order('created_at', { ascending: false })
-      .limit(10);
-    if (error) {
-      throw new Error(error.message);
-    }
-    return data as Movie[];
+    return await getRecentMovies();
   };
   const { data, error, isLoading } = useQuery<Movie[] | null>(
     ['recentMovies'],
@@ -59,33 +62,30 @@ export const useRecentMovies = () => {
   };
 };
 
+export const getFeaturedMovies = async () => {
+  const { data, error } = await supabase
+    .from('movies')
+    .select('id, title, creator, url')
+    .filter('published', 'eq', true)
+    .filter('featured', 'eq', true)
+    .order('created_at', { ascending: false });
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data as Movie[];
+};
+
 export const useFeaturedMovies = () => {
   const supabase = useSupabaseClient();
 
   const fetchFeaturedMovies = async () => {
-    const { data, error } = await supabase
-      .from('movies')
-      .select('*')
-      .filter('published', 'eq', true)
-      .filter('featured', 'eq', true)
-      .order('created_at', { ascending: false });
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    return data as Movie[];
+    return await getFeaturedMovies();
   };
   const { data, error, isLoading, refetch } = useQuery<Movie[] | null>(
     ['featuredMovies'],
     fetchFeaturedMovies
   );
-
-  const shuffled = useMemo(() => {
-    const shuffled = JSON.parse(JSON.stringify(data || [])).sort(
-      (a: Movie, b: Movie) => 0.5 - Math.random()
-    ) as Movie[];
-    return shuffled;
-  }, [data]);
 
   const [removing, setRemoving] = useState<boolean>(false);
   const removeFeaturedMovie = async (id: string) => {
@@ -110,7 +110,6 @@ export const useFeaturedMovies = () => {
 
   return {
     featuredMovies: data || [],
-    shuffledFeaturedMovies: shuffled,
     error: error,
     loading: isLoading,
     removeFeaturedMovie,
@@ -119,41 +118,31 @@ export const useFeaturedMovies = () => {
   };
 };
 
-export const useMoviesByCategory = (category: string, limit?: number) => {
-  const supabase = useSupabaseClient();
+export const getMoviesByCategory = async (category: string, limit?: number) => {
+  if (!category) return [];
+  const { data, error } = await supabase
+    .from('random_movies')
+    .select('id, title, creator, url')
+    .filter('tags', 'cs', `{${category}}`)
+    .filter('published', 'eq', true)
+    .limit(limit || Infinity);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data as Movie[];
+};
 
+export const useMoviesByCategory = (category: string, limit?: number) => {
   const fetchMoviesByCategory = async () => {
-    if (!category) return [];
-    const { data, error } = await supabase
-      .from('random_movies')
-      .select('id, title, creator, url')
-      .filter('tags', 'cs', `{${category}}`)
-      .filter('published', 'eq', true)
-      .limit(limit || Infinity);
-    if (error) {
-      throw new Error(error.message);
-    }
-    return data as Movie[];
+    return getMoviesByCategory(category, limit);
   };
   const { data, error, isLoading } = useQuery<Movie[] | null>(
-    ['moviesByCategory', category, limit],
-    fetchMoviesByCategory,
-    {
-      staleTime: 1000 * 60 * 60,
-      refetchOnWindowFocus: false,
-    }
+    ['moviesByCategory', category, limit || ''],
+    fetchMoviesByCategory
   );
-
-  const shuffled = useMemo(() => {
-    const shuffled = JSON.parse(JSON.stringify(data || [])).sort(
-      (a: Movie, b: Movie) => 0.5 - Math.random()
-    ) as Movie[];
-    return shuffled;
-  }, [data]);
 
   return {
     movies: data || [],
-    shuffledMovies: shuffled,
     error: error,
     loading: isLoading,
   };
@@ -166,7 +155,7 @@ export const useMoviesByCreator = (creator: string) => {
     if (!creator) return [];
     const { data, error } = await supabase
       .from('movies')
-      .select('*')
+      .select('id, title, creator, url')
       .filter('creator', 'eq', creator)
       .filter('published', 'eq', true)
       .order('created_at', { ascending: false });
@@ -194,7 +183,7 @@ export const useFilteredMovies = (search: string) => {
     if (!search) return [];
     const { data, error } = await supabase
       .from('movies')
-      .select('*')
+      .select('id, title, creator, url')
       .filter('title', 'ilike', `%${search}%`)
       .filter('published', 'eq', true)
       .order('created_at', { ascending: false });

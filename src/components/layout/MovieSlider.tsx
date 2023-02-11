@@ -15,11 +15,8 @@ interface MovieSliderProps {
 const MovieSlider = (props: MovieSliderProps) => {
   const { movies, title, tag, shuffled } = props;
 
-  const { movies: sortedMovies, shuffledMovies } = useMoviesByCategory(
-    tag || '',
-    15
-  );
-  const tagged = shuffled ? shuffledMovies : sortedMovies;
+  const { movies: sortedMovies } = useMoviesByCategory(tag || '', 15);
+  const tagged = sortedMovies;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
