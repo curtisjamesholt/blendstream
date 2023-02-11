@@ -10,7 +10,7 @@ import {
   getMoviesByCategory,
   useMoviesByCategory,
 } from '../../src/hooks/useMovies';
-import useTags, { useTagTitle } from '../../src/hooks/useTags';
+import useTags, { getTags, useTagTitle } from '../../src/hooks/useTags';
 
 export default function Categories() {
   const router = useRouter();
@@ -68,6 +68,8 @@ export default function Categories() {
 export const getStaticProps: GetStaticProps = async (context) => {
   const category = context.params?.category as string;
   const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(['tags'], () => getTags());
 
   await queryClient.prefetchQuery(['moviesByCategory', category, ''], () =>
     getMoviesByCategory(category)

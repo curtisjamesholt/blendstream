@@ -2,13 +2,16 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useQuery } from '@tanstack/react-query';
 import { Movie } from './usePublishMovie';
 import { useState } from 'react';
+import useUser from './useUser';
 
 const useSubmissions = () => {
   const supabase = useSupabaseClient();
   const session = useSession();
 
+  const { profile } = useUser(session?.user.id || '');
+
   const fetchSubmissions = async () => {
-    if (!session) return [];
+    if (!session || !profile?.is_moderator) return [];
     const { data, error } = await supabase
       .from('movies')
       .select('*')
@@ -20,7 +23,7 @@ const useSubmissions = () => {
     return data as Movie[];
   };
   const { data, error, isLoading, refetch } = useQuery<Movie[] | null>(
-    ['submissions', session?.user?.id],
+    ['submissions', session?.user?.id, profile?.is_moderator],
     fetchSubmissions
   );
 

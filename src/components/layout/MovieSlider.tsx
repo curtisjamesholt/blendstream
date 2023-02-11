@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Movie } from '../../hooks/usePublishMovie';
 import MovieCard from '../MovieCard';
 import { FiChevronLeft, FiChevronRight, FiHash } from 'react-icons/fi';
@@ -16,7 +16,8 @@ const MovieSlider = (props: MovieSliderProps) => {
   const { movies, title, tag, shuffled } = props;
 
   const { movies: sortedMovies } = useMoviesByCategory(tag || '', 15);
-  const tagged = sortedMovies;
+
+  const [tagged, setTagged] = useState<Movie[]>([]);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -59,6 +60,14 @@ const MovieSlider = (props: MovieSliderProps) => {
       window.removeEventListener('resize', updateHasOverflow);
     };
   }, []);
+
+  useEffect(() => {
+    if (shuffled) {
+      setTagged([...sortedMovies].sort(() => 0.5 - Math.random()));
+    } else {
+      setTagged([...sortedMovies]);
+    }
+  }, [sortedMovies, shuffled]);
 
   const displayMovies = movies ? movies : tag ? tagged : [];
 
