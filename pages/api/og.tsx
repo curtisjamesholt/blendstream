@@ -8,25 +8,21 @@ export const config = {
 export default async function handler(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const thumbnail = searchParams.get('thumbnail') || '';
-  console.log(thumbnail);
 
   return new ImageResponse(
     (
       <div
         style={{
           display: 'flex',
-          fontSize: 60,
-          color: 'black',
-          background: '#f6f6f6',
+          background: 'black',
           width: '100%',
           height: '100%',
-          paddingTop: 50,
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
         }}
       >
-        <img width="256" height="256" src={thumbnail} />
+        <img
+          src={thumbnail}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
       </div>
     ),
     {
