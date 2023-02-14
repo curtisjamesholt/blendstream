@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useMemo, useEffect } from 'react';
 import { FiExternalLink, FiTrash2 } from 'react-icons/fi';
 import useEditMovie from '../../hooks/useEditMovie';
+import useMovie from '../../hooks/useMovie';
 import { useFilteredMovies } from '../../hooks/useMovies';
 import useMovieThumbnail from '../../hooks/useMovieThumbnail';
 import useTags from '../../hooks/useTags';
@@ -29,9 +30,11 @@ const CurateMovies = () => {
 
   const { tags } = useTags();
 
-  const editMovie = useMemo(() => {
-    return editResults.find((m) => m.title === searchEdit) || null;
+  const editMovieId = useMemo(() => {
+    return editResults.find((m) => m.title === searchEdit)?.id || '';
   }, [editResults, searchEdit]);
+
+  const { movie: editMovie } = useMovie(editMovieId);
 
   const [editTitle, setEditTitle] = useState<string>('');
   const [editDescription, setEditDescription] = useState<string>('');
